@@ -1,0 +1,53 @@
+function foo(arg-> i, j, f: int; arg-> i, j, f: char): int{
+function foo(): void {
+for (i=0; i<10; i=i+2){ a = a + i;}
+var i = 0: int;
+var y: int*;
+}
+string a[20], b[20+25] = "moshe";
+var a: int;
+i = |b|;
+a = "test";
+do {a = a + i; i= i + 1;} while (i<=10);
+if(true) { j = 3; } else { k = 4; }
+while(true) { l = 2; k = l + j; }
+if(true) i = 5;
+x = 3 || 2;
+foo(x, y);
+return i;
+}
+
+function main(): void {
+for (i=0; i<10; i=i+2){ a = a + i;}
+var i = 0: int;
+var y: int*;
+}
+
+/*
+
+
+function foo(arg-> i, j, f, d, r, d, fg, rewr, wer, yyy, ttt, uuu, hhh, zzz: int): int{
+string a[20], b[20+25] = "moshe";
+return a;
+}
+
+function foo(arg-> i, j, k: int): int
+{
+function square(arg-> t: int): int
+{
+function square(arg-> t: int): int
+{
+var temp: int;
+temp = t*t;
+return 0;
+}
+var temp: int;
+temp = t*t;
+return 0;
+}
+var total: int;
+total = 1;
+var m = true, n = false, x: bool;
+return total;
+}
+*/

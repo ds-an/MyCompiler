@@ -653,6 +653,355 @@ void print_tree(node *treenode, int depth) {
     }
 }
 
+void analyze_tree(node *treenode) {
+    if (!treenode) {
+        return;
+    }
+    switch (treenode->node_type) {
+        case leaf:
+            switch (treenode->nodes.leaf_node.type) {
+                case id_list:
+                    
+                    break;
+                case decl_id:
+                    
+                    break;
+                default:
+                    
+                    break;
+            }
+            break;
+        case main_function:
+            
+
+            
+            if (treenode->nodes.main_function_node.param_list) {
+                
+                
+                
+                
+            }
+            
+            
+            
+            
+            if (treenode->nodes.main_function_node.stmt) {
+                
+                
+                
+            }
+            
+            break;
+        case function:
+            
+            
+            if (treenode->nodes.function_node.id) {
+                
+            }
+            if (treenode->nodes.function_node.param_list) {
+                
+                
+                
+                
+            }
+            if (treenode->nodes.function_node.type) {
+                
+                
+                
+                
+                
+            }
+            if (treenode->nodes.function_node.stmt) {
+                
+                
+                
+            }
+            
+            break;
+        case procedure:
+            
+
+            
+            if (treenode->nodes.procedure_node.id) {
+                
+            }
+            if (treenode->nodes.procedure_node.param_list) {
+                
+            }
+            
+            
+            
+            if (treenode->nodes.procedure_node.stmt) {
+                
+                
+                
+            }
+            
+            break;
+        case parameter_list:
+            
+            
+            if (treenode->nodes.param_list_node.ids) {
+                
+            }
+            if (treenode->nodes.param_list_node.type) {
+                
+                
+            }
+            
+            break;
+        case list:
+            //int list_lenght = sizeof(treenode->nodes.list_node.list) / sizeof(treenode->nodes.list_node.list[0]);
+            for (int i = 0; i < treenode->nodes.list_node.num - 1; i++) { // make another loop for ids !!!!
+                
+                //
+            }
+            break;
+        case decl_var:
+            
+            if (treenode->nodes.var_decl_node.param_list) {
+                
+            }
+            
+            if (treenode->nodes.var_decl_node.type) {
+                
+                
+            }
+            break;
+        case decl_str:
+            
+            if (treenode->nodes.str_decl_node.param_list) {
+                
+            }
+            break;
+        case decl_assgn:
+            if (treenode->nodes.assgn_decl_node.decl_id) {
+                
+            }
+            
+            if (treenode->nodes.assgn_decl_node.expr) {
+                
+            }
+            break;
+        case decl_id_ar:
+            if (treenode->nodes.id_ar_decl_node.decl_id) {
+                
+            }
+            
+            if (treenode->nodes.id_ar_decl_node.expr) {
+                
+            }
+            
+            break;
+        case decl_id_int:
+            if (treenode->nodes.id_int_decl_node.decl_id) {
+                
+            }
+            
+            if (treenode->nodes.id_int_decl_node.integer) {
+                
+            }
+            
+            break;
+        case update:
+            if (treenode->nodes.update_node.id) {
+                
+            }
+            
+            if (treenode->nodes.update_node.expr) {
+                
+            }
+            break;
+        case decl_statement:
+            
+            if (treenode->nodes.decl_stmt_node.decl) {
+                
+            }
+            
+            break;
+        case assgn_statement:
+            
+            
+            if (treenode->nodes.assgn_stmt_node.ids) {
+                
+            }
+            
+            if (treenode->nodes.assgn_stmt_node.expr) {
+                
+            }
+            
+            break;
+        case expr_statement:
+            
+            if (treenode->nodes.expr_stmt_node.expr) {
+                
+            }
+            
+            break;
+        case if_statement:
+            
+            
+            if (treenode->nodes.if_stmt_node.expr) {
+                
+                
+                
+                
+                
+            }
+            if (treenode->nodes.if_stmt_node.stmt) {
+                
+                
+                
+            }
+            break;
+        case if_else_statement:
+            
+            
+            if (treenode->nodes.if_else_stmt_node.expr) {
+                
+                
+                
+                
+                
+            }
+            if (treenode->nodes.if_else_stmt_node.stmt) {
+                
+                
+                
+            }
+            
+            
+            
+            
+            if (treenode->nodes.if_else_stmt_node.elsestmt) {
+                
+            }
+            break;
+        case while_statement:
+            
+            
+            if (treenode->nodes.while_stmt_node.expr) {
+                
+                
+                
+                
+                
+                
+            }
+            if (treenode->nodes.while_stmt_node.stmt) {
+                
+                
+            }
+            break;
+        case do_while_statement:
+            
+            
+            if (treenode->nodes.do_while_stmt_node.stmt) {
+                
+                
+                
+            }
+            if (treenode->nodes.do_while_stmt_node.expr) {
+                
+                
+                
+            }
+            
+            break;
+        case for_statement:
+            
+            
+            if (treenode->nodes.for_stmt_node.assgn_stmt) {
+                
+                
+                
+                
+            }
+            if (treenode->nodes.for_stmt_node.expr) {
+                
+                
+                
+                
+            }
+            if (treenode->nodes.for_stmt_node.update) {
+                
+                
+                
+                
+                
+            }
+            
+            
+            if (treenode->nodes.for_stmt_node.stmt) {
+                
+            }
+            break;
+        case ret_statement:
+            
+            
+            if (treenode->nodes.ret_stmt_node.expr) {
+                
+            }
+            break;
+        case not_expression:
+            
+            if (treenode->nodes.not_expr_node.expr) {
+                
+            }
+            break;
+        case logic_expression:
+            if (treenode->nodes.logic_expr_node.expr1) {
+                
+            }
+            if (treenode->nodes.logic_expr_node.logic) {
+                
+            }
+            if (treenode->nodes.logic_expr_node.expr2) {
+                
+            }
+            break;
+        case ar_expression:
+            if (treenode->nodes.ar_expr_node.expr1) {
+                
+            }
+            if (treenode->nodes.ar_expr_node.ar) {
+                
+            }
+            if (treenode->nodes.ar_expr_node.expr2) {
+                
+            }
+            break;
+        case func_call:
+            
+            if (treenode->nodes.func_call_node.id) {
+                
+            }
+            break;
+        case func_call_args:
+            
+            if (treenode->nodes.func_call_args_node.id) {
+                
+            }
+            
+            if (treenode->nodes.func_call_args_node.args) {
+                
+            }
+            break;
+        case deref:
+            
+            if (treenode->nodes.deref_node.expr) {
+                
+            }
+            break;
+        case address:
+            
+            if (treenode->nodes.address_node.expr) {
+                
+            }
+            break;
+    }
+}
+
 void indent(int depth) {
     for (int i = depth; i >= 0; i--) {
         printf("\t");

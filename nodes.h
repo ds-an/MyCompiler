@@ -318,5 +318,7 @@ void indent(int depth);
 
 void free_tree(node *root);
 
+void analyze_tree(node *treenode);
+
 #endif //MYCOMPILER_NODES_H
 

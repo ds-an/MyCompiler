@@ -50,6 +50,10 @@ enum leaf_node_type {
     func_call_id
 };
 
+/*enum data_type {
+
+};*/
+
 typedef struct leaf_node {
     char *info;
     enum leaf_node_type type;
@@ -317,6 +321,8 @@ void print_tree(node *root, int depth); // int level возможно, смот�
 void indent(int depth);
 
 void free_tree(node *root);
+
+void analyze_tree(node *treenode);
 
 #endif //MYCOMPILER_NODES_H
 

@@ -151,7 +151,7 @@ statement: iter_statement {$$.treenode = $1.treenode;}
 | expr_statement {$$.treenode = $1.treenode;}
 | assgn_statement {$$.treenode = $1.treenode;}
 | decl_statement {$$.treenode = $1.treenode;} ;
- //| '{' statement_list '}' {$$.treenode = $2.treenode;}// think and check
+| '{' statement_list '}' {$$.treenode = $2.treenode;}// think and check
  // | '{' '}' ; //think here too
 
 update: ID ASSGN expression {
@@ -166,7 +166,7 @@ statement_list: statement {
     node *list_node_stmts = $$.treenode;
     add_to_list(list_node_stmts, $2.treenode);
     $$.treenode = list_node_stmts;
-} ; // check loop
+};
 
 decl_statement: declaration ENDST {
     $$.treenode = crnode_decl_stmt("DECL_STMT", $1.treenode);
@@ -221,7 +221,7 @@ not_expression: NOT pr_expression {
     $$.treenode = crnode_not_expr("NOT_EXPR", $2.treenode);
 } ;
 
-logic_expression: pr_expression logic pr_expression {
+logic_expression: pr_expression logic pr_expression { //Change needed here
     $$.treenode = crnode_list();
     add_to_list($$.treenode, crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op), $3.treenode));
 }
@@ -232,7 +232,7 @@ logic_expression: pr_expression logic pr_expression {
     $$.treenode = list_node_logic;
 };
 
-ar_expression: pr_expression arithmetic pr_expression {
+ar_expression: pr_expression arithmetic pr_expression { //AND here too
     $$.treenode = crnode_list();
     add_to_list($$.treenode, crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op), $3.treenode));
 }

@@ -37,7 +37,7 @@ id ({letter})({letter}|_|{digit})*
 "arg->" { strcpy(yylval.node_info.str, yytext); return ARG; }
 {id} { strcpy(yylval.node_info.str, yytext); return ID; }
 ["].*["] { strcpy(yylval.node_info.str, yytext); return STR; }
-[']{letter}['] { strcpy(yylval.node_info.str, yytext); return CHAR; }
+['].['] { strcpy(yylval.node_info.str, yytext); return CHAR; }
 [|]{id}[|] { strcpy(yylval.node_info.str, yytext); return STRLEN; }
 "==" { strcpy(yylval.node_info.str, yytext); return LOGICEQ;}
 "!=" { strcpy(yylval.node_info.str, yytext); return LOGICNOTEQ;}
@@ -59,7 +59,8 @@ id ({letter})({letter}|_|{digit})*
 ":" { strcpy(yylval.node_info.str, yytext); return TYPEDEF; }
 "!" { strcpy(yylval.node_info.str, yytext); return NOT; }
 "&" { strcpy(yylval.node_info.str, yytext); return ADDRESS; }
-\/\*(.*\n)*.*\*\/ ;
+ /* \/\*(.*\n)*.*\*\/ ; */
+"/*"([^*]|[*][^/])*"*/" ;
 [ \t] ;
 . { strcpy(yylval.node_info.str, yytext); return yytext[0]; }
 .|\n ;

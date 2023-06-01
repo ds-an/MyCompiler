@@ -50,6 +50,10 @@ enum leaf_node_type {
     func_call_id
 };
 
+/*enum data_type {
+
+};*/
+
 typedef struct leaf_node {
     char *info;
     enum leaf_node_type type;

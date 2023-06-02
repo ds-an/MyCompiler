@@ -6,7 +6,9 @@ enum node_type {
     decl_var, // *
     decl_str, // *
     decl_id_ar, // * check
-    decl_id_int, // * check
+    decl_id_int,
+    str_id_ar,
+    str_id_int,// * check
     decl_assgn, // * check
     function, // *
     procedure, // *
@@ -37,6 +39,8 @@ enum leaf_node_type {
     decl_id,
     decl_id_br,
     decl_id_integer,
+    str_id_br,
+    str_id_integer,
     func_id,
     id_plain,
     func_type,
@@ -124,6 +128,18 @@ typedef struct id_int_decl_node {
     struct node *decl_id;
     struct node *integer;
 }idIntDeclNode;
+
+typedef struct id_ar_str_node {
+    char *info;
+    struct node *str_id;
+    struct node *expr;
+}idArStrNode;
+
+typedef struct id_int_str_node {
+    char *info;
+    struct node *str_id;
+    struct node *integer;
+}idIntStrNode;
 
 typedef struct update_node {
     char *info;
@@ -233,6 +249,8 @@ typedef struct node{
         assgnDeclNode assgn_decl_node;
         idArDeclNode id_ar_decl_node;
         idIntDeclNode id_int_decl_node;
+        idArStrNode id_ar_str_node;
+        idIntStrNode id_int_str_node;
         updateNode update_node;
         exprStmtNode expr_stmt_node;
         declStmtNode decl_stmt_node;
@@ -273,6 +291,10 @@ node *crnode_assgn_decl(char *info, node *decl_id, node *expr);
 node *crnode_id_ar_decl(char *info, node *decl_id, node *expr);
 
 node *crnode_id_int_decl(char *info, node *decl_id, node *integer);
+
+node *crnode_id_ar_str(char *info, node *decl_id, node *expr);
+
+node *crnode_id_int_str(char *info, node *decl_id, node *integer);
 
 node *crnode_update(char *info, node *id, node *expr);
 

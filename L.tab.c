@@ -1520,7 +1520,7 @@ yyreduce:
   case 12: /* decl_id: ID '[' ID ']'  */
 #line 79 "L.y"
                 {
-    (yyval.node_info).treenode = crnode_id_ar_decl("", crnode_leaf((yyvsp[-3].node_info).str, decl_id_br), (yyvsp[-1].node_info).treenode);
+    (yyval.node_info).treenode = crnode_id_int_decl("", crnode_leaf((yyvsp[-3].node_info).str, decl_id_br), crnode_leaf((yyvsp[-1].node_info).str, decl_id_integer));
 }
 #line 1526 "L.tab.c"
     break;
@@ -1974,7 +1974,7 @@ yyreduce:
   case 75: /* str_id: ID '[' ar_expression ']'  */
 #line 270 "L.y"
                                  {
-    (yyval.node_info).treenode = crnode_id_ar_decl("", crnode_leaf((yyvsp[-3].node_info).str, decl_id_br), (yyvsp[-1].node_info).treenode);
+    (yyval.node_info).treenode = crnode_id_ar_str("", crnode_leaf((yyvsp[-3].node_info).str, str_id_br), (yyvsp[-1].node_info).treenode);
 }
 #line 1980 "L.tab.c"
     break;
@@ -1982,7 +1982,7 @@ yyreduce:
   case 76: /* str_id: ID '[' INT ']'  */
 #line 273 "L.y"
                  {
-    (yyval.node_info).treenode = crnode_id_int_decl("", crnode_leaf((yyvsp[-3].node_info).str, decl_id_br), crnode_leaf((yyvsp[-1].node_info).str, decl_id_integer));
+    (yyval.node_info).treenode = crnode_id_int_str("", crnode_leaf((yyvsp[-3].node_info).str, str_id_br), crnode_leaf((yyvsp[-1].node_info).str, str_id_integer));
 }
 #line 1988 "L.tab.c"
     break;
@@ -1990,7 +1990,7 @@ yyreduce:
   case 77: /* str_id: ID '[' ID ']'  */
 #line 276 "L.y"
                 {
-    (yyval.node_info).treenode = crnode_id_ar_decl("", crnode_leaf((yyvsp[-3].node_info).str, decl_id_br), (yyvsp[-1].node_info).treenode);
+    (yyval.node_info).treenode = crnode_id_int_str("", crnode_leaf((yyvsp[-3].node_info).str, str_id_br), crnode_leaf((yyvsp[-1].node_info).str, str_id_integer));
 }
 #line 1996 "L.tab.c"
     break;

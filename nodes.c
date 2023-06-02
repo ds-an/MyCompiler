@@ -105,6 +105,26 @@ node *crnode_id_int_decl(char *info, node *decl_id, node *integer) {
     return cur_node;
 }
 
+node *crnode_id_ar_str(char *info, node *str_id, node *expr) {
+    node *cur_node = (node*) malloc(sizeof(node));
+    cur_node->node_type = str_id_ar;
+    char *str = (char*) malloc(sizeof(info) + 1); // !!!
+    strcpy(str, info);
+    cur_node->nodes.id_ar_str_node.str_id = str_id;
+    cur_node->nodes.id_ar_str_node.expr = expr;
+    return cur_node;
+}
+
+node *crnode_id_int_str(char *info, node *str_id, node *integer) {
+    node *cur_node = (node*) malloc(sizeof(node));
+    cur_node->node_type = str_id_int;
+    char *str = (char*) malloc(sizeof(info) + 1); // !!!
+    strcpy(str, info);
+    cur_node->nodes.id_int_str_node.str_id = str_id;
+    cur_node->nodes.id_int_str_node.integer = integer;
+    return cur_node;
+}
+
 node *crnode_update(char *info, node *id, node *expr) {
     node *cur_node = (node*) malloc(sizeof(node));
     cur_node->node_type = update;
@@ -451,6 +471,26 @@ void print_tree(node *treenode, int depth) {
             printf("[");
             if (treenode->nodes.id_int_decl_node.integer) {
                 print_tree(treenode->nodes.id_int_decl_node.integer, depth);
+            }
+            printf("]");
+            break;
+        case str_id_ar:
+            if (treenode->nodes.id_ar_str_node.str_id) {
+                print_tree(treenode->nodes.id_ar_str_node.str_id, depth);
+            }
+            printf("[");
+            if (treenode->nodes.id_ar_str_node.expr) {
+                print_tree(treenode->nodes.id_ar_str_node.expr, depth);
+            }
+            printf("]");
+            break;
+        case str_id_int:
+            if (treenode->nodes.id_int_str_node.str_id) {
+                print_tree(treenode->nodes.id_int_str_node.str_id, depth);
+            }
+            printf("[");
+            if (treenode->nodes.id_int_str_node.integer) {
+                print_tree(treenode->nodes.id_int_str_node.integer, depth);
             }
             printf("]");
             break;
@@ -802,6 +842,24 @@ void analyze_tree(node *treenode) {
                 
             }
             
+            break;
+        case str_id_ar:
+            if (treenode->nodes.id_ar_str_node.str_id) {
+                print_tree(treenode->nodes.id_ar_str_node.str_id, depth);
+            }
+            printf("[");
+            if (treenode->nodes.id_ar_str_node.expr) {
+                print_tree(treenode->nodes.id_ar_str_node.expr, depth);
+            }
+            printf("]");
+            break;
+        case str_id_int:
+            if (treenode->nodes.id_int_str_node.str_id) {
+
+            }
+            if (treenode->nodes.id_int_str_node.integer) {
+
+            }
             break;
         case update:
             if (treenode->nodes.update_node.id) {

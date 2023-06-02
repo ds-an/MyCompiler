@@ -77,7 +77,7 @@ decl_id: ID {$$.treenode = crnode_leaf($1.str, decl_id);};
     $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br), crnode_leaf($3.str, decl_id_integer));
 } ;
 | ID '[' ID ']' {
-    $$.treenode = crnode_id_ar_decl("", crnode_leaf($1.str, decl_id_br), $3.treenode);
+    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br), crnode_leaf($3.str, decl_id_integer));
 } ;
 
 function_list: funcproc {
@@ -268,13 +268,13 @@ func_call: ID '(' arglist ')' {
 } ; // can be problems here, check!!!
 
 str_id: ID '[' ar_expression ']' {
-    $$.treenode = crnode_id_ar_decl("", crnode_leaf($1.str, decl_id_br), $3.treenode);
+    $$.treenode = crnode_id_ar_str("", crnode_leaf($1.str, str_id_br), $3.treenode);
 };
 | ID '[' INT ']' {
-    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br), crnode_leaf($3.str, decl_id_integer));
+    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br), crnode_leaf($3.str, str_id_integer));
 } ;
 | ID '[' ID ']' {
-    $$.treenode = crnode_id_ar_decl("", crnode_leaf($1.str, decl_id_br), $3.treenode);
+    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br), crnode_leaf($3.str, str_id_integer));
 } ;
 
 arglist: expression {

@@ -845,13 +845,11 @@ void analyze_tree(node *treenode) {
             break;
         case str_id_ar:
             if (treenode->nodes.id_ar_str_node.str_id) {
-                print_tree(treenode->nodes.id_ar_str_node.str_id, depth);
+
             }
-            printf("[");
             if (treenode->nodes.id_ar_str_node.expr) {
-                print_tree(treenode->nodes.id_ar_str_node.expr, depth);
+
             }
-            printf("]");
             break;
         case str_id_int:
             if (treenode->nodes.id_int_str_node.str_id) {

@@ -139,7 +139,7 @@ func_body: '{' function_list ret_statement '}'{
 | '{' '}';
 
 proc_body: '{' function_list '}' {$$.treenode = $2.treenode;}
-| block_statement {$$.treenode = $1.treenode;}
+| '{' statement_list '}' {$$.treenode = $2.treenode;}
 | '{' function_list statement_list '}' {
     $$.treenode = crnode_list();
     add_to_list($$.treenode, $2.treenode);

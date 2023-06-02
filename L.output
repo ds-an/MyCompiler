@@ -5,14 +5,14 @@ Terminals unused in grammar
     COMMCLOSE
 
 
-State 81 conflicts: 8 shift/reduce
-State 82 conflicts: 4 shift/reduce
+State 80 conflicts: 8 shift/reduce
+State 81 conflicts: 4 shift/reduce
 State 139 conflicts: 4 shift/reduce
-State 158 conflicts: 12 shift/reduce
 State 159 conflicts: 12 shift/reduce
 State 160 conflicts: 12 shift/reduce
 State 161 conflicts: 12 shift/reduce
-State 178 conflicts: 4 shift/reduce
+State 162 conflicts: 12 shift/reduce
+State 179 conflicts: 4 shift/reduce
 
 
 Grammar
@@ -58,7 +58,7 @@ Grammar
    26          | '{' '}'
 
    27 proc_body: '{' function_list '}'
-   28          | block_statement
+   28          | '{' statement_list '}'
    29          | '{' function_list statement_list '}'
    30          | '{' '}'
 
@@ -168,8 +168,8 @@ Terminals, with rules where they appear
     ',' (44) 5 54 78
     '[' (91) 9 10 11 74 75 76
     ']' (93) 9 10 11 74 75 76
-    '{' (123) 23 24 25 26 27 29 30 32 39
-    '}' (125) 23 24 25 26 27 29 30 32 39
+    '{' (123) 23 24 25 26 27 28 29 30 32 39
+    '}' (125) 23 24 25 26 27 28 29 30 32 39
     error (256)
     INT <node_info> (258) 10 75 99
     ID <node_info> (259) 8 9 10 11 17 18 40 53 54 65 72 73 74 75 76
@@ -271,13 +271,13 @@ Nonterminals, with rules where they appear
         on right: 31 41 42
     block_statement <node_info> (73)
         on left: 39
-        on right: 28 38
+        on right: 38
     update <node_info> (74)
         on left: 40
         on right: 51
     statement_list <node_info> (75)
         on left: 41 42
-        on right: 24 25 29 39 42
+        on right: 24 25 28 29 39 42
     decl_statement <node_info> (76)
         on left: 43
         on right: 37
@@ -671,17 +671,16 @@ State 38
 
     '{'  shift, and go to state 42
 
-    proc_body        go to state 43
-    block_statement  go to state 44
+    proc_body  go to state 43
 
 
 State 39
 
    17 function: FUNCTION ID '(' parameter_list ')' TYPEDEF type • func_body
 
-    '{'  shift, and go to state 45
+    '{'  shift, and go to state 44
 
-    func_body  go to state 46
+    func_body  go to state 45
 
 
 State 40
@@ -690,8 +689,7 @@ State 40
 
     '{'  shift, and go to state 42
 
-    proc_body        go to state 47
-    block_statement  go to state 44
+    proc_body  go to state 46
 
 
 State 41
@@ -707,60 +705,60 @@ State 41
     TYPEREALPOINTER  shift, and go to state 33
     TYPESTR          shift, and go to state 34
 
-    type  go to state 48
+    type  go to state 47
 
 
 State 42
 
    27 proc_body: '{' • function_list '}'
+   28          | '{' • statement_list '}'
    29          | '{' • function_list statement_list '}'
    30          | '{' • '}'
-   39 block_statement: '{' • statement_list '}'
 
-    INT       shift, and go to state 49
-    ID        shift, and go to state 50
-    REAL      shift, and go to state 51
-    BOOL      shift, and go to state 52
-    STR       shift, and go to state 53
-    CHAR      shift, and go to state 54
-    IF        shift, and go to state 55
-    WHILE     shift, and go to state 56
-    FOR       shift, and go to state 57
-    DO        shift, and go to state 58
-    VAR       shift, and go to state 59
+    INT       shift, and go to state 48
+    ID        shift, and go to state 49
+    REAL      shift, and go to state 50
+    BOOL      shift, and go to state 51
+    STR       shift, and go to state 52
+    CHAR      shift, and go to state 53
+    IF        shift, and go to state 54
+    WHILE     shift, and go to state 55
+    FOR       shift, and go to state 56
+    DO        shift, and go to state 57
+    VAR       shift, and go to state 58
     FUNCTION  shift, and go to state 1
-    TYPESTR   shift, and go to state 60
-    MUL       shift, and go to state 61
-    NOT       shift, and go to state 62
-    ADDRESS   shift, and go to state 63
-    STRLEN    shift, and go to state 64
-    '('       shift, and go to state 65
-    '{'       shift, and go to state 66
-    '}'       shift, and go to state 67
+    TYPESTR   shift, and go to state 59
+    MUL       shift, and go to state 60
+    NOT       shift, and go to state 61
+    ADDRESS   shift, and go to state 62
+    STRLEN    shift, and go to state 63
+    '('       shift, and go to state 64
+    '{'       shift, and go to state 65
+    '}'       shift, and go to state 66
 
-    declaration       go to state 68
-    function_list     go to state 69
+    declaration       go to state 67
+    function_list     go to state 68
     funcproc          go to state 4
     function          go to state 5
     procedure         go to state 6
     main_function     go to state 7
-    statement         go to state 70
-    block_statement   go to state 71
-    statement_list    go to state 72
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    statement         go to state 69
+    block_statement   go to state 70
+    statement_list    go to state 71
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 43
@@ -772,93 +770,86 @@ State 43
 
 State 44
 
-   28 proc_body: block_statement •
-
-    $default  reduce using rule 28 (proc_body)
-
-
-State 45
-
    23 func_body: '{' • function_list ret_statement '}'
    24          | '{' • statement_list ret_statement '}'
    25          | '{' • function_list statement_list ret_statement '}'
    26          | '{' • '}'
 
-    INT       shift, and go to state 49
-    ID        shift, and go to state 50
-    REAL      shift, and go to state 51
-    BOOL      shift, and go to state 52
-    STR       shift, and go to state 53
-    CHAR      shift, and go to state 54
-    IF        shift, and go to state 55
-    WHILE     shift, and go to state 56
-    FOR       shift, and go to state 57
-    DO        shift, and go to state 58
-    VAR       shift, and go to state 59
+    INT       shift, and go to state 48
+    ID        shift, and go to state 49
+    REAL      shift, and go to state 50
+    BOOL      shift, and go to state 51
+    STR       shift, and go to state 52
+    CHAR      shift, and go to state 53
+    IF        shift, and go to state 54
+    WHILE     shift, and go to state 55
+    FOR       shift, and go to state 56
+    DO        shift, and go to state 57
+    VAR       shift, and go to state 58
     FUNCTION  shift, and go to state 1
-    TYPESTR   shift, and go to state 60
-    MUL       shift, and go to state 61
-    NOT       shift, and go to state 62
-    ADDRESS   shift, and go to state 63
-    STRLEN    shift, and go to state 64
-    '('       shift, and go to state 65
-    '{'       shift, and go to state 66
-    '}'       shift, and go to state 87
+    TYPESTR   shift, and go to state 59
+    MUL       shift, and go to state 60
+    NOT       shift, and go to state 61
+    ADDRESS   shift, and go to state 62
+    STRLEN    shift, and go to state 63
+    '('       shift, and go to state 64
+    '{'       shift, and go to state 65
+    '}'       shift, and go to state 86
 
-    declaration       go to state 68
-    function_list     go to state 88
+    declaration       go to state 67
+    function_list     go to state 87
     funcproc          go to state 4
     function          go to state 5
     procedure         go to state 6
     main_function     go to state 7
-    statement         go to state 70
-    block_statement   go to state 71
-    statement_list    go to state 89
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    statement         go to state 69
+    block_statement   go to state 70
+    statement_list    go to state 88
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 46
+State 45
 
    17 function: FUNCTION ID '(' parameter_list ')' TYPEDEF type func_body •
 
     $default  reduce using rule 17 (function)
 
 
-State 47
+State 46
 
    19 main_function: FUNCTION MAIN '(' parameter_list ')' TYPEDEF VOID proc_body •
 
     $default  reduce using rule 19 (main_function)
 
 
-State 48
+State 47
 
    21 parameter_list: parameter_list ENDST ARG ids TYPEDEF type •
 
     $default  reduce using rule 21 (parameter_list)
 
 
-State 49
+State 48
 
    99 literal: INT •
 
     $default  reduce using rule 99 (literal)
 
 
-State 50
+State 49
 
    53 ids: ID •
    65 pr_expression: ID •
@@ -868,428 +859,428 @@ State 50
    75       | ID • '[' INT ']'
    76       | ID • '[' ID ']'
 
-    '['  shift, and go to state 90
-    '('  shift, and go to state 91
+    '['  shift, and go to state 89
+    '('  shift, and go to state 90
 
     ASSGN     reduce using rule 53 (ids)
     ','       reduce using rule 53 (ids)
     $default  reduce using rule 65 (pr_expression)
 
 
-State 51
+State 50
 
   100 literal: REAL •
 
     $default  reduce using rule 100 (literal)
 
 
-State 52
+State 51
 
   102 literal: BOOL •
 
     $default  reduce using rule 102 (literal)
 
 
-State 53
+State 52
 
   103 literal: STR •
 
     $default  reduce using rule 103 (literal)
 
 
-State 54
+State 53
 
   101 literal: CHAR •
 
     $default  reduce using rule 101 (literal)
 
 
-State 55
+State 54
 
    47 if_statement: IF • '(' expression ')' iter_body
    48             | IF • '(' expression ')' iter_body ELSE iter_body
+
+    '('  shift, and go to state 91
+
+
+State 55
+
+   49 iter_statement: WHILE • '(' expression ')' iter_body
 
     '('  shift, and go to state 92
 
 
 State 56
 
-   49 iter_statement: WHILE • '(' expression ')' iter_body
+   51 iter_statement: FOR • '(' assgn_statement expression ENDST update ')' iter_body
 
     '('  shift, and go to state 93
 
 
 State 57
 
-   51 iter_statement: FOR • '(' assgn_statement expression ENDST update ')' iter_body
+   50 iter_statement: DO • iter_body WHILE '(' expression ')' ENDST
 
-    '('  shift, and go to state 94
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 94
+
+    declaration       go to state 67
+    iter_body         go to state 95
+    statement         go to state 96
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 58
 
-   50 iter_statement: DO • iter_body WHILE '(' expression ')' ENDST
+    2 declaration: VAR • decl_param_list TYPEDEF type
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 95
+    ID  shift, and go to state 97
 
-    declaration       go to state 68
-    iter_body         go to state 96
-    statement         go to state 97
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    decl_param_list  go to state 98
+    decl_assgn       go to state 99
+    decl_id          go to state 100
 
 
 State 59
 
-    2 declaration: VAR • decl_param_list TYPEDEF type
+    3 declaration: TYPESTR • decl_param_list
 
-    ID  shift, and go to state 98
+    ID  shift, and go to state 97
 
-    decl_param_list  go to state 99
-    decl_assgn       go to state 100
-    decl_id          go to state 101
+    decl_param_list  go to state 101
+    decl_assgn       go to state 99
+    decl_id          go to state 100
 
 
 State 60
 
-    3 declaration: TYPESTR • decl_param_list
+   45 assgn_statement: MUL • pr_expression ASSGN expression ENDST
+   70 pr_expression: MUL • pr_expression
 
-    ID  shift, and go to state 98
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    decl_param_list  go to state 102
-    decl_assgn       go to state 100
-    decl_id          go to state 101
+    pr_expression  go to state 104
+    func_call      go to state 83
+    str_id         go to state 84
+    literal        go to state 85
 
 
 State 61
 
-   45 assgn_statement: MUL • pr_expression ASSGN expression ENDST
-   70 pr_expression: MUL • pr_expression
+   59 not_expression: NOT • pr_expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
     pr_expression  go to state 105
-    func_call      go to state 84
-    str_id         go to state 85
-    literal        go to state 86
+    func_call      go to state 83
+    str_id         go to state 84
+    literal        go to state 85
 
 
 State 62
 
-   59 not_expression: NOT • pr_expression
+   69 pr_expression: ADDRESS • pr_expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
     pr_expression  go to state 106
-    func_call      go to state 84
-    str_id         go to state 85
-    literal        go to state 86
+    func_call      go to state 83
+    str_id         go to state 84
+    literal        go to state 85
 
 
 State 63
-
-   69 pr_expression: ADDRESS • pr_expression
-
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-
-    pr_expression  go to state 107
-    func_call      go to state 84
-    str_id         go to state 85
-    literal        go to state 86
-
-
-State 64
 
    71 pr_expression: STRLEN •
 
     $default  reduce using rule 71 (pr_expression)
 
 
-State 65
+State 64
 
    64 pr_expression: '(' • expression ')'
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 108
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 107
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 66
+State 65
 
    39 block_statement: '{' • statement_list '}'
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 66
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 65
 
-    declaration       go to state 68
-    statement         go to state 70
-    block_statement   go to state 71
-    statement_list    go to state 72
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    declaration       go to state 67
+    statement         go to state 69
+    block_statement   go to state 70
+    statement_list    go to state 108
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 67
+State 66
 
    30 proc_body: '{' '}' •
 
     $default  reduce using rule 30 (proc_body)
 
 
-State 68
+State 67
 
    43 decl_statement: declaration • ENDST
 
     ENDST  shift, and go to state 109
 
 
-State 69
+State 68
 
    13 function_list: function_list • funcproc
    27 proc_body: '{' function_list • '}'
    29          | '{' function_list • statement_list '}'
 
-    INT       shift, and go to state 49
-    ID        shift, and go to state 50
-    REAL      shift, and go to state 51
-    BOOL      shift, and go to state 52
-    STR       shift, and go to state 53
-    CHAR      shift, and go to state 54
-    IF        shift, and go to state 55
-    WHILE     shift, and go to state 56
-    FOR       shift, and go to state 57
-    DO        shift, and go to state 58
-    VAR       shift, and go to state 59
+    INT       shift, and go to state 48
+    ID        shift, and go to state 49
+    REAL      shift, and go to state 50
+    BOOL      shift, and go to state 51
+    STR       shift, and go to state 52
+    CHAR      shift, and go to state 53
+    IF        shift, and go to state 54
+    WHILE     shift, and go to state 55
+    FOR       shift, and go to state 56
+    DO        shift, and go to state 57
+    VAR       shift, and go to state 58
     FUNCTION  shift, and go to state 1
-    TYPESTR   shift, and go to state 60
-    MUL       shift, and go to state 61
-    NOT       shift, and go to state 62
-    ADDRESS   shift, and go to state 63
-    STRLEN    shift, and go to state 64
-    '('       shift, and go to state 65
-    '{'       shift, and go to state 66
+    TYPESTR   shift, and go to state 59
+    MUL       shift, and go to state 60
+    NOT       shift, and go to state 61
+    ADDRESS   shift, and go to state 62
+    STRLEN    shift, and go to state 63
+    '('       shift, and go to state 64
+    '{'       shift, and go to state 65
     '}'       shift, and go to state 110
 
-    declaration       go to state 68
+    declaration       go to state 67
     funcproc          go to state 11
     function          go to state 5
     procedure         go to state 6
     main_function     go to state 7
-    statement         go to state 70
-    block_statement   go to state 71
+    statement         go to state 69
+    block_statement   go to state 70
     statement_list    go to state 111
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 70
+State 69
 
    41 statement_list: statement •
 
     $default  reduce using rule 41 (statement_list)
 
 
-State 71
+State 70
 
    38 statement: block_statement •
 
     $default  reduce using rule 38 (statement)
 
 
-State 72
+State 71
 
-   39 block_statement: '{' statement_list • '}'
+   28 proc_body: '{' statement_list • '}'
    42 statement_list: statement_list • statement
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 66
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 65
     '}'      shift, and go to state 112
 
-    declaration       go to state 68
+    declaration       go to state 67
     statement         go to state 113
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 73
+State 72
 
    37 statement: decl_statement •
 
     $default  reduce using rule 37 (statement)
 
 
-State 74
+State 73
 
    36 statement: assgn_statement •
 
     $default  reduce using rule 36 (statement)
 
 
-State 75
+State 74
 
    35 statement: expr_statement •
 
     $default  reduce using rule 35 (statement)
 
 
-State 76
+State 75
 
    34 statement: if_statement •
 
     $default  reduce using rule 34 (statement)
 
 
-State 77
+State 76
 
    33 statement: iter_statement •
 
     $default  reduce using rule 33 (statement)
 
 
-State 78
+State 77
 
    44 assgn_statement: ids • ASSGN expression ENDST
    54 ids: ids • ',' ID
@@ -1298,7 +1289,7 @@ State 78
     ','    shift, and go to state 23
 
 
-State 79
+State 78
 
    46 expr_statement: expression • ENDST
    60 logic_expression: expression • logic expression
@@ -1322,14 +1313,14 @@ State 79
     arithmetic  go to state 129
 
 
-State 80
+State 79
 
    55 expression: not_expression •
 
     $default  reduce using rule 55 (expression)
 
 
-State 81
+State 80
 
    57 expression: logic_expression •
    61 logic_expression: logic_expression • logic expression
@@ -1356,7 +1347,7 @@ State 81
     logic  go to state 130
 
 
-State 82
+State 81
 
    56 expression: ar_expression •
    63 ar_expression: ar_expression • arithmetic expression
@@ -1375,139 +1366,139 @@ State 82
     arithmetic  go to state 131
 
 
-State 83
+State 82
 
    58 expression: pr_expression •
 
     $default  reduce using rule 58 (expression)
 
 
-State 84
+State 83
 
    68 pr_expression: func_call •
 
     $default  reduce using rule 68 (pr_expression)
 
 
-State 85
+State 84
 
    66 pr_expression: str_id •
 
     $default  reduce using rule 66 (pr_expression)
 
 
-State 86
+State 85
 
    67 pr_expression: literal •
 
     $default  reduce using rule 67 (pr_expression)
 
 
-State 87
+State 86
 
    26 func_body: '{' '}' •
 
     $default  reduce using rule 26 (func_body)
 
 
-State 88
+State 87
 
    13 function_list: function_list • funcproc
    23 func_body: '{' function_list • ret_statement '}'
    25          | '{' function_list • statement_list ret_statement '}'
 
-    INT       shift, and go to state 49
-    ID        shift, and go to state 50
-    REAL      shift, and go to state 51
-    BOOL      shift, and go to state 52
-    STR       shift, and go to state 53
-    CHAR      shift, and go to state 54
-    IF        shift, and go to state 55
-    WHILE     shift, and go to state 56
-    FOR       shift, and go to state 57
-    DO        shift, and go to state 58
-    VAR       shift, and go to state 59
+    INT       shift, and go to state 48
+    ID        shift, and go to state 49
+    REAL      shift, and go to state 50
+    BOOL      shift, and go to state 51
+    STR       shift, and go to state 52
+    CHAR      shift, and go to state 53
+    IF        shift, and go to state 54
+    WHILE     shift, and go to state 55
+    FOR       shift, and go to state 56
+    DO        shift, and go to state 57
+    VAR       shift, and go to state 58
     FUNCTION  shift, and go to state 1
     RETURN    shift, and go to state 132
-    TYPESTR   shift, and go to state 60
-    MUL       shift, and go to state 61
-    NOT       shift, and go to state 62
-    ADDRESS   shift, and go to state 63
-    STRLEN    shift, and go to state 64
-    '('       shift, and go to state 65
-    '{'       shift, and go to state 66
+    TYPESTR   shift, and go to state 59
+    MUL       shift, and go to state 60
+    NOT       shift, and go to state 61
+    ADDRESS   shift, and go to state 62
+    STRLEN    shift, and go to state 63
+    '('       shift, and go to state 64
+    '{'       shift, and go to state 65
 
-    declaration       go to state 68
+    declaration       go to state 67
     funcproc          go to state 11
     function          go to state 5
     procedure         go to state 6
     main_function     go to state 7
-    statement         go to state 70
-    block_statement   go to state 71
+    statement         go to state 69
+    block_statement   go to state 70
     statement_list    go to state 133
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
     ret_statement     go to state 134
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 89
+State 88
 
    24 func_body: '{' statement_list • ret_statement '}'
    42 statement_list: statement_list • statement
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
     RETURN   shift, and go to state 132
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 66
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 65
 
-    declaration       go to state 68
+    declaration       go to state 67
     statement         go to state 113
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
     ret_statement     go to state 135
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 90
+State 89
 
    74 str_id: ID '[' • ar_expression ']'
    75       | ID '[' • INT ']'
@@ -1515,109 +1506,109 @@ State 90
 
     INT      shift, and go to state 136
     ID       shift, and go to state 137
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
     expression        go to state 138
-    not_expression    go to state 80
-    logic_expression  go to state 81
+    not_expression    go to state 79
+    logic_expression  go to state 80
     ar_expression     go to state 139
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 91
+State 90
 
    72 func_call: ID '(' • arglist ')'
    73          | ID '(' • ')'
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
     ')'      shift, and go to state 140
 
     expression        go to state 141
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
     arglist           go to state 142
-    literal           go to state 86
+    literal           go to state 85
 
 
-State 92
+State 91
 
    47 if_statement: IF '(' • expression ')' iter_body
    48             | IF '(' • expression ')' iter_body ELSE iter_body
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
     expression        go to state 143
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 93
+State 92
 
    49 iter_statement: WHILE '(' • expression ')' iter_body
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
     expression        go to state 144
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 94
+State 93
 
    51 iter_statement: FOR '(' • assgn_statement expression ENDST update ')' iter_body
 
@@ -1625,69 +1616,69 @@ State 94
     MUL  shift, and go to state 145
 
     assgn_statement  go to state 146
-    ids              go to state 78
+    ids              go to state 77
 
 
-State 95
+State 94
 
    32 iter_body: '{' • '}'
    39 block_statement: '{' • statement_list '}'
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 66
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 65
     '}'      shift, and go to state 147
 
-    declaration       go to state 68
-    statement         go to state 70
-    block_statement   go to state 71
-    statement_list    go to state 72
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    declaration       go to state 67
+    statement         go to state 69
+    block_statement   go to state 70
+    statement_list    go to state 108
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 96
+State 95
 
    50 iter_statement: DO iter_body • WHILE '(' expression ')' ENDST
 
     WHILE  shift, and go to state 148
 
 
-State 97
+State 96
 
    31 iter_body: statement •
 
     $default  reduce using rule 31 (iter_body)
 
 
-State 98
+State 97
 
     8 decl_id: ID •
     9        | ID • '[' ar_expression ']'
@@ -1699,7 +1690,7 @@ State 98
     $default  reduce using rule 8 (decl_id)
 
 
-State 99
+State 98
 
     2 declaration: VAR decl_param_list • TYPEDEF type
     5 decl_param_list: decl_param_list • ',' decl_assgn
@@ -1708,14 +1699,14 @@ State 99
     ','      shift, and go to state 151
 
 
-State 100
+State 99
 
     4 decl_param_list: decl_assgn •
 
     $default  reduce using rule 4 (decl_param_list)
 
 
-State 101
+State 100
 
     6 decl_assgn: decl_id • ASSGN expression
     7           | decl_id •
@@ -1725,7 +1716,7 @@ State 101
     $default  reduce using rule 7 (decl_assgn)
 
 
-State 102
+State 101
 
     3 declaration: TYPESTR decl_param_list •
     5 decl_param_list: decl_param_list • ',' decl_assgn
@@ -1735,7 +1726,7 @@ State 102
     $default  reduce using rule 3 (declaration)
 
 
-State 103
+State 102
 
    65 pr_expression: ID •
    72 func_call: ID • '(' arglist ')'
@@ -1744,34 +1735,34 @@ State 103
    75       | ID • '[' INT ']'
    76       | ID • '[' ID ']'
 
-    '['  shift, and go to state 90
-    '('  shift, and go to state 91
+    '['  shift, and go to state 89
+    '('  shift, and go to state 90
 
     $default  reduce using rule 65 (pr_expression)
 
 
-State 104
+State 103
 
    70 pr_expression: MUL • pr_expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
     pr_expression  go to state 153
-    func_call      go to state 84
-    str_id         go to state 85
-    literal        go to state 86
+    func_call      go to state 83
+    str_id         go to state 84
+    literal        go to state 85
 
 
-State 105
+State 104
 
    45 assgn_statement: MUL pr_expression • ASSGN expression ENDST
    70 pr_expression: MUL pr_expression •
@@ -1781,21 +1772,21 @@ State 105
     $default  reduce using rule 70 (pr_expression)
 
 
-State 106
+State 105
 
    59 not_expression: NOT pr_expression •
 
     $default  reduce using rule 59 (not_expression)
 
 
-State 107
+State 106
 
    69 pr_expression: ADDRESS pr_expression •
 
     $default  reduce using rule 69 (pr_expression)
 
 
-State 108
+State 107
 
    60 logic_expression: expression • logic expression
    62 ar_expression: expression • arithmetic expression
@@ -1819,6 +1810,50 @@ State 108
     arithmetic  go to state 129
 
 
+State 108
+
+   39 block_statement: '{' statement_list • '}'
+   42 statement_list: statement_list • statement
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 65
+    '}'      shift, and go to state 156
+
+    declaration       go to state 67
+    statement         go to state 113
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
+
+
 State 109
 
    43 decl_statement: declaration ENDST •
@@ -1838,50 +1873,50 @@ State 111
    29 proc_body: '{' function_list statement_list • '}'
    42 statement_list: statement_list • statement
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 66
-    '}'      shift, and go to state 156
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 65
+    '}'      shift, and go to state 157
 
-    declaration       go to state 68
+    declaration       go to state 67
     statement         go to state 113
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 112
 
-   39 block_statement: '{' statement_list '}' •
+   28 proc_body: '{' statement_list '}' •
 
-    $default  reduce using rule 39 (block_statement)
+    $default  reduce using rule 28 (proc_body)
 
 
 State 113
@@ -1895,26 +1930,26 @@ State 114
 
    44 assgn_statement: ids ASSGN • expression ENDST
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 157
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 158
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 115
@@ -2012,130 +2047,130 @@ State 128
 
    60 logic_expression: expression logic • expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 158
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 159
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 129
 
    62 ar_expression: expression arithmetic • expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 159
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 160
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 130
 
    61 logic_expression: logic_expression logic • expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 160
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 161
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 131
 
    63 ar_expression: ar_expression arithmetic • expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 161
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 162
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 132
 
    52 ret_statement: RETURN • expression ENDST
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 162
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 163
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 133
@@ -2143,58 +2178,58 @@ State 133
    25 func_body: '{' function_list statement_list • ret_statement '}'
    42 statement_list: statement_list • statement
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
     RETURN   shift, and go to state 132
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 66
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 65
 
-    declaration       go to state 68
+    declaration       go to state 67
     statement         go to state 113
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ret_statement     go to state 163
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ret_statement     go to state 164
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 134
 
    23 func_body: '{' function_list ret_statement • '}'
 
-    '}'  shift, and go to state 164
+    '}'  shift, and go to state 165
 
 
 State 135
 
    24 func_body: '{' statement_list ret_statement • '}'
 
-    '}'  shift, and go to state 165
+    '}'  shift, and go to state 166
 
 
 State 136
@@ -2202,7 +2237,7 @@ State 136
    75 str_id: ID '[' INT • ']'
    99 literal: INT •
 
-    ']'  shift, and go to state 166
+    ']'  shift, and go to state 167
 
     $default  reduce using rule 99 (literal)
 
@@ -2217,9 +2252,9 @@ State 137
    76       | ID • '[' ID ']'
    76       | ID '[' ID • ']'
 
-    '['  shift, and go to state 90
-    ']'  shift, and go to state 167
-    '('  shift, and go to state 91
+    '['  shift, and go to state 89
+    ']'  shift, and go to state 168
+    '('  shift, and go to state 90
 
     $default  reduce using rule 65 (pr_expression)
 
@@ -2256,7 +2291,7 @@ State 139
     MINUS  shift, and go to state 124
     MUL    shift, and go to state 125
     DIV    shift, and go to state 126
-    ']'    shift, and go to state 168
+    ']'    shift, and go to state 169
 
     PLUS      [reduce using rule 56 (expression)]
     MINUS     [reduce using rule 56 (expression)]
@@ -2304,8 +2339,8 @@ State 142
    72 func_call: ID '(' arglist • ')'
    78 arglist: arglist • ',' expression
 
-    ','  shift, and go to state 169
-    ')'  shift, and go to state 170
+    ','  shift, and go to state 170
+    ')'  shift, and go to state 171
 
 
 State 143
@@ -2327,7 +2362,7 @@ State 143
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ')'          shift, and go to state 171
+    ')'          shift, and go to state 172
 
     logic       go to state 128
     arithmetic  go to state 129
@@ -2351,7 +2386,7 @@ State 144
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ')'          shift, and go to state 172
+    ')'          shift, and go to state 173
 
     logic       go to state 128
     arithmetic  go to state 129
@@ -2361,47 +2396,47 @@ State 145
 
    45 assgn_statement: MUL • pr_expression ASSGN expression ENDST
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    pr_expression  go to state 173
-    func_call      go to state 84
-    str_id         go to state 85
-    literal        go to state 86
+    pr_expression  go to state 174
+    func_call      go to state 83
+    str_id         go to state 84
+    literal        go to state 85
 
 
 State 146
 
    51 iter_statement: FOR '(' assgn_statement • expression ENDST update ')' iter_body
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 174
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 175
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 147
@@ -2415,7 +2450,7 @@ State 148
 
    50 iter_statement: DO iter_body WHILE • '(' expression ')' ENDST
 
-    '('  shift, and go to state 175
+    '('  shift, and go to state 176
 
 
 State 149
@@ -2424,26 +2459,26 @@ State 149
    10        | ID '[' • INT ']'
    11        | ID '[' • ID ']'
 
-    INT      shift, and go to state 176
-    ID       shift, and go to state 177
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 177
+    ID       shift, and go to state 178
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
     expression        go to state 138
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 178
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 179
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 150
@@ -2459,43 +2494,43 @@ State 150
     TYPEREALPOINTER  shift, and go to state 33
     TYPESTR          shift, and go to state 34
 
-    type  go to state 179
+    type  go to state 180
 
 
 State 151
 
     5 decl_param_list: decl_param_list ',' • decl_assgn
 
-    ID  shift, and go to state 98
+    ID  shift, and go to state 97
 
-    decl_assgn  go to state 180
-    decl_id     go to state 101
+    decl_assgn  go to state 181
+    decl_id     go to state 100
 
 
 State 152
 
     6 decl_assgn: decl_id ASSGN • expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 181
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 182
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 153
@@ -2509,26 +2544,26 @@ State 154
 
    45 assgn_statement: MUL pr_expression ASSGN • expression ENDST
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 182
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 183
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 155
@@ -2540,12 +2575,19 @@ State 155
 
 State 156
 
+   39 block_statement: '{' statement_list '}' •
+
+    $default  reduce using rule 39 (block_statement)
+
+
+State 157
+
    29 proc_body: '{' function_list statement_list '}' •
 
     $default  reduce using rule 29 (proc_body)
 
 
-State 157
+State 158
 
    44 assgn_statement: ids ASSGN expression • ENDST
    60 logic_expression: expression • logic expression
@@ -2563,13 +2605,13 @@ State 157
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ENDST        shift, and go to state 183
+    ENDST        shift, and go to state 184
 
     logic       go to state 128
     arithmetic  go to state 129
 
 
-State 158
+State 159
 
    60 logic_expression: expression • logic expression
    60                 | expression logic expression •
@@ -2606,7 +2648,7 @@ State 158
     arithmetic  go to state 129
 
 
-State 159
+State 160
 
    60 logic_expression: expression • logic expression
    62 ar_expression: expression • arithmetic expression
@@ -2643,7 +2685,7 @@ State 159
     arithmetic  go to state 129
 
 
-State 160
+State 161
 
    60 logic_expression: expression • logic expression
    61                 | logic_expression logic expression •
@@ -2680,7 +2722,7 @@ State 160
     arithmetic  go to state 129
 
 
-State 161
+State 162
 
    60 logic_expression: expression • logic expression
    62 ar_expression: expression • arithmetic expression
@@ -2717,7 +2759,7 @@ State 161
     arithmetic  go to state 129
 
 
-State 162
+State 163
 
    52 ret_statement: RETURN expression • ENDST
    60 logic_expression: expression • logic expression
@@ -2735,182 +2777,182 @@ State 162
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ENDST        shift, and go to state 184
+    ENDST        shift, and go to state 185
 
     logic       go to state 128
     arithmetic  go to state 129
 
 
-State 163
+State 164
 
    25 func_body: '{' function_list statement_list ret_statement • '}'
 
-    '}'  shift, and go to state 185
+    '}'  shift, and go to state 186
 
 
-State 164
+State 165
 
    23 func_body: '{' function_list ret_statement '}' •
 
     $default  reduce using rule 23 (func_body)
 
 
-State 165
+State 166
 
    24 func_body: '{' statement_list ret_statement '}' •
 
     $default  reduce using rule 24 (func_body)
 
 
-State 166
+State 167
 
    75 str_id: ID '[' INT ']' •
 
     $default  reduce using rule 75 (str_id)
 
 
-State 167
+State 168
 
    76 str_id: ID '[' ID ']' •
 
     $default  reduce using rule 76 (str_id)
 
 
-State 168
+State 169
 
    74 str_id: ID '[' ar_expression ']' •
 
     $default  reduce using rule 74 (str_id)
 
 
-State 169
+State 170
 
    78 arglist: arglist ',' • expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 186
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 187
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 170
+State 171
 
    72 func_call: ID '(' arglist ')' •
 
     $default  reduce using rule 72 (func_call)
 
 
-State 171
+State 172
 
    47 if_statement: IF '(' expression ')' • iter_body
    48             | IF '(' expression ')' • iter_body ELSE iter_body
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 95
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 94
 
-    declaration       go to state 68
-    iter_body         go to state 187
-    statement         go to state 97
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
-
-
-State 172
-
-   49 iter_statement: WHILE '(' expression ')' • iter_body
-
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 95
-
-    declaration       go to state 68
+    declaration       go to state 67
     iter_body         go to state 188
-    statement         go to state 97
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    statement         go to state 96
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 173
+
+   49 iter_statement: WHILE '(' expression ')' • iter_body
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 94
+
+    declaration       go to state 67
+    iter_body         go to state 189
+    statement         go to state 96
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
+
+
+State 174
 
    45 assgn_statement: MUL pr_expression • ASSGN expression ENDST
 
     ASSGN  shift, and go to state 154
 
 
-State 174
+State 175
 
    51 iter_statement: FOR '(' assgn_statement expression • ENDST update ')' iter_body
    60 logic_expression: expression • logic expression
@@ -2928,49 +2970,49 @@ State 174
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ENDST        shift, and go to state 189
+    ENDST        shift, and go to state 190
 
     logic       go to state 128
     arithmetic  go to state 129
 
 
-State 175
+State 176
 
    50 iter_statement: DO iter_body WHILE '(' • expression ')' ENDST
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 190
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 191
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
-State 176
+State 177
 
    10 decl_id: ID '[' INT • ']'
    99 literal: INT •
 
-    ']'  shift, and go to state 191
+    ']'  shift, and go to state 192
 
     $default  reduce using rule 99 (literal)
 
 
-State 177
+State 178
 
    11 decl_id: ID '[' ID • ']'
    65 pr_expression: ID •
@@ -2980,14 +3022,14 @@ State 177
    75       | ID • '[' INT ']'
    76       | ID • '[' ID ']'
 
-    '['  shift, and go to state 90
-    ']'  shift, and go to state 192
-    '('  shift, and go to state 91
+    '['  shift, and go to state 89
+    ']'  shift, and go to state 193
+    '('  shift, and go to state 90
 
     $default  reduce using rule 65 (pr_expression)
 
 
-State 178
+State 179
 
     9 decl_id: ID '[' ar_expression • ']'
    56 expression: ar_expression •
@@ -2997,7 +3039,7 @@ State 178
     MINUS  shift, and go to state 124
     MUL    shift, and go to state 125
     DIV    shift, and go to state 126
-    ']'    shift, and go to state 193
+    ']'    shift, and go to state 194
 
     PLUS      [reduce using rule 56 (expression)]
     MINUS     [reduce using rule 56 (expression)]
@@ -3008,21 +3050,21 @@ State 178
     arithmetic  go to state 131
 
 
-State 179
+State 180
 
     2 declaration: VAR decl_param_list TYPEDEF type •
 
     $default  reduce using rule 2 (declaration)
 
 
-State 180
+State 181
 
     5 decl_param_list: decl_param_list ',' decl_assgn •
 
     $default  reduce using rule 5 (decl_param_list)
 
 
-State 181
+State 182
 
     6 decl_assgn: decl_id ASSGN expression •
    60 logic_expression: expression • logic expression
@@ -3047,7 +3089,7 @@ State 181
     arithmetic  go to state 129
 
 
-State 182
+State 183
 
    45 assgn_statement: MUL pr_expression ASSGN expression • ENDST
    60 logic_expression: expression • logic expression
@@ -3065,34 +3107,34 @@ State 182
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ENDST        shift, and go to state 194
+    ENDST        shift, and go to state 195
 
     logic       go to state 128
     arithmetic  go to state 129
 
 
-State 183
+State 184
 
    44 assgn_statement: ids ASSGN expression ENDST •
 
     $default  reduce using rule 44 (assgn_statement)
 
 
-State 184
+State 185
 
    52 ret_statement: RETURN expression ENDST •
 
     $default  reduce using rule 52 (ret_statement)
 
 
-State 185
+State 186
 
    25 func_body: '{' function_list statement_list ret_statement '}' •
 
     $default  reduce using rule 25 (func_body)
 
 
-State 186
+State 187
 
    60 logic_expression: expression • logic expression
    62 ar_expression: expression • arithmetic expression
@@ -3117,33 +3159,33 @@ State 186
     arithmetic  go to state 129
 
 
-State 187
+State 188
 
    47 if_statement: IF '(' expression ')' iter_body •
    48             | IF '(' expression ')' iter_body • ELSE iter_body
 
-    ELSE  shift, and go to state 195
+    ELSE  shift, and go to state 196
 
     $default  reduce using rule 47 (if_statement)
 
 
-State 188
+State 189
 
    49 iter_statement: WHILE '(' expression ')' iter_body •
 
     $default  reduce using rule 49 (iter_statement)
 
 
-State 189
+State 190
 
    51 iter_statement: FOR '(' assgn_statement expression ENDST • update ')' iter_body
 
-    ID  shift, and go to state 196
+    ID  shift, and go to state 197
 
-    update  go to state 197
+    update  go to state 198
 
 
-State 190
+State 191
 
    50 iter_statement: DO iter_body WHILE '(' expression • ')' ENDST
    60 logic_expression: expression • logic expression
@@ -3161,188 +3203,188 @@ State 190
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ')'          shift, and go to state 198
+    ')'          shift, and go to state 199
 
     logic       go to state 128
     arithmetic  go to state 129
 
 
-State 191
+State 192
 
    10 decl_id: ID '[' INT ']' •
 
     $default  reduce using rule 10 (decl_id)
 
 
-State 192
+State 193
 
    11 decl_id: ID '[' ID ']' •
 
     $default  reduce using rule 11 (decl_id)
 
 
-State 193
+State 194
 
     9 decl_id: ID '[' ar_expression ']' •
 
     $default  reduce using rule 9 (decl_id)
 
 
-State 194
+State 195
 
    45 assgn_statement: MUL pr_expression ASSGN expression ENDST •
 
     $default  reduce using rule 45 (assgn_statement)
 
 
-State 195
+State 196
 
    48 if_statement: IF '(' expression ')' iter_body ELSE • iter_body
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 95
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 94
 
-    declaration       go to state 68
-    iter_body         go to state 199
-    statement         go to state 97
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
-
-
-State 196
-
-   40 update: ID • ASSGN expression
-
-    ASSGN  shift, and go to state 200
+    declaration       go to state 67
+    iter_body         go to state 200
+    statement         go to state 96
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 197
 
-   51 iter_statement: FOR '(' assgn_statement expression ENDST update • ')' iter_body
+   40 update: ID • ASSGN expression
 
-    ')'  shift, and go to state 201
+    ASSGN  shift, and go to state 201
 
 
 State 198
 
-   50 iter_statement: DO iter_body WHILE '(' expression ')' • ENDST
+   51 iter_statement: FOR '(' assgn_statement expression ENDST update • ')' iter_body
 
-    ENDST  shift, and go to state 202
+    ')'  shift, and go to state 202
 
 
 State 199
+
+   50 iter_statement: DO iter_body WHILE '(' expression ')' • ENDST
+
+    ENDST  shift, and go to state 203
+
+
+State 200
 
    48 if_statement: IF '(' expression ')' iter_body ELSE iter_body •
 
     $default  reduce using rule 48 (if_statement)
 
 
-State 200
+State 201
 
    40 update: ID ASSGN • expression
 
-    INT      shift, and go to state 49
-    ID       shift, and go to state 103
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    MUL      shift, and go to state 104
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
 
-    expression        go to state 203
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
-
-
-State 201
-
-   51 iter_statement: FOR '(' assgn_statement expression ENDST update ')' • iter_body
-
-    INT      shift, and go to state 49
-    ID       shift, and go to state 50
-    REAL     shift, and go to state 51
-    BOOL     shift, and go to state 52
-    STR      shift, and go to state 53
-    CHAR     shift, and go to state 54
-    IF       shift, and go to state 55
-    WHILE    shift, and go to state 56
-    FOR      shift, and go to state 57
-    DO       shift, and go to state 58
-    VAR      shift, and go to state 59
-    TYPESTR  shift, and go to state 60
-    MUL      shift, and go to state 61
-    NOT      shift, and go to state 62
-    ADDRESS  shift, and go to state 63
-    STRLEN   shift, and go to state 64
-    '('      shift, and go to state 65
-    '{'      shift, and go to state 95
-
-    declaration       go to state 68
-    iter_body         go to state 204
-    statement         go to state 97
-    block_statement   go to state 71
-    decl_statement    go to state 73
-    assgn_statement   go to state 74
-    expr_statement    go to state 75
-    if_statement      go to state 76
-    iter_statement    go to state 77
-    ids               go to state 78
-    expression        go to state 79
-    not_expression    go to state 80
-    logic_expression  go to state 81
-    ar_expression     go to state 82
-    pr_expression     go to state 83
-    func_call         go to state 84
-    str_id            go to state 85
-    literal           go to state 86
+    expression        go to state 204
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
 
 
 State 202
+
+   51 iter_statement: FOR '(' assgn_statement expression ENDST update ')' • iter_body
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    STRLEN   shift, and go to state 63
+    '('      shift, and go to state 64
+    '{'      shift, and go to state 94
+
+    declaration       go to state 67
+    iter_body         go to state 205
+    statement         go to state 96
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ids               go to state 77
+    expression        go to state 78
+    not_expression    go to state 79
+    logic_expression  go to state 80
+    ar_expression     go to state 81
+    pr_expression     go to state 82
+    func_call         go to state 83
+    str_id            go to state 84
+    literal           go to state 85
+
+
+State 203
 
    50 iter_statement: DO iter_body WHILE '(' expression ')' ENDST •
 
     $default  reduce using rule 50 (iter_statement)
 
 
-State 203
+State 204
 
    40 update: ID ASSGN expression •
    60 logic_expression: expression • logic expression
@@ -3367,7 +3409,7 @@ State 203
     arithmetic  go to state 129
 
 
-State 204
+State 205
 
    51 iter_statement: FOR '(' assgn_statement expression ENDST update ')' iter_body •
 

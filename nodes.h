@@ -55,14 +55,15 @@ enum leaf_node_type {
 };
 
 enum data_type {
+    null,
     type_bool,
     type_char,
     type_int,
     type_real,
     type_char_point,
-    type_char_int,
-    type_char_real,
-    type_chat_string
+    type_int_point,
+    type_real_point,
+    type_string
 };
 
 /*enum data_type {

@@ -38,7 +38,6 @@ int yydebug=1;
 
 %union {
     struct node_info {
-       enum data_type;
        char str [sizeof(char) * 50];
        struct node *treenode;
     }node_info;
@@ -49,7 +48,7 @@ int yydebug=1;
 program: function_list {$$.treenode = $1.treenode; print_tree($$.treenode, 0);} ; // main_function | main_function ;
 
 declaration: VAR decl_param_list TYPEDEF type {
-    $$.treenode = crnode_var_decl("DECL", $2.treenode, crnode_leaf($4.str, decl_type));
+    $$.treenode = crnode_var_decl("DECL", $2.treenode, $4.treenode);
 } ;
 | TYPESTR decl_param_list {
     $$.treenode = crnode_str_decl("DECL", $2.treenode);
@@ -70,15 +69,15 @@ decl_assgn: decl_id ASSGN expression {
 };
 | decl_id {$$.treenode = $1.treenode;} ;
 
-decl_id: ID {$$.treenode = crnode_leaf($1.str, decl_id);};
+decl_id: ID {$$.treenode = crnode_leaf($1.str, decl_id, null);};
 | ID '[' ar_expression ']' {
-    $$.treenode = crnode_id_ar_decl("", crnode_leaf($1.str, decl_id_br), $3.treenode);
+    $$.treenode = crnode_id_ar_decl("", crnode_leaf($1.str, decl_id_br, null), $3.treenode);
 };
 | ID '[' INT ']' {
-    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br), crnode_leaf($3.str, decl_id_integer));
+    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br, null), crnode_leaf($3.str, decl_id_integer, type_int));
 } ;
 | ID '[' ID ']' {
-    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br), crnode_leaf($3.str, decl_id_integer));
+    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br, null), crnode_leaf($3.str, decl_id_integer, null));
 } ;
 
 function_list: funcproc {
@@ -96,11 +95,11 @@ funcproc: function {$$.treenode = $1.treenode;}
 | main_function {$$.treenode = $1.treenode;} ;
 
 function: FUNCTION ID '(' parameter_list ')' TYPEDEF type func_body {
-    $$.treenode = crnode_function("FUNC", crnode_leaf($2.str, func_id), $4.treenode, crnode_leaf($7.str, func_type), $8.treenode);
+    $$.treenode = crnode_function("FUNC", crnode_leaf($2.str, func_id, null), $4.treenode, $7.treenode, $8.treenode);
 } ;
 
 procedure: FUNCTION ID '(' parameter_list ')' TYPEDEF VOID proc_body {
-    $$.treenode = crnode_procedure("PROC", crnode_leaf($2.str, func_id), $4.treenode, $8.treenode);
+    $$.treenode = crnode_procedure("PROC", crnode_leaf($2.str, func_id, null), $4.treenode, $8.treenode);
 } ;
 
 main_function: FUNCTION MAIN '(' parameter_list ')' TYPEDEF VOID proc_body {
@@ -112,11 +111,11 @@ parameter_list: ARG ids TYPEDEF type {
       //  strcpy($2.treenode->nodes.list_node.list[i]->nodes.leaf_node.info, "param");
     //}
     $$.treenode = crnode_list();
-    add_to_list($$.treenode, crnode_param_list("PARAM_LIST", $2.treenode, crnode_leaf($4.str, param_type)));
+    add_to_list($$.treenode, crnode_param_list("PARAM_LIST", $2.treenode, $4.treenode));
 } ;
 | parameter_list ENDST ARG ids TYPEDEF type {
     node *list_node_args = $$.treenode;
-    add_to_list(list_node_args, crnode_param_list("PARAM_LIST", $4.treenode, crnode_leaf($6.str, param_type)));
+    add_to_list(list_node_args, crnode_param_list("PARAM_LIST", $4.treenode, $6.treenode));
     $$.treenode = list_node_args;
 } ;
 | ;
@@ -162,7 +161,7 @@ statement: iter_statement {$$.treenode = $1.treenode;}
 block_statement: '{' statement_list '}' {$$.treenode = $2.treenode;};
 
 update: ID ASSGN expression {
-    $$.treenode = crnode_update("UPDATE_STMT", crnode_leaf($1.str, update_id), $3.treenode);
+    $$.treenode = crnode_update("UPDATE_STMT", crnode_leaf($1.str, update_id, null), $3.treenode);
 } ;
 
 statement_list: statement {
@@ -213,11 +212,11 @@ ret_statement: RETURN expression ENDST {
 
 ids: ID {
     $$.treenode = crnode_list();
-    add_to_list($$.treenode, crnode_leaf($1.str, id_list));
+    add_to_list($$.treenode, crnode_leaf($1.str, id_list, null));
 };
 | ids ',' ID {
     node *list_node_ids = $$.treenode;
-    add_to_list(list_node_ids, crnode_leaf($3.str, id_list));
+    add_to_list(list_node_ids, crnode_leaf($3.str, id_list, null));
     $$.treenode = list_node_ids;
 } ; //подумать!!!!!!!!!!
 
@@ -233,49 +232,50 @@ not_expression: NOT pr_expression {
 
 logic_expression: expression logic expression { //Change needed here, was pr_expression
     $$.treenode = crnode_list();
-    add_to_list($$.treenode, crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op), $3.treenode));
+    add_to_list($$.treenode, crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode));
 }
 | logic_expression logic expression {
     node *list_node_logic = $$.treenode;
-    add_to_list(list_node_logic, crnode_leaf($2.str, logic_op));
+    add_to_list(list_node_logic, crnode_leaf($2.str, logic_op, null));
     add_to_list(list_node_logic, $3.treenode);
     $$.treenode = list_node_logic;
 };
 
 ar_expression: expression arithmetic expression { //AND here too
     $$.treenode = crnode_list();
-    add_to_list($$.treenode, crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op), $3.treenode));
+    add_to_list($$.treenode, crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode));
 }
 | ar_expression arithmetic expression {
     node *list_node_ar = $$.treenode;
-    add_to_list(list_node_ar, crnode_leaf($2.str, ar_op));
+    add_to_list(list_node_ar, crnode_leaf($2.str, ar_op, null));
     add_to_list(list_node_ar, $3.treenode);
     $$.treenode = list_node_ar;
 };
 
 pr_expression: '(' expression ')' {$$.treenode = $2.treenode;} /* brackets */
-| ID {$$.treenode = crnode_leaf($1.str, id_plain);};
+| ID {$$.treenode = crnode_leaf($1.str, id_plain, null);};
 | str_id {$$.treenode = $1.treenode;};
-| literal {$$.treenode = crnode_leaf($1.str, literal);}; | func_call {$$.treenode = $1.treenode;};
+| literal {$$.treenode = $1.treenode;};
+| func_call {$$.treenode = $1.treenode;};
 | ADDRESS pr_expression {$$.treenode = crnode_address("ADDRESS", $2.treenode);};
 | MUL pr_expression {$$.treenode = crnode_deref("DEREF", $2.treenode);};
-| STRLEN {$$.treenode = crnode_leaf($1.str, strlength);} ; //think about pointers and other things
+| STRLEN {$$.treenode = crnode_leaf($1.str, strlength, type_int);} ; //think about pointers and other things
 
 func_call: ID '(' arglist ')' {
-    $$.treenode = crnode_func_call_args("FUNC_CALL", crnode_leaf($1.str, func_call_id), $3.treenode);
+    $$.treenode = crnode_func_call_args("FUNC_CALL", crnode_leaf($1.str, func_call_id, null), $3.treenode);
 };
 | ID '(' ')' {
-    $$.treenode = crnode_func_call("FUNC_CALL", crnode_leaf($1.str, func_call_id));
+    $$.treenode = crnode_func_call("FUNC_CALL", crnode_leaf($1.str, func_call_id, null));
 } ; // can be problems here, check!!!
 
 str_id: ID '[' ar_expression ']' {
-    $$.treenode = crnode_id_ar_str("", crnode_leaf($1.str, str_id_br), $3.treenode);
+    $$.treenode = crnode_id_ar_str("", crnode_leaf($1.str, str_id_br, null), $3.treenode);
 };
 | ID '[' INT ']' {
-    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br), crnode_leaf($3.str, str_id_integer));
+    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br, null), crnode_leaf($3.str, str_id_integer, type_int));
 } ;
 | ID '[' ID ']' {
-    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br), crnode_leaf($3.str, str_id_integer));
+    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br, null), crnode_leaf($3.str, str_id_integer, null));
 } ;
 
 arglist: expression {
@@ -293,10 +293,20 @@ logic: LOGICEQ | LOGICNOTEQ | LOGICMORE | LOGICLESS
 
 arithmetic: PLUS | MINUS | MUL | DIV ;
 
-type: TYPEBOOL | TYPECHAR | TYPEINT | TYPEREAL
-| TYPECHARPOINTER | TYPEINTPOINTER | TYPEREALPOINTER | TYPESTR ;
+type: TYPEBOOL {$$.treenode = crnode_leaf($1.str, param_type, type_bool);} 
+| TYPECHAR {$$.treenode = crnode_leaf($1.str, param_type, type_char);}
+| TYPEINT {$$.treenode = crnode_leaf($1.str, param_type, type_int);}
+| TYPEREAL {$$.treenode = crnode_leaf($1.str, param_type, type_real);}
+| TYPECHARPOINTER {$$.treenode = crnode_leaf($1.str, param_type, type_char_point);} 
+| TYPEINTPOINTER {$$.treenode = crnode_leaf($1.str, param_type, type_int_point);} 
+| TYPEREALPOINTER {$$.treenode = crnode_leaf($1.str, param_type, type_real_point);} 
+| TYPESTR {$$.treenode = crnode_leaf($1.str, param_type, type_string);} ;
 
-literal: INT | REAL | CHAR | BOOL | STR ;
+literal: INT {$$.treenode = crnode_leaf($1.str, literal, type_int);}
+| REAL {$$.treenode = crnode_leaf($1.str, literal, type_real);} 
+| CHAR {$$.treenode = crnode_leaf($1.str, literal, type_char);} 
+| BOOL {$$.treenode = crnode_leaf($1.str, literal, type_bool);} 
+| STR {$$.treenode = crnode_leaf($1.str, literal, type_string);} ;
 
 %%
 

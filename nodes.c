@@ -301,7 +301,7 @@ node *crnode_list() {
     node **list_nodes = (node**) malloc(sizeof(node*) * 10);
     cur_node->nodes.list_node.list = list_nodes;
     cur_node->nodes.list_node.num = 1;
-    cur_node->nodes.list_node.length = sizeof(list_nodes)/ sizeof(list_nodes[0]);
+    cur_node->nodes.list_node.length = 0;
     return cur_node;
 }
 /*
@@ -323,6 +323,7 @@ void add_to_list(node *list, node *item) {
     //printf("%s", item->nodes.leaf_node.info);
     list->nodes.list_node.list[list_lenght-1] = item;
     list->nodes.list_node.num++;
+    list->nodes.list_node.length++;
     // list->nodes.list_node.list = realloc(list->nodes.list_node.list, (list_lenght) * sizeof(node*));
 }
 
@@ -412,6 +413,9 @@ void print_tree(node *treenode, int depth) {
             printf("\n");
             break;
         case parameter_list:
+            int length = treenode->nodes.param_list_node.ids->nodes.list_node.length;
+            printf("length\n: %d", length);
+            printf("type: %u\n", treenode->nodes.param_list_node.ids->nodes.list_node.list[0]->nodes.leaf_node.data_type);
             printf("(");
             printf("PARAM_LIST: ");
             if (treenode->nodes.param_list_node.ids) {
@@ -1118,7 +1122,11 @@ void *pass_type_decl(node *decl_param_list, node *type) {
 }
 
 void *pass_type_func(node *ids, node *type) {
-
+    for (int i = 0; i < ids->nodes.list_node.length; ++i) {
+        ids->nodes.list_node.list[i]->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
+        /*printf("type: %u\n", ids->nodes.list_node.list[i]->nodes.leaf_node.data_type);
+        printf("length: %zu", ids->nodes.list_node.length);*/
+    }
 }
 
 /*void free_tree(node *root) {

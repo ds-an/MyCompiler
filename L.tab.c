@@ -599,15 +599,15 @@ static const yytype_int16 yyrline[] =
 {
        0,    48,    48,    50,    54,    59,    63,    69,    72,    74,
       75,    78,    81,    85,    89,    95,    96,    97,    99,   103,
-     107,   111,   118,   123,   125,   130,   135,   141,   143,   144,
-     145,   150,   152,   153,   155,   156,   157,   158,   159,   160,
-     163,   165,   169,   173,   179,   183,   186,   190,   194,   197,
-     201,   204,   207,   211,   215,   219,   225,   226,   227,   228,
-     231,   235,   239,   246,   250,   257,   258,   259,   260,   261,
-     262,   263,   264,   266,   269,   273,   276,   279,   283,   287,
-     293,   293,   293,   293,   294,   294,   294,   294,   296,   296,
-     296,   296,   298,   299,   300,   301,   302,   303,   304,   305,
-     307,   308,   309,   310,   311
+     107,   111,   119,   125,   127,   132,   137,   143,   145,   146,
+     147,   152,   154,   155,   157,   158,   159,   160,   161,   162,
+     165,   167,   171,   175,   181,   185,   188,   192,   196,   199,
+     203,   206,   209,   213,   217,   221,   227,   228,   229,   230,
+     233,   237,   241,   248,   252,   259,   260,   261,   262,   263,
+     264,   265,   266,   268,   271,   275,   278,   281,   285,   289,
+     295,   295,   295,   295,   296,   296,   296,   296,   298,   298,
+     298,   298,   300,   301,   302,   303,   304,   305,   306,   307,
+     309,   310,   311,   312,   313
 };
 #endif
 
@@ -1606,508 +1606,510 @@ yyreduce:
     //for (int i = 0; i < $2.treenode->nodes.list_node.num - 1; i++) {
       //  strcpy($2.treenode->nodes.list_node.list[i]->nodes.leaf_node.info, "param");
     //}
+    pass_type_func((yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode);
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, crnode_param_list("PARAM_LIST", (yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode));
 }
-#line 1613 "L.tab.c"
+#line 1614 "L.tab.c"
     break;
 
   case 22: /* parameter_list: parameter_list ENDST ARG ids TYPEDEF type  */
-#line 118 "L.y"
+#line 119 "L.y"
                                             {
+    pass_type_func((yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode);
     node *list_node_args = (yyval.node_info).treenode;
     add_to_list(list_node_args, crnode_param_list("PARAM_LIST", (yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode));
     (yyval.node_info).treenode = list_node_args;
 }
-#line 1623 "L.tab.c"
+#line 1625 "L.tab.c"
     break;
 
   case 24: /* func_body: '{' function_list ret_statement '}'  */
-#line 125 "L.y"
+#line 127 "L.y"
                                               {
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, (yyvsp[-2].node_info).treenode);
     add_to_list((yyval.node_info).treenode, (yyvsp[-1].node_info).treenode);
 }
-#line 1633 "L.tab.c"
+#line 1635 "L.tab.c"
     break;
 
   case 25: /* func_body: '{' statement_list ret_statement '}'  */
-#line 130 "L.y"
+#line 132 "L.y"
                                        {
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, (yyvsp[-2].node_info).treenode);
     add_to_list((yyval.node_info).treenode, (yyvsp[-1].node_info).treenode);
 }
-#line 1643 "L.tab.c"
+#line 1645 "L.tab.c"
     break;
 
   case 26: /* func_body: '{' function_list statement_list ret_statement '}'  */
-#line 135 "L.y"
+#line 137 "L.y"
                                                      {
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, (yyvsp[-3].node_info).treenode);
     add_to_list((yyval.node_info).treenode, (yyvsp[-2].node_info).treenode);
     add_to_list((yyval.node_info).treenode, (yyvsp[-1].node_info).treenode);
 }
-#line 1654 "L.tab.c"
+#line 1656 "L.tab.c"
     break;
 
   case 28: /* proc_body: '{' function_list '}'  */
-#line 143 "L.y"
+#line 145 "L.y"
                                  {(yyval.node_info).treenode = (yyvsp[-1].node_info).treenode;}
-#line 1660 "L.tab.c"
+#line 1662 "L.tab.c"
     break;
 
   case 29: /* proc_body: '{' statement_list '}'  */
-#line 144 "L.y"
+#line 146 "L.y"
                          {(yyval.node_info).treenode = (yyvsp[-1].node_info).treenode;}
-#line 1666 "L.tab.c"
+#line 1668 "L.tab.c"
     break;
 
   case 30: /* proc_body: '{' function_list statement_list '}'  */
-#line 145 "L.y"
+#line 147 "L.y"
                                        {
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, (yyvsp[-2].node_info).treenode);
     add_to_list((yyval.node_info).treenode, (yyvsp[-1].node_info).treenode);
 }
-#line 1676 "L.tab.c"
+#line 1678 "L.tab.c"
     break;
 
   case 32: /* iter_body: statement  */
-#line 152 "L.y"
+#line 154 "L.y"
                      {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1682 "L.tab.c"
+#line 1684 "L.tab.c"
     break;
 
   case 34: /* statement: iter_statement  */
-#line 155 "L.y"
+#line 157 "L.y"
                           {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1688 "L.tab.c"
+#line 1690 "L.tab.c"
     break;
 
   case 35: /* statement: if_statement  */
-#line 156 "L.y"
+#line 158 "L.y"
                {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1694 "L.tab.c"
+#line 1696 "L.tab.c"
     break;
 
   case 36: /* statement: expr_statement  */
-#line 157 "L.y"
+#line 159 "L.y"
                  {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1700 "L.tab.c"
+#line 1702 "L.tab.c"
     break;
 
   case 37: /* statement: assgn_statement  */
-#line 158 "L.y"
+#line 160 "L.y"
                   {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1706 "L.tab.c"
+#line 1708 "L.tab.c"
     break;
 
   case 38: /* statement: decl_statement  */
-#line 159 "L.y"
+#line 161 "L.y"
                  {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1712 "L.tab.c"
+#line 1714 "L.tab.c"
     break;
 
   case 39: /* statement: block_statement  */
-#line 160 "L.y"
+#line 162 "L.y"
                   {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1718 "L.tab.c"
+#line 1720 "L.tab.c"
     break;
 
   case 40: /* block_statement: '{' statement_list '}'  */
-#line 163 "L.y"
+#line 165 "L.y"
                                         {(yyval.node_info).treenode = (yyvsp[-1].node_info).treenode;}
-#line 1724 "L.tab.c"
+#line 1726 "L.tab.c"
     break;
 
   case 41: /* update: ID ASSGN expression  */
-#line 165 "L.y"
+#line 167 "L.y"
                             {
     (yyval.node_info).treenode = crnode_update("UPDATE_STMT", crnode_leaf((yyvsp[-2].node_info).str, update_id, null), (yyvsp[0].node_info).treenode);
 }
-#line 1732 "L.tab.c"
+#line 1734 "L.tab.c"
     break;
 
   case 42: /* statement_list: statement  */
-#line 169 "L.y"
+#line 171 "L.y"
                           {
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, (yyvsp[0].node_info).treenode);
 }
-#line 1741 "L.tab.c"
+#line 1743 "L.tab.c"
     break;
 
   case 43: /* statement_list: statement_list statement  */
-#line 173 "L.y"
+#line 175 "L.y"
                            {
     node *list_node_stmts = (yyval.node_info).treenode;
     add_to_list(list_node_stmts, (yyvsp[0].node_info).treenode);
     (yyval.node_info).treenode = list_node_stmts;
 }
-#line 1751 "L.tab.c"
+#line 1753 "L.tab.c"
     break;
 
   case 44: /* decl_statement: declaration ENDST  */
-#line 179 "L.y"
+#line 181 "L.y"
                                   {
     (yyval.node_info).treenode = crnode_decl_stmt("DECL_STMT", (yyvsp[-1].node_info).treenode);
 }
-#line 1759 "L.tab.c"
+#line 1761 "L.tab.c"
     break;
 
   case 45: /* assgn_statement: ids ASSGN expression ENDST  */
-#line 183 "L.y"
+#line 185 "L.y"
                                             {
     (yyval.node_info).treenode = crnode_assgn_stmt("ASSGN_STMT", (yyvsp[-3].node_info).treenode, (yyvsp[-1].node_info).treenode);
 }
-#line 1767 "L.tab.c"
+#line 1769 "L.tab.c"
     break;
 
   case 46: /* assgn_statement: MUL pr_expression ASSGN expression ENDST  */
-#line 186 "L.y"
+#line 188 "L.y"
                                            {
     (yyval.node_info).treenode = crnode_assgn_stmt("ASSGN_STMT", crnode_deref("DEREF", (yyvsp[-3].node_info).treenode), (yyvsp[-1].node_info).treenode);
 }
-#line 1775 "L.tab.c"
+#line 1777 "L.tab.c"
     break;
 
   case 47: /* expr_statement: expression ENDST  */
-#line 190 "L.y"
+#line 192 "L.y"
                                  {
     (yyval.node_info).treenode = crnode_expr_stmt("EXPR_STMT", (yyvsp[-1].node_info).treenode);
 }
-#line 1783 "L.tab.c"
+#line 1785 "L.tab.c"
     break;
 
   case 48: /* if_statement: IF '(' expression ')' iter_body  */
-#line 194 "L.y"
+#line 196 "L.y"
                                                              {
     (yyval.node_info).treenode = crnode_if_stmt("IF_STMT", (yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode);
 }
-#line 1791 "L.tab.c"
+#line 1793 "L.tab.c"
     break;
 
   case 49: /* if_statement: IF '(' expression ')' iter_body ELSE iter_body  */
-#line 197 "L.y"
+#line 199 "L.y"
                                                  {
     (yyval.node_info).treenode = crnode_if_else_stmt("IF_ELSE_STMT", (yyvsp[-4].node_info).treenode, (yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode);
 }
-#line 1799 "L.tab.c"
+#line 1801 "L.tab.c"
     break;
 
   case 50: /* iter_statement: WHILE '(' expression ')' iter_body  */
-#line 201 "L.y"
+#line 203 "L.y"
                                                    {
     (yyval.node_info).treenode = crnode_while_stmt("WHILE_STMT", (yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode);
 }
-#line 1807 "L.tab.c"
+#line 1809 "L.tab.c"
     break;
 
   case 51: /* iter_statement: DO iter_body WHILE '(' expression ')' ENDST  */
-#line 204 "L.y"
+#line 206 "L.y"
                                               {
     (yyval.node_info).treenode = crnode_do_while_stmt("DO_WHILE_STMT", (yyvsp[-5].node_info).treenode, (yyvsp[-2].node_info).treenode);
 }
-#line 1815 "L.tab.c"
+#line 1817 "L.tab.c"
     break;
 
   case 52: /* iter_statement: FOR '(' assgn_statement expression ENDST update ')' iter_body  */
-#line 207 "L.y"
+#line 209 "L.y"
                                                                 {
     (yyval.node_info).treenode = crnode_for_stmt("FOR_STMT", (yyvsp[-5].node_info).treenode, (yyvsp[-4].node_info).treenode, (yyvsp[-2].node_info).treenode, (yyvsp[0].node_info).treenode);
 }
-#line 1823 "L.tab.c"
+#line 1825 "L.tab.c"
     break;
 
   case 53: /* ret_statement: RETURN expression ENDST  */
-#line 211 "L.y"
+#line 213 "L.y"
                                        {
     (yyval.node_info).treenode = crnode_ret_stmt("RET_STMT", (yyvsp[-1].node_info).treenode);
 }
-#line 1831 "L.tab.c"
+#line 1833 "L.tab.c"
     break;
 
   case 54: /* ids: ID  */
-#line 215 "L.y"
+#line 217 "L.y"
         {
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, crnode_leaf((yyvsp[0].node_info).str, id_list, null));
 }
-#line 1840 "L.tab.c"
+#line 1842 "L.tab.c"
     break;
 
   case 55: /* ids: ids ',' ID  */
-#line 219 "L.y"
+#line 221 "L.y"
              {
     node *list_node_ids = (yyval.node_info).treenode;
     add_to_list(list_node_ids, crnode_leaf((yyvsp[0].node_info).str, id_list, null));
     (yyval.node_info).treenode = list_node_ids;
 }
-#line 1850 "L.tab.c"
+#line 1852 "L.tab.c"
     break;
 
   case 56: /* expression: not_expression  */
-#line 225 "L.y"
+#line 227 "L.y"
                            {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1856 "L.tab.c"
+#line 1858 "L.tab.c"
     break;
 
   case 57: /* expression: ar_expression  */
-#line 226 "L.y"
+#line 228 "L.y"
                 {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1862 "L.tab.c"
+#line 1864 "L.tab.c"
     break;
 
   case 58: /* expression: logic_expression  */
-#line 227 "L.y"
+#line 229 "L.y"
                    {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1868 "L.tab.c"
+#line 1870 "L.tab.c"
     break;
 
   case 59: /* expression: pr_expression  */
-#line 228 "L.y"
+#line 230 "L.y"
                 {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1874 "L.tab.c"
+#line 1876 "L.tab.c"
     break;
 
   case 60: /* not_expression: NOT pr_expression  */
-#line 231 "L.y"
+#line 233 "L.y"
                                   {
     (yyval.node_info).treenode = crnode_not_expr("NOT_EXPR", (yyvsp[0].node_info).treenode);
 }
-#line 1882 "L.tab.c"
+#line 1884 "L.tab.c"
     break;
 
   case 61: /* logic_expression: expression logic expression  */
-#line 235 "L.y"
+#line 237 "L.y"
                                               { //Change needed here, was pr_expression
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, crnode_logic_expr("LOGIC_EXPR", (yyvsp[-2].node_info).treenode, crnode_leaf((yyvsp[-1].node_info).str, logic_op, null), (yyvsp[0].node_info).treenode));
 }
-#line 1891 "L.tab.c"
+#line 1893 "L.tab.c"
     break;
 
   case 62: /* logic_expression: logic_expression logic expression  */
-#line 239 "L.y"
+#line 241 "L.y"
                                     {
     node *list_node_logic = (yyval.node_info).treenode;
     add_to_list(list_node_logic, crnode_leaf((yyvsp[-1].node_info).str, logic_op, null));
     add_to_list(list_node_logic, (yyvsp[0].node_info).treenode);
     (yyval.node_info).treenode = list_node_logic;
 }
-#line 1902 "L.tab.c"
+#line 1904 "L.tab.c"
     break;
 
   case 63: /* ar_expression: expression arithmetic expression  */
-#line 246 "L.y"
+#line 248 "L.y"
                                                 { //AND here too
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, crnode_ar_expr("AR_EXPR", (yyvsp[-2].node_info).treenode, crnode_leaf((yyvsp[-1].node_info).str, ar_op, null), (yyvsp[0].node_info).treenode));
 }
-#line 1911 "L.tab.c"
+#line 1913 "L.tab.c"
     break;
 
   case 64: /* ar_expression: ar_expression arithmetic expression  */
-#line 250 "L.y"
+#line 252 "L.y"
                                       {
     node *list_node_ar = (yyval.node_info).treenode;
     add_to_list(list_node_ar, crnode_leaf((yyvsp[-1].node_info).str, ar_op, null));
     add_to_list(list_node_ar, (yyvsp[0].node_info).treenode);
     (yyval.node_info).treenode = list_node_ar;
 }
-#line 1922 "L.tab.c"
+#line 1924 "L.tab.c"
     break;
 
   case 65: /* pr_expression: '(' expression ')'  */
-#line 257 "L.y"
+#line 259 "L.y"
                                   {(yyval.node_info).treenode = (yyvsp[-1].node_info).treenode;}
-#line 1928 "L.tab.c"
+#line 1930 "L.tab.c"
     break;
 
   case 66: /* pr_expression: ID  */
-#line 258 "L.y"
+#line 260 "L.y"
      {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, id_plain, null);}
-#line 1934 "L.tab.c"
+#line 1936 "L.tab.c"
     break;
 
   case 67: /* pr_expression: str_id  */
-#line 259 "L.y"
+#line 261 "L.y"
          {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1940 "L.tab.c"
+#line 1942 "L.tab.c"
     break;
 
   case 68: /* pr_expression: literal  */
-#line 260 "L.y"
+#line 262 "L.y"
           {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1946 "L.tab.c"
+#line 1948 "L.tab.c"
     break;
 
   case 69: /* pr_expression: func_call  */
-#line 261 "L.y"
+#line 263 "L.y"
             {(yyval.node_info).treenode = (yyvsp[0].node_info).treenode;}
-#line 1952 "L.tab.c"
+#line 1954 "L.tab.c"
     break;
 
   case 70: /* pr_expression: ADDRESS pr_expression  */
-#line 262 "L.y"
+#line 264 "L.y"
                         {(yyval.node_info).treenode = crnode_address("ADDRESS", (yyvsp[0].node_info).treenode);}
-#line 1958 "L.tab.c"
+#line 1960 "L.tab.c"
     break;
 
   case 71: /* pr_expression: MUL pr_expression  */
-#line 263 "L.y"
+#line 265 "L.y"
                     {(yyval.node_info).treenode = crnode_deref("DEREF", (yyvsp[0].node_info).treenode);}
-#line 1964 "L.tab.c"
+#line 1966 "L.tab.c"
     break;
 
   case 72: /* pr_expression: STRLEN  */
-#line 264 "L.y"
+#line 266 "L.y"
          {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, strlength, type_int);}
-#line 1970 "L.tab.c"
+#line 1972 "L.tab.c"
     break;
 
   case 73: /* func_call: ID '(' arglist ')'  */
-#line 266 "L.y"
+#line 268 "L.y"
                               {
     (yyval.node_info).treenode = crnode_func_call_args("FUNC_CALL", crnode_leaf((yyvsp[-3].node_info).str, func_call_id, null), (yyvsp[-1].node_info).treenode);
 }
-#line 1978 "L.tab.c"
+#line 1980 "L.tab.c"
     break;
 
   case 74: /* func_call: ID '(' ')'  */
-#line 269 "L.y"
+#line 271 "L.y"
              {
     (yyval.node_info).treenode = crnode_func_call("FUNC_CALL", crnode_leaf((yyvsp[-2].node_info).str, func_call_id, null));
 }
-#line 1986 "L.tab.c"
+#line 1988 "L.tab.c"
     break;
 
   case 75: /* str_id: ID '[' ar_expression ']'  */
-#line 273 "L.y"
+#line 275 "L.y"
                                  {
     (yyval.node_info).treenode = crnode_id_ar_str("", crnode_leaf((yyvsp[-3].node_info).str, str_id_br, null), (yyvsp[-1].node_info).treenode);
 }
-#line 1994 "L.tab.c"
+#line 1996 "L.tab.c"
     break;
 
   case 76: /* str_id: ID '[' INT ']'  */
-#line 276 "L.y"
+#line 278 "L.y"
                  {
     (yyval.node_info).treenode = crnode_id_int_str("", crnode_leaf((yyvsp[-3].node_info).str, str_id_br, null), crnode_leaf((yyvsp[-1].node_info).str, str_id_integer, type_int));
 }
-#line 2002 "L.tab.c"
+#line 2004 "L.tab.c"
     break;
 
   case 77: /* str_id: ID '[' ID ']'  */
-#line 279 "L.y"
+#line 281 "L.y"
                 {
     (yyval.node_info).treenode = crnode_id_int_str("", crnode_leaf((yyvsp[-3].node_info).str, str_id_br, null), crnode_leaf((yyvsp[-1].node_info).str, str_id_integer, null));
 }
-#line 2010 "L.tab.c"
+#line 2012 "L.tab.c"
     break;
 
   case 78: /* arglist: expression  */
-#line 283 "L.y"
+#line 285 "L.y"
                     {
     (yyval.node_info).treenode = crnode_list();
     add_to_list((yyval.node_info).treenode, (yyvsp[0].node_info).treenode);
 }
-#line 2019 "L.tab.c"
+#line 2021 "L.tab.c"
     break;
 
   case 79: /* arglist: arglist ',' expression  */
-#line 287 "L.y"
+#line 289 "L.y"
                          {
     node *list_node_args = (yyval.node_info).treenode;
     add_to_list(list_node_args, (yyvsp[0].node_info).treenode);
     (yyval.node_info).treenode = list_node_args;
 }
-#line 2029 "L.tab.c"
+#line 2031 "L.tab.c"
     break;
 
   case 92: /* type: TYPEBOOL  */
-#line 298 "L.y"
+#line 300 "L.y"
                {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_bool);}
-#line 2035 "L.tab.c"
+#line 2037 "L.tab.c"
     break;
 
   case 93: /* type: TYPECHAR  */
-#line 299 "L.y"
+#line 301 "L.y"
            {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_char);}
-#line 2041 "L.tab.c"
+#line 2043 "L.tab.c"
     break;
 
   case 94: /* type: TYPEINT  */
-#line 300 "L.y"
+#line 302 "L.y"
           {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_int);}
-#line 2047 "L.tab.c"
+#line 2049 "L.tab.c"
     break;
 
   case 95: /* type: TYPEREAL  */
-#line 301 "L.y"
+#line 303 "L.y"
            {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_real);}
-#line 2053 "L.tab.c"
+#line 2055 "L.tab.c"
     break;
 
   case 96: /* type: TYPECHARPOINTER  */
-#line 302 "L.y"
+#line 304 "L.y"
                   {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_char_point);}
-#line 2059 "L.tab.c"
+#line 2061 "L.tab.c"
     break;
 
   case 97: /* type: TYPEINTPOINTER  */
-#line 303 "L.y"
+#line 305 "L.y"
                  {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_int_point);}
-#line 2065 "L.tab.c"
+#line 2067 "L.tab.c"
     break;
 
   case 98: /* type: TYPEREALPOINTER  */
-#line 304 "L.y"
+#line 306 "L.y"
                   {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_real_point);}
-#line 2071 "L.tab.c"
+#line 2073 "L.tab.c"
     break;
 
   case 99: /* type: TYPESTR  */
-#line 305 "L.y"
+#line 307 "L.y"
           {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, param_type, type_string);}
-#line 2077 "L.tab.c"
+#line 2079 "L.tab.c"
     break;
 
   case 100: /* literal: INT  */
-#line 307 "L.y"
+#line 309 "L.y"
              {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, literal, type_int);}
-#line 2083 "L.tab.c"
+#line 2085 "L.tab.c"
     break;
 
   case 101: /* literal: REAL  */
-#line 308 "L.y"
+#line 310 "L.y"
        {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, literal, type_real);}
-#line 2089 "L.tab.c"
+#line 2091 "L.tab.c"
     break;
 
   case 102: /* literal: CHAR  */
-#line 309 "L.y"
+#line 311 "L.y"
        {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, literal, type_char);}
-#line 2095 "L.tab.c"
+#line 2097 "L.tab.c"
     break;
 
   case 103: /* literal: BOOL  */
-#line 310 "L.y"
+#line 312 "L.y"
        {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, literal, type_bool);}
-#line 2101 "L.tab.c"
+#line 2103 "L.tab.c"
     break;
 
   case 104: /* literal: STR  */
-#line 311 "L.y"
+#line 313 "L.y"
       {(yyval.node_info).treenode = crnode_leaf((yyvsp[0].node_info).str, literal, type_string);}
-#line 2107 "L.tab.c"
+#line 2109 "L.tab.c"
     break;
 
 
-#line 2111 "L.tab.c"
+#line 2113 "L.tab.c"
 
       default: break;
     }
@@ -2300,7 +2302,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 313 "L.y"
+#line 315 "L.y"
 
 
 int main() {

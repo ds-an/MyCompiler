@@ -112,10 +112,12 @@ parameter_list: ARG ids TYPEDEF type {
     //for (int i = 0; i < $2.treenode->nodes.list_node.num - 1; i++) {
       //  strcpy($2.treenode->nodes.list_node.list[i]->nodes.leaf_node.info, "param");
     //}
+    pass_type_func($2.treenode, $4.treenode);
     $$.treenode = crnode_list();
     add_to_list($$.treenode, crnode_param_list("PARAM_LIST", $2.treenode, $4.treenode));
 } ;
 | parameter_list ENDST ARG ids TYPEDEF type {
+    pass_type_func($4.treenode, $6.treenode);
     node *list_node_args = $$.treenode;
     add_to_list(list_node_args, crnode_param_list("PARAM_LIST", $4.treenode, $6.treenode));
     $$.treenode = list_node_args;

@@ -381,5 +381,7 @@ void *pass_type_str_decl(node *decl_param_list);
 
 void *pass_type_decl(node *decl_param_list, node *type);
 
+void *pass_type_func(node *ids, node *type);
+
 #endif //MYCOMPILER_NODES_H
 

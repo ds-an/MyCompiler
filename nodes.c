@@ -413,9 +413,9 @@ void print_tree(node *treenode, int depth) {
             printf("\n");
             break;
         case parameter_list:
-            int length = treenode->nodes.param_list_node.ids->nodes.list_node.length;
+            /*int length = treenode->nodes.param_list_node.ids->nodes.list_node.length;
             printf("length\n: %d", length);
-            printf("type: %u\n", treenode->nodes.param_list_node.ids->nodes.list_node.list[0]->nodes.leaf_node.data_type);
+            printf("type: %u\n", treenode->nodes.param_list_node.ids->nodes.list_node.list[0]->nodes.leaf_node.data_type);*/
             printf("(");
             printf("PARAM_LIST: ");
             if (treenode->nodes.param_list_node.ids) {

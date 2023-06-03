@@ -350,7 +350,8 @@ node *crnode_list();
 
 typedef struct Symbol {
     char *name;
-    char *type;
+    enum data_type data_type;
+    enum node_type node_type;
 }Symbol;
 
 typedef struct SymbolTable {
@@ -360,8 +361,31 @@ typedef struct SymbolTable {
 }SymbolTable;
 
 typedef struct Scope {
-
+    SymbolTable **scopestack;
+    int size;
+    int capacity;
 }Scope;
+
+typedef struct FunctionInfo {
+    char *name;
+    int argcount;
+    node *args;
+    enum node_type node_type;
+}FunctionInfo;
+
+typedef struct FunctionTable {
+    FunctionInfo **functions;
+    int size;
+    int capacity;
+}FunctionTable;
+
+typedef struct FunctionScope {
+    FunctionTable **scopestack;
+    int size;
+    int capacity;
+}FunctionScope;
+
+void *add_symbol(char *name, enum data_type data_type, enum node_type node_type);
 
 void *init_list(node *list_node);
 

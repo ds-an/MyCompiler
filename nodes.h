@@ -246,6 +246,7 @@ typedef struct func_call_node {
 
 typedef struct list_node {
     int num;
+    size_t length;
     struct node **list;
 }listNode;
 
@@ -375,6 +376,10 @@ void indent(int depth);
 void free_tree(node *root);
 
 void analyze_tree(node *treenode);
+
+void *pass_type_str_decl(node *decl_param_list);
+
+void *pass_type_decl(node *decl_param_list, node *type);
 
 #endif //MYCOMPILER_NODES_H
 

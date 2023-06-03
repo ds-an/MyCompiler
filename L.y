@@ -48,9 +48,11 @@ int yydebug=1;
 program: function_list {$$.treenode = $1.treenode; print_tree($$.treenode, 0);} ; // main_function | main_function ;
 
 declaration: VAR decl_param_list TYPEDEF type {
+    pass_type_decl($2.treenode, $4.treenode);
     $$.treenode = crnode_var_decl("DECL", $2.treenode, $4.treenode);
 } ;
 | TYPESTR decl_param_list {
+    pass_type_str_decl($2.treenode);
     $$.treenode = crnode_str_decl("DECL", $2.treenode);
 } ;
 

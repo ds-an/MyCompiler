@@ -301,6 +301,7 @@ node *crnode_list() {
     node **list_nodes = (node**) malloc(sizeof(node*) * 10);
     cur_node->nodes.list_node.list = list_nodes;
     cur_node->nodes.list_node.num = 1;
+    cur_node->nodes.list_node.length = sizeof(list_nodes)/ sizeof(list_nodes[0]);
     return cur_node;
 }
 /*
@@ -1063,6 +1064,61 @@ void indent(int depth) {
     for (int i = depth; i >= 0; i--) {
         printf("\t");
     }
+}
+
+void *pass_type_str_decl(node *decl_param_list) {
+    for (int i = 0; i < decl_param_list->nodes.list_node.length; ++i) {
+        if (decl_param_list->nodes.list_node.list[i]->node_type == leaf) {
+            decl_param_list->nodes.list_node.list[i]->nodes.leaf_node.data_type = type_string;
+        }
+        if (decl_param_list->nodes.list_node.list[i]->node_type == decl_id_ar) {
+            decl_param_list->nodes.list_node.list[i]->nodes.id_ar_decl_node.decl_id->nodes.leaf_node.data_type = type_string;
+        }
+        if (decl_param_list->nodes.list_node.list[i]->node_type == decl_id_int) {
+            decl_param_list->nodes.list_node.list[i]->nodes.id_int_decl_node.decl_id->nodes.leaf_node.data_type = type_string;
+        }
+        if (decl_param_list->nodes.list_node.list[i]->node_type == decl_assgn) {
+            if (decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->node_type == leaf) {
+                decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->nodes.leaf_node.data_type = type_string;
+            }
+            if (decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->node_type == decl_id_ar) {
+                decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->nodes.id_ar_decl_node.decl_id->nodes.leaf_node.data_type = type_string;
+            }
+            if (decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->node_type == decl_id_int) {
+                decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->nodes.id_int_decl_node.decl_id->nodes.leaf_node.data_type = type_string;
+            }
+        }
+    }
+}
+
+void *pass_type_decl(node *decl_param_list, node *type) {
+    for (int i = 0; i < decl_param_list->nodes.list_node.length; ++i) {
+        if (decl_param_list->nodes.list_node.list[i]->node_type == leaf) {
+            decl_param_list->nodes.list_node.list[i]->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
+            //printf("%u\n", decl_param_list->nodes.list_node.list[i]->nodes.leaf_node.data_type);
+        }
+        if (decl_param_list->nodes.list_node.list[i]->node_type == decl_id_ar) {
+            decl_param_list->nodes.list_node.list[i]->nodes.id_ar_decl_node.decl_id->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
+        }
+        if (decl_param_list->nodes.list_node.list[i]->node_type == decl_id_int) {
+            decl_param_list->nodes.list_node.list[i]->nodes.id_int_decl_node.decl_id->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
+        }
+        if (decl_param_list->nodes.list_node.list[i]->node_type == decl_assgn) {
+            if (decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->node_type == leaf) {
+                decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
+            }
+            if (decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->node_type == decl_id_ar) {
+                decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->nodes.id_ar_decl_node.decl_id->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
+            }
+            if (decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->node_type == decl_id_int) {
+                decl_param_list->nodes.list_node.list[i]->nodes.assgn_decl_node.decl_id->nodes.id_int_decl_node.decl_id->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
+            }
+        }
+    }
+}
+
+void *pass_type_func(node *ids, node *type) {
+
 }
 
 /*void free_tree(node *root) {

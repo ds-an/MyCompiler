@@ -54,6 +54,17 @@ enum leaf_node_type {
     func_call_id
 };
 
+enum data_type {
+    type_bool,
+    type_char,
+    type_int,
+    type_real,
+    type_char_point,
+    type_char_int,
+    type_char_real,
+    type_chat_string
+};
+
 /*enum data_type {
 
 };*/
@@ -61,6 +72,7 @@ enum leaf_node_type {
 typedef struct leaf_node {
     char *info;
     enum leaf_node_type type;
+    enum data_type data_type;
 }leafNode;
 
 typedef struct deref_node {
@@ -272,7 +284,7 @@ typedef struct node{
     }nodes;
 }node;
 
-node *crnode_leaf(char *info, enum leaf_node_type type);
+node *crnode_leaf(char *info, enum leaf_node_type type, enum data_type data_type);
 
 node *crnode_function(char *info, node *id, node *param_list, node *type, node *stmt);
 
@@ -331,6 +343,23 @@ node *crnode_deref(char *info, node *expr);
 node *crnode_address(char *info, node *expr);
 
 node *crnode_list();
+
+// symbol table stuff here
+
+typedef struct Symbol {
+    char *name;
+    char *type;
+}Symbol;
+
+typedef struct SymbolTable {
+    Symbol **table;
+    int size;
+    int capacity;
+}SymbolTable;
+
+typedef struct Scope {
+
+}Scope;
 
 void *init_list(node *list_node);
 

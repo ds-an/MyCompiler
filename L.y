@@ -38,6 +38,7 @@ int yydebug=1;
 
 %union {
     struct node_info {
+       enum data_type;
        char str [sizeof(char) * 50];
        struct node *treenode;
     }node_info;

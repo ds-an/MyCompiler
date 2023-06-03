@@ -4,12 +4,13 @@
 #include "nodes.h"
 int startd;
 
-node *crnode_leaf(char *info, enum leaf_node_type type) {
+node *crnode_leaf(char *info, enum leaf_node_type type, enum data_type data_type) {
     node *cur_node = (node*) malloc(sizeof(node));
     cur_node->node_type = leaf;
     cur_node->nodes.leaf_node.info = (char*) malloc(sizeof(info) + 1); // !!!
     strcpy(cur_node->nodes.leaf_node.info, info);
     cur_node->nodes.leaf_node.type = type;
+    cur_node->nodes.leaf_node.data_type = data_type;
     return cur_node;
 }
 

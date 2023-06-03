@@ -111,11 +111,12 @@ union YYSTYPE
 #line 39 "L.y"
 
     struct node_info {
+       enum data_type;
        char str [sizeof(char) * 50];
        struct node *treenode;
     }node_info;
 
-#line 119 "L.tab.h"
+#line 120 "L.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

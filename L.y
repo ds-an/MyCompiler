@@ -11,6 +11,7 @@ int yychar;
 extern int yylineno;//maybe extern?
 char *s;
 node *list_node = NULL;
+ScopeStack *scopeStack = NULL;
 int yydebug=1;
 //#define YYSTYPE node*
 %}
@@ -45,7 +46,11 @@ int yydebug=1;
 
 %%
 
-program: function_list {$$.treenode = $1.treenode; print_tree($$.treenode, 0);} ; // main_function | main_function ;
+program: function_list {
+    $$.treenode = $1.treenode;
+    print_tree($$.treenode, 0);
+    analyze_tree($$.treenode, scopeStack);
+} ; // main_function | main_function ;
 
 declaration: VAR decl_param_list TYPEDEF type {
     pass_type_decl($2.treenode, $4.treenode);
@@ -79,7 +84,7 @@ decl_id: ID {$$.treenode = crnode_leaf($1.str, decl_id, null);};
     $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br, null), crnode_leaf($3.str, decl_id_integer, type_int));
 } ;
 | ID '[' ID ']' {
-    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br, null), crnode_leaf($3.str, decl_id_integer, null));
+    $$.treenode = crnode_id_int_decl("", crnode_leaf($1.str, decl_id_br, null), crnode_leaf($3.str, decl_id_id, null));
 } ;
 
 function_list: funcproc {
@@ -162,7 +167,10 @@ statement: iter_statement {$$.treenode = $1.treenode;}
 | block_statement {$$.treenode = $1.treenode;} ;// think and check
  // | '{' '}' ; //think here too
 
-block_statement: '{' statement_list '}' {$$.treenode = $2.treenode;};
+block_statement: '{' statement_list '}' {
+    $2.treenode->nodes.list_node.list_type = block_statement;
+    $$.treenode = $2.treenode;
+};
 
 update: ID ASSGN expression {
     $$.treenode = crnode_update("UPDATE_STMT", crnode_leaf($1.str, update_id, null), $3.treenode);
@@ -279,7 +287,7 @@ str_id: ID '[' ar_expression ']' {
     $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br, null), crnode_leaf($3.str, str_id_integer, type_int));
 } ;
 | ID '[' ID ']' {
-    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br, null), crnode_leaf($3.str, str_id_integer, null));
+    $$.treenode = crnode_id_int_str("", crnode_leaf($1.str, str_id_br, null), crnode_leaf($3.str, str_id_id, null));
 } ;
 
 arglist: expression {
@@ -315,9 +323,11 @@ literal: INT {$$.treenode = crnode_leaf($1.str, literal, type_int);}
 %%
 
 int main() {
+    scopeStack = cr_scope_stack();
+    push_symbol_table(scopeStack);
     int result = yyparse();
 }
 
 int yyerror(char *s) {
-    fprintf(stderr, "-------\nError: %s\nToken: %d (Check the corresponding token in L.tab.h file)\nLine: %d\n-------\n", s, yychar, yylineno);
+    fprintf(stderr, "-------\nGrammar error: %s\nToken: %d (Check the corresponding token in L.tab.h file)\nLine: %d\n-------\n", s, yychar, yylineno);
 }

@@ -39,8 +39,10 @@ enum leaf_node_type {
     decl_id,
     decl_id_br,
     decl_id_integer,
+    decl_id_id,
     str_id_br,
     str_id_integer,
+    str_id_id,
     func_id,
     id_plain,
     func_type,
@@ -52,6 +54,11 @@ enum leaf_node_type {
     literal,
     strlength,
     func_call_id
+};
+
+enum list_node_type {
+    regular,
+    block_statement
 };
 
 enum data_type {
@@ -248,6 +255,7 @@ typedef struct list_node {
     int num;
     size_t length;
     struct node **list;
+    enum list_node_type list_type;
 }listNode;
 
 typedef struct node{
@@ -348,23 +356,25 @@ node *crnode_list();
 
 // symbol table stuff here
 
-typedef struct Symbol {
+/*typedef struct Symbol {
     char *name;
     enum data_type data_type;
     enum node_type node_type;
-}Symbol;
+}Symbol;*/
 
 typedef struct SymbolTable {
-    Symbol **table;
+    node **table;
     int size;
     int capacity;
+    int top;
 }SymbolTable;
 
-typedef struct Scope {
+typedef struct ScopeStack {
     SymbolTable **scopestack;
     int size;
     int capacity;
-}Scope;
+    int top;
+}ScopeStack;
 
 typedef struct FunctionInfo {
     char *name;
@@ -379,13 +389,22 @@ typedef struct FunctionTable {
     int capacity;
 }FunctionTable;
 
-typedef struct FunctionScope {
+typedef struct FunctionScopeStack {
     FunctionTable **scopestack;
     int size;
     int capacity;
-}FunctionScope;
+    int top;
+}FunctionScopeStack;
 
-void *add_symbol(char *name, enum data_type data_type, enum node_type node_type);
+void *add_symbol_to_table(node *node, ScopeStack *stack);
+
+void *push_symbol_table(ScopeStack *stack);
+
+void *pop_symbol_table(ScopeStack *stack);
+
+ScopeStack *cr_scope_stack();
+
+int *find_symbol(node *symbol);
 
 void *init_list(node *list_node);
 
@@ -399,7 +418,7 @@ void indent(int depth);
 
 void free_tree(node *root);
 
-void analyze_tree(node *treenode);
+void analyze_tree(node *treenode, ScopeStack *scopeStack);
 
 void *pass_type_str_decl(node *decl_param_list);
 

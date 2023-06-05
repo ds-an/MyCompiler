@@ -715,7 +715,7 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                     treenode->nodes.leaf_node.type == func_type ||
                     treenode->nodes.leaf_node.type == param_type)) {
                 add_symbol_to_table(treenode, scopeStack);
-                /*printf("%s\n", treenode->nodes.leaf_node.info);*/
+                //printf("%s\n", treenode->nodes.leaf_node.info);
                 printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
                 //printf("%d\n", treenode->nodes.leaf_node.data_type);
             }
@@ -1148,12 +1148,16 @@ void *pass_type_decl(node *decl_param_list, node *type) {
     }
 }
 
-void *pass_type_func(node *ids, node *type) {
+void *pass_type_param_list(node *ids, node *type) {
     for (int i = 0; i < ids->nodes.list_node.length; ++i) {
         ids->nodes.list_node.list[i]->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
         /*printf("type: %u\n", ids->nodes.list_node.list[i]->nodes.leaf_node.data_type);
         printf("length: %zu", ids->nodes.list_node.length);*/
     }
+}
+
+void *pass_type_function(node *id, node *type) {
+    id->nodes.function_node.id->nodes.leaf_node.data_type = type->nodes.leaf_node.data_type;
 }
 
 
@@ -1196,8 +1200,33 @@ ScopeStack *cr_scope_stack() {
     return scopeStack;
 }
 
-int *find_symbol(node *symbol) {
-
+void *find_symbol_stack(node *symbol, ScopeStack *stack) {
+    for (int i = stack->top; i >= 0; i--) {
+        SymbolTable *current_scope = stack->scopestack[i];
+        for (int j = current_scope->top; j >= 0; j--) {
+            if (!(symbol->nodes.leaf_node.type == decl_id ||
+                    symbol->nodes.leaf_node.type == decl_id_br ||
+                    symbol->nodes.leaf_node.type == id_list) &&
+                    (current_scope->table[j]->nodes.leaf_node.info == symbol->nodes.leaf_node.info) &&
+                    (current_scope->table[j]->nodes.leaf_node.type == decl_id ||
+                    current_scope->table[j]->nodes.leaf_node.type == decl_id_br ||
+                    current_scope->table[j]->nodes.leaf_node.type == id_list)) {
+                symbol->nodes.leaf_node.data_type = current_scope->table[j]->nodes.leaf_node.data_type;
+            }else if ((symbol->nodes.leaf_node.type == decl_id ||
+                  symbol->nodes.leaf_node.type == decl_id_br ||
+                  symbol->nodes.leaf_node.type == id_list) &&
+                (current_scope->table[j]->nodes.leaf_node.info == symbol->nodes.leaf_node.info) &&
+                (current_scope->table[j]->nodes.leaf_node.type == decl_id ||
+                 current_scope->table[j]->nodes.leaf_node.type == decl_id_br ||
+                 current_scope->table[j]->nodes.leaf_node.type == id_list)) {
+                fprintf(stderr,
+                        "Error: identifier \"%s\" already declared.\n", symbol->nodes.leaf_node.info);
+            } else {
+                fprintf(stderr,
+                        "Error: identifier \"%s\" undeclared.\n", symbol->nodes.leaf_node.info);
+            }
+        }
+    }
 }
 
 /*void free_tree(node *root) {

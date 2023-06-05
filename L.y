@@ -103,6 +103,7 @@ funcproc: function {$$.treenode = $1.treenode;}
 
 function: FUNCTION ID '(' parameter_list ')' TYPEDEF type func_body {
     $$.treenode = crnode_function("FUNC", crnode_leaf($2.str, func_id, null), $4.treenode, $7.treenode, $8.treenode);
+    pass_type_function($$.treenode, $7.treenode);
 } ;
 
 procedure: FUNCTION ID '(' parameter_list ')' TYPEDEF VOID proc_body {
@@ -117,12 +118,12 @@ parameter_list: ARG ids TYPEDEF type {
     //for (int i = 0; i < $2.treenode->nodes.list_node.num - 1; i++) {
       //  strcpy($2.treenode->nodes.list_node.list[i]->nodes.leaf_node.info, "param");
     //}
-    pass_type_func($2.treenode, $4.treenode);
+    pass_type_param_list($2.treenode, $4.treenode);
     $$.treenode = crnode_list();
     add_to_list($$.treenode, crnode_param_list("PARAM_LIST", $2.treenode, $4.treenode));
 } ;
 | parameter_list ENDST ARG ids TYPEDEF type {
-    pass_type_func($4.treenode, $6.treenode);
+    pass_type_param_list($4.treenode, $6.treenode);
     node *list_node_args = $$.treenode;
     add_to_list(list_node_args, crnode_param_list("PARAM_LIST", $4.treenode, $6.treenode));
     $$.treenode = list_node_args;
@@ -190,8 +191,8 @@ decl_statement: declaration ENDST {
     $$.treenode = crnode_decl_stmt("DECL_STMT", $1.treenode);
 };
 
-assgn_statement: ids ASSGN expression ENDST {
-    $$.treenode = crnode_assgn_stmt("ASSGN_STMT", $1.treenode, $3.treenode);
+assgn_statement: ID ASSGN expression ENDST {
+    $$.treenode = crnode_assgn_stmt("ASSGN_STMT", crnode_leaf($1.str, id_plain, null), $3.treenode);
 } ;
 | MUL pr_expression ASSGN expression ENDST {
     $$.treenode = crnode_assgn_stmt("ASSGN_STMT", crnode_deref("DEREF", $2.treenode), $4.treenode);

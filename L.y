@@ -8,6 +8,7 @@ int yylex();
 int yywrap();
 int yyerror();
 int yychar;
+int main_flag = 0;
 extern int yylineno;//maybe extern?
 char *s;
 node *list_node = NULL;
@@ -49,7 +50,8 @@ int yydebug=1;
 program: function_list {
     $$.treenode = $1.treenode;
     print_tree($$.treenode, 0);
-    analyze_tree($$.treenode, scopeStack);
+    pass_type_tree($$.treenode, scopeStack);
+    check_tree($$.treenode);
 } ; // main_function | main_function ;
 
 declaration: VAR decl_param_list TYPEDEF type {
@@ -111,6 +113,7 @@ procedure: FUNCTION ID '(' parameter_list ')' TYPEDEF VOID proc_body {
 } ;
 
 main_function: FUNCTION MAIN '(' parameter_list ')' TYPEDEF VOID proc_body {
+    main_flag++;
     $$.treenode = crnode_main_function("MAIN_FUNC", $4.treenode, $8.treenode);
 } ;
 
@@ -327,6 +330,10 @@ int main() {
     scopeStack = cr_scope_stack();
     push_symbol_table(scopeStack);
     int result = yyparse();
+    if (main_flag > 1)
+        fprintf(stderr, "Error: more than one main function.");
+    if (main_flag < 1)
+        fprintf(stderr, "Error: main function not present.");
 }
 
 int yyerror(char *s) {

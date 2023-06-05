@@ -700,7 +700,7 @@ void print_tree(node *treenode, int depth) {
     }
 }
 
-void analyze_tree(node *treenode, ScopeStack *scopeStack) {
+void pass_type_tree(node *treenode, ScopeStack *scopeStack) {
     //pop_symbol_table(scopeStack);
     if (!treenode) {
         return;
@@ -714,10 +714,12 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                     treenode->nodes.leaf_node.type == str_id_integer ||
                     treenode->nodes.leaf_node.type == func_type ||
                     treenode->nodes.leaf_node.type == param_type)) {
+                pass_type_else(treenode, scopeStack);
                 add_symbol_to_table(treenode, scopeStack);
-                //printf("%s\n", treenode->nodes.leaf_node.info);
-                printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
-                //printf("%d\n", treenode->nodes.leaf_node.data_type);
+                printf("%s\n", treenode->nodes.leaf_node.info);
+                //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
+                printf("%d\n", treenode->nodes.leaf_node.data_type);
+                //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
             }
             /*switch (treenode->nodes.leaf_node.type) {
                 case id_list:
@@ -739,7 +741,7 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                 
                 
                 
-                analyze_tree(treenode->nodes.main_function_node.param_list, scopeStack);
+                pass_type_tree(treenode->nodes.main_function_node.param_list, scopeStack);
             }
             
             
@@ -748,7 +750,7 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
             if (treenode->nodes.main_function_node.stmt) {
                 
                 
-                analyze_tree(treenode->nodes.main_function_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.main_function_node.stmt, scopeStack);
             }
             pop_symbol_table(scopeStack);
             break;
@@ -756,25 +758,25 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
             push_symbol_table(scopeStack);
             
             if (treenode->nodes.function_node.id) {
-                analyze_tree(treenode->nodes.function_node.id, scopeStack);
+                pass_type_tree(treenode->nodes.function_node.id, scopeStack);
             }
             if (treenode->nodes.function_node.param_list) {
                 
                 
                 
-                analyze_tree(treenode->nodes.function_node.param_list, scopeStack);
+                pass_type_tree(treenode->nodes.function_node.param_list, scopeStack);
             }
             if (treenode->nodes.function_node.type) {
                 
                 
                 
                 
-                analyze_tree(treenode->nodes.function_node.type, scopeStack);
+                pass_type_tree(treenode->nodes.function_node.type, scopeStack);
             }
             if (treenode->nodes.function_node.stmt) {
                 
                 
-                analyze_tree(treenode->nodes.function_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.function_node.stmt, scopeStack);
             }
             pop_symbol_table(scopeStack);
             break;
@@ -783,10 +785,10 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
 
             
             if (treenode->nodes.procedure_node.id) {
-                analyze_tree(treenode->nodes.procedure_node.id, scopeStack);
+                pass_type_tree(treenode->nodes.procedure_node.id, scopeStack);
             }
             if (treenode->nodes.procedure_node.param_list) {
-                analyze_tree(treenode->nodes.procedure_node.param_list, scopeStack);
+                pass_type_tree(treenode->nodes.procedure_node.param_list, scopeStack);
             }
             
             
@@ -794,7 +796,7 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
             if (treenode->nodes.procedure_node.stmt) {
                 
                 
-                analyze_tree(treenode->nodes.procedure_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.procedure_node.stmt, scopeStack);
             }
             pop_symbol_table(scopeStack);
             break;
@@ -806,11 +808,11 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
             }
             printf("%d\n", scopeStack->scopestack[0]->size);*/
             if (treenode->nodes.param_list_node.ids) {
-                analyze_tree(treenode->nodes.param_list_node.ids, scopeStack);
+                pass_type_tree(treenode->nodes.param_list_node.ids, scopeStack);
             }
             if (treenode->nodes.param_list_node.type) {
                 
-                analyze_tree(treenode->nodes.param_list_node.type, scopeStack);
+                pass_type_tree(treenode->nodes.param_list_node.type, scopeStack);
             }
             
             break;
@@ -819,7 +821,7 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                 push_symbol_table(scopeStack);
             }
             for (int i = 0; i < treenode->nodes.list_node.num - 1; i++) { // make another loop for ids !!!!
-                analyze_tree(treenode->nodes.list_node.list[i], scopeStack);
+                pass_type_tree(treenode->nodes.list_node.list[i], scopeStack);
                 //
             }
             if (treenode->nodes.list_node.list_type == block_statement) {
@@ -829,82 +831,82 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
         case decl_var:
             
             if (treenode->nodes.var_decl_node.param_list) {
-                analyze_tree(treenode->nodes.var_decl_node.param_list, scopeStack);
+                pass_type_tree(treenode->nodes.var_decl_node.param_list, scopeStack);
             }
             
             if (treenode->nodes.var_decl_node.type) {
                 
-                analyze_tree(treenode->nodes.var_decl_node.type, scopeStack);
+                pass_type_tree(treenode->nodes.var_decl_node.type, scopeStack);
             }
             break;
         case decl_str:
             
             if (treenode->nodes.str_decl_node.param_list) {
-                analyze_tree(treenode->nodes.str_decl_node.param_list, scopeStack);
+                pass_type_tree(treenode->nodes.str_decl_node.param_list, scopeStack);
             }
             break;
         case decl_assgn:
             if (treenode->nodes.assgn_decl_node.decl_id) {
-                analyze_tree(treenode->nodes.assgn_decl_node.decl_id, scopeStack);
+                pass_type_tree(treenode->nodes.assgn_decl_node.decl_id, scopeStack);
             }
             
             if (treenode->nodes.assgn_decl_node.expr) {
-                analyze_tree(treenode->nodes.assgn_decl_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.assgn_decl_node.expr, scopeStack);
             }
             break;
         case decl_id_ar:
             if (treenode->nodes.id_ar_decl_node.decl_id) {
-                analyze_tree(treenode->nodes.id_ar_decl_node.decl_id, scopeStack);
+                pass_type_tree(treenode->nodes.id_ar_decl_node.decl_id, scopeStack);
             }
             
             if (treenode->nodes.id_ar_decl_node.expr) {
-                analyze_tree(treenode->nodes.id_ar_decl_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.id_ar_decl_node.expr, scopeStack);
             }
             
             break;
         case decl_id_int:
             if (treenode->nodes.id_int_decl_node.decl_id) {
-                analyze_tree(treenode->nodes.id_int_decl_node.decl_id, scopeStack);
+                pass_type_tree(treenode->nodes.id_int_decl_node.decl_id, scopeStack);
             }
             
             if (treenode->nodes.id_int_decl_node.integer) {
-                analyze_tree(treenode->nodes.id_int_decl_node.integer, scopeStack);
+                pass_type_tree(treenode->nodes.id_int_decl_node.integer, scopeStack);
             }
             
             break;
         case str_id_ar:
             if (treenode->nodes.id_ar_str_node.str_id) {
-                analyze_tree(treenode->nodes.id_ar_str_node.str_id, scopeStack);
+                pass_type_tree(treenode->nodes.id_ar_str_node.str_id, scopeStack);
             }
             
             if (treenode->nodes.id_ar_str_node.expr) {
-                analyze_tree(treenode->nodes.id_ar_str_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.id_ar_str_node.expr, scopeStack);
             }
             
             break;
         case str_id_int:
             if (treenode->nodes.id_int_str_node.str_id) {
-                analyze_tree(treenode->nodes.id_int_str_node.str_id, scopeStack);
+                pass_type_tree(treenode->nodes.id_int_str_node.str_id, scopeStack);
             }
             
             if (treenode->nodes.id_int_str_node.integer) {
-                analyze_tree(treenode->nodes.id_int_str_node.integer, scopeStack);
+                pass_type_tree(treenode->nodes.id_int_str_node.integer, scopeStack);
             }
             
             break;
         case update:
             if (treenode->nodes.update_node.id) {
-                analyze_tree(treenode->nodes.update_node.id, scopeStack);
+                pass_type_tree(treenode->nodes.update_node.id, scopeStack);
             }
             
             if (treenode->nodes.update_node.expr) {
-                analyze_tree(treenode->nodes.update_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.update_node.expr, scopeStack);
             }
             break;
         case decl_statement:
             
             if (treenode->nodes.decl_stmt_node.decl) {
-                analyze_tree(treenode->nodes.decl_stmt_node.decl, scopeStack);
+                pass_type_tree(treenode->nodes.decl_stmt_node.decl, scopeStack);
             }
             
             break;
@@ -912,18 +914,18 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
             
             
             if (treenode->nodes.assgn_stmt_node.ids) {
-                analyze_tree(treenode->nodes.assgn_stmt_node.ids, scopeStack);
+                pass_type_tree(treenode->nodes.assgn_stmt_node.ids, scopeStack);
             }
             
             if (treenode->nodes.assgn_stmt_node.expr) {
-                analyze_tree(treenode->nodes.assgn_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.assgn_stmt_node.expr, scopeStack);
             }
             
             break;
         case expr_statement:
             
             if (treenode->nodes.expr_stmt_node.expr) {
-                analyze_tree(treenode->nodes.expr_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.expr_stmt_node.expr, scopeStack);
             }
             
             break;
@@ -935,12 +937,12 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                 
                 
                 
-                analyze_tree(treenode->nodes.if_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.if_stmt_node.expr, scopeStack);
             }
             if (treenode->nodes.if_stmt_node.stmt) {
                 
                 
-                analyze_tree(treenode->nodes.if_stmt_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.if_stmt_node.stmt, scopeStack);
             }
             break;
         case if_else_statement:
@@ -951,19 +953,19 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                 
                 
                 
-                analyze_tree(treenode->nodes.if_else_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.if_else_stmt_node.expr, scopeStack);
             }
             if (treenode->nodes.if_else_stmt_node.stmt) {
                 
                 
-                analyze_tree(treenode->nodes.if_else_stmt_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.if_else_stmt_node.stmt, scopeStack);
             }
             
             
             
             
             if (treenode->nodes.if_else_stmt_node.elsestmt) {
-                analyze_tree(treenode->nodes.if_else_stmt_node.elsestmt, scopeStack);
+                pass_type_tree(treenode->nodes.if_else_stmt_node.elsestmt, scopeStack);
             }
             break;
         case while_statement:
@@ -975,11 +977,11 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                 
                 
                 
-                analyze_tree(treenode->nodes.while_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.while_stmt_node.expr, scopeStack);
             }
             if (treenode->nodes.while_stmt_node.stmt) {
                 
-                analyze_tree(treenode->nodes.while_stmt_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.while_stmt_node.stmt, scopeStack);
             }
             break;
         case do_while_statement:
@@ -988,12 +990,12 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
             if (treenode->nodes.do_while_stmt_node.stmt) {
                 
                 
-                analyze_tree(treenode->nodes.do_while_stmt_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.do_while_stmt_node.stmt, scopeStack);
             }
             if (treenode->nodes.do_while_stmt_node.expr) {
                 
                 
-                analyze_tree(treenode->nodes.do_while_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.do_while_stmt_node.expr, scopeStack);
             }
             
             break;
@@ -1004,88 +1006,88 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
                 
                 
                 
-                analyze_tree(treenode->nodes.for_stmt_node.assgn_stmt, scopeStack);
+                pass_type_tree(treenode->nodes.for_stmt_node.assgn_stmt, scopeStack);
             }
             if (treenode->nodes.for_stmt_node.expr) {
                 
                 
                 
-                analyze_tree(treenode->nodes.for_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.for_stmt_node.expr, scopeStack);
             }
             if (treenode->nodes.for_stmt_node.update) {
                 
                 
                 
                 
-                analyze_tree(treenode->nodes.for_stmt_node.update, scopeStack);
+                pass_type_tree(treenode->nodes.for_stmt_node.update, scopeStack);
             }
             
             
             if (treenode->nodes.for_stmt_node.stmt) {
-                analyze_tree(treenode->nodes.for_stmt_node.stmt, scopeStack);
+                pass_type_tree(treenode->nodes.for_stmt_node.stmt, scopeStack);
             }
             break;
         case ret_statement:
             
             
             if (treenode->nodes.ret_stmt_node.expr) {
-                analyze_tree(treenode->nodes.ret_stmt_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.ret_stmt_node.expr, scopeStack);
             }
             break;
         case not_expression:
             
             if (treenode->nodes.not_expr_node.expr) {
-                analyze_tree(treenode->nodes.not_expr_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.not_expr_node.expr, scopeStack);
             }
             break;
         case logic_expression:
             if (treenode->nodes.logic_expr_node.expr1) {
-                analyze_tree(treenode->nodes.logic_expr_node.expr1, scopeStack);
+                pass_type_tree(treenode->nodes.logic_expr_node.expr1, scopeStack);
             }
             if (treenode->nodes.logic_expr_node.logic) {
-                analyze_tree(treenode->nodes.logic_expr_node.logic, scopeStack);
+                pass_type_tree(treenode->nodes.logic_expr_node.logic, scopeStack);
             }
             if (treenode->nodes.logic_expr_node.expr2) {
-                analyze_tree(treenode->nodes.logic_expr_node.expr2, scopeStack);
+                pass_type_tree(treenode->nodes.logic_expr_node.expr2, scopeStack);
             }
             break;
         case ar_expression:
             if (treenode->nodes.ar_expr_node.expr1) {
-                analyze_tree(treenode->nodes.ar_expr_node.expr1, scopeStack);
+                pass_type_tree(treenode->nodes.ar_expr_node.expr1, scopeStack);
             }
             if (treenode->nodes.ar_expr_node.ar) {
-                analyze_tree(treenode->nodes.ar_expr_node.ar, scopeStack);
+                pass_type_tree(treenode->nodes.ar_expr_node.ar, scopeStack);
             }
             if (treenode->nodes.ar_expr_node.expr2) {
-                analyze_tree(treenode->nodes.ar_expr_node.expr2, scopeStack);
+                pass_type_tree(treenode->nodes.ar_expr_node.expr2, scopeStack);
             }
             break;
         case func_call:
             
             if (treenode->nodes.func_call_node.id) {
-                analyze_tree(treenode->nodes.func_call_node.id, scopeStack);
+                pass_type_tree(treenode->nodes.func_call_node.id, scopeStack);
             }
             break;
         case func_call_args:
             
             if (treenode->nodes.func_call_args_node.id) {
-                analyze_tree(treenode->nodes.func_call_args_node.id, scopeStack);
+                pass_type_tree(treenode->nodes.func_call_args_node.id, scopeStack);
             }
             
             if (treenode->nodes.func_call_args_node.args) {
-                analyze_tree(treenode->nodes.func_call_args_node.args, scopeStack);
+                pass_type_tree(treenode->nodes.func_call_args_node.args, scopeStack);
             }
             break;
         case deref:
             
             if (treenode->nodes.deref_node.expr) {
-                analyze_tree(treenode->nodes.deref_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.deref_node.expr, scopeStack);
             }
             break;
         case address:
             
             if (treenode->nodes.address_node.expr) {
-                analyze_tree(treenode->nodes.address_node.expr, scopeStack);
+                pass_type_tree(treenode->nodes.address_node.expr, scopeStack);
             }
             break;
     }
@@ -1094,6 +1096,376 @@ void analyze_tree(node *treenode, ScopeStack *scopeStack) {
 void indent(int depth) {
     for (int i = depth; i >= 0; i--) {
         printf("\t");
+    }
+}
+
+void check_tree(node *treenode) {
+    if (!treenode) {
+        return;
+    }
+    switch (treenode->node_type) {
+        case leaf:
+            //printf("%s", treenode->nodes.leaf_node.info);
+            if (treenode->nodes.leaf_node.data_type == null &&
+                !(treenode->nodes.leaf_node.type == logic_op ||
+                      treenode->nodes.leaf_node.type == ar_op)) {
+                fprintf(stderr,
+                        "Error: identifier \"%s\" undeclared.\n", treenode->nodes.leaf_node.info);
+            }
+            break;
+        case main_function:
+
+
+
+            if (treenode->nodes.main_function_node.param_list) {
+
+
+
+                check_tree(treenode->nodes.main_function_node.param_list);
+            }
+
+
+
+
+            if (treenode->nodes.main_function_node.stmt) {
+
+
+                check_tree(treenode->nodes.main_function_node.stmt);
+            }
+            break;
+        case function:
+
+
+            if (treenode->nodes.function_node.id) {
+                check_tree(treenode->nodes.function_node.id);
+            }
+            if (treenode->nodes.function_node.param_list) {
+
+
+
+                check_tree(treenode->nodes.function_node.param_list);
+            }
+            if (treenode->nodes.function_node.type) {
+
+
+
+
+                check_tree(treenode->nodes.function_node.type);
+            }
+            if (treenode->nodes.function_node.stmt) {
+
+
+                check_tree(treenode->nodes.function_node.stmt);
+            }
+            break;
+        case procedure:
+
+
+
+            if (treenode->nodes.procedure_node.id) {
+                check_tree(treenode->nodes.procedure_node.id);
+            }
+            if (treenode->nodes.procedure_node.param_list) {
+                check_tree(treenode->nodes.procedure_node.param_list);
+            }
+
+
+
+            if (treenode->nodes.procedure_node.stmt) {
+
+
+                check_tree(treenode->nodes.procedure_node.stmt);
+            }
+            break;
+        case parameter_list:
+            /*for (int i = 0; i < treenode->nodes.param_list_node.ids->nodes.list_node.length; ++i) {
+                node *mynode = treenode->nodes.param_list_node.ids->nodes.list_node.list[i];
+                add_symbol_to_table(mynode,
+                                    scopeStack);
+            }
+            printf("%d\n"->scopestack[0]->size);*/
+            if (treenode->nodes.param_list_node.ids) {
+                check_tree(treenode->nodes.param_list_node.ids);
+            }
+            if (treenode->nodes.param_list_node.type) {
+
+                check_tree(treenode->nodes.param_list_node.type);
+            }
+
+            break;
+        case list:
+            if (treenode->nodes.list_node.list_type == block_statement) {
+
+            }
+            for (int i = 0; i < treenode->nodes.list_node.num - 1; i++) { // make another loop for ids !!!!
+                check_tree(treenode->nodes.list_node.list[i]);
+                //
+            }
+            if (treenode->nodes.list_node.list_type == block_statement) {
+            }
+            break;
+        case decl_var:
+
+            if (treenode->nodes.var_decl_node.param_list) {
+                check_tree(treenode->nodes.var_decl_node.param_list);
+            }
+
+            if (treenode->nodes.var_decl_node.type) {
+
+                check_tree(treenode->nodes.var_decl_node.type);
+            }
+            break;
+        case decl_str:
+
+            if (treenode->nodes.str_decl_node.param_list) {
+                check_tree(treenode->nodes.str_decl_node.param_list);
+            }
+            break;
+        case decl_assgn:
+            if (treenode->nodes.assgn_decl_node.decl_id) {
+                check_tree(treenode->nodes.assgn_decl_node.decl_id);
+            }
+
+            if (treenode->nodes.assgn_decl_node.expr) {
+                check_tree(treenode->nodes.assgn_decl_node.expr);
+            }
+            break;
+        case decl_id_ar:
+            if (treenode->nodes.id_ar_decl_node.decl_id) {
+                check_tree(treenode->nodes.id_ar_decl_node.decl_id);
+            }
+
+            if (treenode->nodes.id_ar_decl_node.expr) {
+                check_tree(treenode->nodes.id_ar_decl_node.expr);
+            }
+
+            break;
+        case decl_id_int:
+            if (treenode->nodes.id_int_decl_node.decl_id) {
+                check_tree(treenode->nodes.id_int_decl_node.decl_id);
+            }
+
+            if (treenode->nodes.id_int_decl_node.integer) {
+                check_tree(treenode->nodes.id_int_decl_node.integer);
+            }
+
+            break;
+        case str_id_ar:
+            if (treenode->nodes.id_ar_str_node.str_id) {
+                check_tree(treenode->nodes.id_ar_str_node.str_id);
+            }
+
+            if (treenode->nodes.id_ar_str_node.expr) {
+                check_tree(treenode->nodes.id_ar_str_node.expr);
+            }
+
+            break;
+        case str_id_int:
+            if (treenode->nodes.id_int_str_node.str_id) {
+                check_tree(treenode->nodes.id_int_str_node.str_id);
+            }
+
+            if (treenode->nodes.id_int_str_node.integer) {
+                check_tree(treenode->nodes.id_int_str_node.integer);
+            }
+
+            break;
+        case update:
+            if (treenode->nodes.update_node.id) {
+                check_tree(treenode->nodes.update_node.id);
+            }
+
+            if (treenode->nodes.update_node.expr) {
+                check_tree(treenode->nodes.update_node.expr);
+            }
+            break;
+        case decl_statement:
+
+            if (treenode->nodes.decl_stmt_node.decl) {
+                check_tree(treenode->nodes.decl_stmt_node.decl);
+            }
+
+            break;
+        case assgn_statement:
+
+
+            if (treenode->nodes.assgn_stmt_node.ids) {
+                check_tree(treenode->nodes.assgn_stmt_node.ids);
+            }
+
+            if (treenode->nodes.assgn_stmt_node.expr) {
+                check_tree(treenode->nodes.assgn_stmt_node.expr);
+            }
+
+            break;
+        case expr_statement:
+
+            if (treenode->nodes.expr_stmt_node.expr) {
+                check_tree(treenode->nodes.expr_stmt_node.expr);
+            }
+
+            break;
+        case if_statement:
+
+
+            if (treenode->nodes.if_stmt_node.expr) {
+
+
+
+
+                check_tree(treenode->nodes.if_stmt_node.expr);
+            }
+            if (treenode->nodes.if_stmt_node.stmt) {
+
+
+                check_tree(treenode->nodes.if_stmt_node.stmt);
+            }
+            break;
+        case if_else_statement:
+
+
+            if (treenode->nodes.if_else_stmt_node.expr) {
+
+
+
+
+                check_tree(treenode->nodes.if_else_stmt_node.expr);
+            }
+            if (treenode->nodes.if_else_stmt_node.stmt) {
+
+
+                check_tree(treenode->nodes.if_else_stmt_node.stmt);
+            }
+
+
+
+
+            if (treenode->nodes.if_else_stmt_node.elsestmt) {
+                check_tree(treenode->nodes.if_else_stmt_node.elsestmt);
+            }
+            break;
+        case while_statement:
+
+
+            if (treenode->nodes.while_stmt_node.expr) {
+
+
+
+
+
+                check_tree(treenode->nodes.while_stmt_node.expr);
+            }
+            if (treenode->nodes.while_stmt_node.stmt) {
+
+                check_tree(treenode->nodes.while_stmt_node.stmt);
+            }
+            break;
+        case do_while_statement:
+
+
+            if (treenode->nodes.do_while_stmt_node.stmt) {
+
+
+                check_tree(treenode->nodes.do_while_stmt_node.stmt);
+            }
+            if (treenode->nodes.do_while_stmt_node.expr) {
+
+
+                check_tree(treenode->nodes.do_while_stmt_node.expr);
+            }
+
+            break;
+        case for_statement:
+
+
+            if (treenode->nodes.for_stmt_node.assgn_stmt) {
+
+
+
+                check_tree(treenode->nodes.for_stmt_node.assgn_stmt);
+            }
+            if (treenode->nodes.for_stmt_node.expr) {
+
+
+
+                check_tree(treenode->nodes.for_stmt_node.expr);
+            }
+            if (treenode->nodes.for_stmt_node.update) {
+
+
+
+
+                check_tree(treenode->nodes.for_stmt_node.update);
+            }
+
+
+            if (treenode->nodes.for_stmt_node.stmt) {
+                check_tree(treenode->nodes.for_stmt_node.stmt);
+            }
+            break;
+        case ret_statement:
+
+
+            if (treenode->nodes.ret_stmt_node.expr) {
+                check_tree(treenode->nodes.ret_stmt_node.expr);
+            }
+            break;
+        case not_expression:
+
+            if (treenode->nodes.not_expr_node.expr) {
+                check_tree(treenode->nodes.not_expr_node.expr);
+            }
+            break;
+        case logic_expression:
+            if (treenode->nodes.logic_expr_node.expr1) {
+                check_tree(treenode->nodes.logic_expr_node.expr1);
+            }
+            if (treenode->nodes.logic_expr_node.logic) {
+                check_tree(treenode->nodes.logic_expr_node.logic);
+            }
+            if (treenode->nodes.logic_expr_node.expr2) {
+                check_tree(treenode->nodes.logic_expr_node.expr2);
+            }
+            break;
+        case ar_expression:
+            if (treenode->nodes.ar_expr_node.expr1) {
+                check_tree(treenode->nodes.ar_expr_node.expr1);
+            }
+            if (treenode->nodes.ar_expr_node.ar) {
+                check_tree(treenode->nodes.ar_expr_node.ar);
+            }
+            if (treenode->nodes.ar_expr_node.expr2) {
+                check_tree(treenode->nodes.ar_expr_node.expr2);
+            }
+            break;
+        case func_call:
+
+            if (treenode->nodes.func_call_node.id) {
+                check_tree(treenode->nodes.func_call_node.id);
+            }
+            break;
+        case func_call_args:
+
+            if (treenode->nodes.func_call_args_node.id) {
+                check_tree(treenode->nodes.func_call_args_node.id);
+            }
+
+            if (treenode->nodes.func_call_args_node.args) {
+                check_tree(treenode->nodes.func_call_args_node.args);
+            }
+            break;
+        case deref:
+
+            if (treenode->nodes.deref_node.expr) {
+                check_tree(treenode->nodes.deref_node.expr);
+            }
+            break;
+        case address:
+
+            if (treenode->nodes.address_node.expr) {
+                check_tree(treenode->nodes.address_node.expr);
+            }
+            break;
     }
 }
 
@@ -1161,6 +1533,56 @@ void *pass_type_function(node *id, node *type) {
 }
 
 
+void pass_type_else(node *symbol, ScopeStack *stack) {
+    for (int i = 0; i <= stack->top; i++) {
+        SymbolTable *current_scope = stack->scopestack[i];
+        for (int j = 0; j <= current_scope->top; j++) {
+            if (!(symbol->nodes.leaf_node.type == decl_id ||
+                  symbol->nodes.leaf_node.type == decl_id_br ||
+                  symbol->nodes.leaf_node.type == id_list ||
+                  symbol->nodes.leaf_node.type == func_call_id ||
+                  symbol->nodes.leaf_node.type == func_id) &&
+                (strcmp(current_scope->table[j]->nodes.leaf_node.info, symbol->nodes.leaf_node.info) == 0) &&
+                (current_scope->table[j]->nodes.leaf_node.type == decl_id ||
+                 current_scope->table[j]->nodes.leaf_node.type == decl_id_br ||
+                 current_scope->table[j]->nodes.leaf_node.type == id_list)) {
+                symbol->nodes.leaf_node.data_type = current_scope->table[j]->nodes.leaf_node.data_type;
+                continue;
+            } else if ((symbol->nodes.leaf_node.type == decl_id ||
+                        symbol->nodes.leaf_node.type == decl_id_br ||
+                        symbol->nodes.leaf_node.type == id_list) &&
+                       (strcmp(current_scope->table[j]->nodes.leaf_node.info, symbol->nodes.leaf_node.info) == 0) &&
+                       (current_scope->table[j]->nodes.leaf_node.type == decl_id ||
+                        current_scope->table[j]->nodes.leaf_node.type == decl_id_br ||
+                        current_scope->table[j]->nodes.leaf_node.type == id_list)) {
+                fprintf(stderr,
+                        "Error: double declaration, identifier \"%s\" has already been declared.\n", symbol->nodes.leaf_node.info);
+                continue;
+            } else if (symbol->nodes.leaf_node.type == func_call_id &&
+                       current_scope->table[j]->nodes.leaf_node.type == func_id &&
+                       strcmp(current_scope->table[j]->nodes.leaf_node.info, symbol->nodes.leaf_node.info) == 0) {
+                symbol->nodes.leaf_node.data_type = current_scope->table[j]->nodes.leaf_node.data_type;
+                continue;
+            } else if (symbol->nodes.leaf_node.type == func_id &&
+                       current_scope->table[j]->nodes.leaf_node.type == func_id &&
+                       strcmp(current_scope->table[j]->nodes.leaf_node.info, symbol->nodes.leaf_node.info) == 0
+                    ) {
+                fprintf(stderr,
+                        "Error: function with the name \"%s\" exists already.\n", symbol->nodes.leaf_node.info);
+                continue;
+            } else if (symbol->nodes.leaf_node.type == decl_id ||
+                       symbol->nodes.leaf_node.type == decl_id_br ||
+                       symbol->nodes.leaf_node.type == id_list ||
+                       symbol->nodes.leaf_node.type == func_id) {
+                continue;
+            } else if (symbol->nodes.leaf_node.data_type == null) {
+                /*fprintf(stderr,
+                        "Error: identifier \"%s\" undeclared.\n", symbol->nodes.leaf_node.info);*/
+            }
+        }
+    }
+}
+
 void *add_symbol_to_table(node *node, ScopeStack *stack) {
     int top_index_stack = stack->top;
     stack->scopestack[top_index_stack]->top++;
@@ -1200,34 +1622,20 @@ ScopeStack *cr_scope_stack() {
     return scopeStack;
 }
 
-void *find_symbol_stack(node *symbol, ScopeStack *stack) {
-    for (int i = stack->top; i >= 0; i--) {
-        SymbolTable *current_scope = stack->scopestack[i];
-        for (int j = current_scope->top; j >= 0; j--) {
-            if (!(symbol->nodes.leaf_node.type == decl_id ||
-                    symbol->nodes.leaf_node.type == decl_id_br ||
-                    symbol->nodes.leaf_node.type == id_list) &&
-                    (current_scope->table[j]->nodes.leaf_node.info == symbol->nodes.leaf_node.info) &&
-                    (current_scope->table[j]->nodes.leaf_node.type == decl_id ||
-                    current_scope->table[j]->nodes.leaf_node.type == decl_id_br ||
-                    current_scope->table[j]->nodes.leaf_node.type == id_list)) {
-                symbol->nodes.leaf_node.data_type = current_scope->table[j]->nodes.leaf_node.data_type;
-            }else if ((symbol->nodes.leaf_node.type == decl_id ||
-                  symbol->nodes.leaf_node.type == decl_id_br ||
-                  symbol->nodes.leaf_node.type == id_list) &&
-                (current_scope->table[j]->nodes.leaf_node.info == symbol->nodes.leaf_node.info) &&
-                (current_scope->table[j]->nodes.leaf_node.type == decl_id ||
-                 current_scope->table[j]->nodes.leaf_node.type == decl_id_br ||
-                 current_scope->table[j]->nodes.leaf_node.type == id_list)) {
-                fprintf(stderr,
-                        "Error: identifier \"%s\" already declared.\n", symbol->nodes.leaf_node.info);
-            } else {
-                fprintf(stderr,
-                        "Error: identifier \"%s\" undeclared.\n", symbol->nodes.leaf_node.info);
+/*
+void *print_stack(ScopeStack *stack) {
+    void pass_type_else(node *symbol, ScopeStack *stack) {
+        for (int i = 0; i <= stack->top; i++) {
+            SymbolTable *current_scope = stack->scopestack[i];
+            for (int j = 0; j <= current_scope->top; j++) {
+                printf("%s\n", current_scope->table[j]->nodes.leaf_node.info);
+                //printf("%d\n", treenode->nodes.leaf_node.data_type);
+                printf("%d\n", current_scope->table[j]->nodes.leaf_node.data_type);
             }
         }
     }
 }
+*/
 
 /*void free_tree(node *root) {
     if (!treenode) {

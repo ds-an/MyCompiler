@@ -404,8 +404,6 @@ void *pop_symbol_table(ScopeStack *stack);
 
 ScopeStack *cr_scope_stack();
 
-void *find_symbol_stack(node *symbol, ScopeStack *stack);
-
 void *init_list(node *list_node);
 
 void *free_list(node *list_node);
@@ -427,6 +425,14 @@ void *pass_type_decl(node *decl_param_list, node *type);
 void *pass_type_param_list(node *ids, node *type);
 
 void *pass_type_function(node *id, node *type);
+
+void pass_type_else(node *symbol, ScopeStack *stack);
+
+void check_tree(node *treenode);
+
+/*
+void *print_stack(ScopeStack *stack);
+*/
 
 #endif //MYCOMPILER_NODES_H
 

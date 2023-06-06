@@ -416,7 +416,7 @@ void indent(int depth);
 
 void free_tree(node *root);
 
-void analyze_tree(node *treenode, ScopeStack *scopeStack);
+void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functions);
 
 void *pass_type_str_decl(node *decl_param_list);
 

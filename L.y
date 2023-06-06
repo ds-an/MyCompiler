@@ -13,6 +13,7 @@ extern int yylineno;//maybe extern?
 char *s;
 node *list_node = NULL;
 ScopeStack *scopeStack = NULL;
+node *global_functions = NULL;
 int yydebug=1;
 //#define YYSTYPE node*
 %}
@@ -50,7 +51,7 @@ int yydebug=1;
 program: function_list {
     $$.treenode = $1.treenode;
     print_tree($$.treenode, 0);
-    pass_type_tree($$.treenode, scopeStack);
+    pass_type_tree($$.treenode, scopeStack, global_functions);
     check_tree($$.treenode);
 } ; // main_function | main_function ;
 
@@ -131,7 +132,10 @@ parameter_list: ARG ids TYPEDEF type {
     add_to_list(list_node_args, crnode_param_list("PARAM_LIST", $4.treenode, $6.treenode));
     $$.treenode = list_node_args;
 } ;
-| ;
+| {
+    $$.treenode = crnode_list();
+    add_to_list($$.treenode, crnode_param_list("PARAM_LIST", NULL, NULL));
+};
 
 func_body: '{' function_list ret_statement '}'{
     $$.treenode = crnode_list();
@@ -328,6 +332,7 @@ literal: INT {$$.treenode = crnode_leaf($1.str, literal, type_int);}
 
 int main() {
     scopeStack = cr_scope_stack();
+    global_functions = crnode_list();
     push_symbol_table(scopeStack);
     int result = yyparse();
     if (main_flag > 1)

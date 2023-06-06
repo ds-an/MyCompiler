@@ -716,6 +716,7 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack) {
                     treenode->nodes.leaf_node.type == param_type)) {
                 pass_type_else(treenode, scopeStack);
                 add_symbol_to_table(treenode, scopeStack);
+                printf("The current scope is: %d\n", scopeStack->top);
                 printf("%s\n", treenode->nodes.leaf_node.info);
                 //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
                 printf("%d\n", treenode->nodes.leaf_node.data_type);
@@ -1536,6 +1537,7 @@ void *pass_type_function(node *id, node *type) {
 void pass_type_else(node *symbol, ScopeStack *stack) {
     for (int i = 0; i <= stack->top; i++) {
         SymbolTable *current_scope = stack->scopestack[i];
+        int declared = 0;
         for (int j = 0; j <= current_scope->top; j++) {
             if (!(symbol->nodes.leaf_node.type == decl_id ||
                   symbol->nodes.leaf_node.type == decl_id_br ||
@@ -1546,9 +1548,16 @@ void pass_type_else(node *symbol, ScopeStack *stack) {
                 (current_scope->table[j]->nodes.leaf_node.type == decl_id ||
                  current_scope->table[j]->nodes.leaf_node.type == decl_id_br ||
                  current_scope->table[j]->nodes.leaf_node.type == id_list)) {
-                symbol->nodes.leaf_node.data_type = current_scope->table[j]->nodes.leaf_node.data_type;
+                if (declared) {
+                    fprintf(stderr,
+                            "Error: double declaration, "
+                            "identifier \"%s\" has already been declared.\n", symbol->nodes.leaf_node.info);
+                } else {
+                    symbol->nodes.leaf_node.data_type = current_scope->table[j]->nodes.leaf_node.data_type;
+                    declared = 1;
+                }
                 continue;
-            } else if ((symbol->nodes.leaf_node.type == decl_id ||
+            } /*else if ((symbol->nodes.leaf_node.type == decl_id ||
                         symbol->nodes.leaf_node.type == decl_id_br ||
                         symbol->nodes.leaf_node.type == id_list) &&
                        (strcmp(current_scope->table[j]->nodes.leaf_node.info, symbol->nodes.leaf_node.info) == 0) &&
@@ -1558,7 +1567,7 @@ void pass_type_else(node *symbol, ScopeStack *stack) {
                 fprintf(stderr,
                         "Error: double declaration, identifier \"%s\" has already been declared.\n", symbol->nodes.leaf_node.info);
                 continue;
-            } else if (symbol->nodes.leaf_node.type == func_call_id &&
+            }*/ else if (symbol->nodes.leaf_node.type == func_call_id &&
                        current_scope->table[j]->nodes.leaf_node.type == func_id &&
                        strcmp(current_scope->table[j]->nodes.leaf_node.info, symbol->nodes.leaf_node.info) == 0) {
                 symbol->nodes.leaf_node.data_type = current_scope->table[j]->nodes.leaf_node.data_type;
@@ -1580,6 +1589,20 @@ void pass_type_else(node *symbol, ScopeStack *stack) {
                         "Error: identifier \"%s\" undeclared.\n", symbol->nodes.leaf_node.info);*/
             }
         }
+        /*for (int k = current_scope->top; k >= 0; k--) {
+            if ((symbol->nodes.leaf_node.type == decl_id ||
+                 symbol->nodes.leaf_node.type == decl_id_br ||
+                 symbol->nodes.leaf_node.type == id_list) &&
+                (strcmp(current_scope->table[k]->nodes.leaf_node.info, symbol->nodes.leaf_node.info) == 0) &&
+                (current_scope->table[k]->nodes.leaf_node.type == decl_id ||
+                 current_scope->table[k]->nodes.leaf_node.type == decl_id_br ||
+                 current_scope->table[k]->nodes.leaf_node.type == id_list)) {
+                fprintf(stderr,
+                        "Error: double declaration, identifier \"%s\" has already been declared.\n",
+                        symbol->nodes.leaf_node.info);
+                continue;
+            }
+        }*/
     }
 }
 

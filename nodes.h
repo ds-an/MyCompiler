@@ -70,7 +70,8 @@ enum data_type {
     type_char_point,
     type_int_point,
     type_real_point,
-    type_string
+    type_string,
+    type_void
 };
 
 /*enum data_type {
@@ -367,6 +368,7 @@ typedef struct SymbolTable {
     int size;
     int capacity;
     int top;
+    //node **local_functions;
 }SymbolTable;
 
 typedef struct ScopeStack {
@@ -395,6 +397,11 @@ typedef struct FunctionScopeStack {
     int capacity;
     int top;
 }FunctionScopeStack;
+
+/*typedef struct LocalFunction {
+    node *function;
+    int scope;
+}LocalFunction;*/
 
 void *add_symbol_to_table(node *node, ScopeStack *stack);
 

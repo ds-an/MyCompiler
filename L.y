@@ -111,7 +111,7 @@ function: FUNCTION ID '(' parameter_list ')' TYPEDEF type func_body {
 } ;
 
 procedure: FUNCTION ID '(' parameter_list ')' TYPEDEF VOID proc_body {
-    $$.treenode = crnode_procedure("PROC", crnode_leaf($2.str, func_id, null), $4.treenode, $8.treenode);
+    $$.treenode = crnode_procedure("PROC", crnode_leaf($2.str, func_id, type_void), $4.treenode, $8.treenode);
 } ;
 
 main_function: FUNCTION MAIN '(' parameter_list ')' TYPEDEF VOID proc_body {

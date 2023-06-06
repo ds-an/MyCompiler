@@ -1595,7 +1595,7 @@ yyreduce:
   case 19: /* procedure: FUNCTION ID '(' parameter_list ')' TYPEDEF VOID proc_body  */
 #line 113 "L.y"
                                                                      {
-    (yyval.node_info).treenode = crnode_procedure("PROC", crnode_leaf((yyvsp[-6].node_info).str, func_id, null), (yyvsp[-4].node_info).treenode, (yyvsp[0].node_info).treenode);
+    (yyval.node_info).treenode = crnode_procedure("PROC", crnode_leaf((yyvsp[-6].node_info).str, func_id, type_void), (yyvsp[-4].node_info).treenode, (yyvsp[0].node_info).treenode);
 }
 #line 1601 "L.tab.c"
     break;

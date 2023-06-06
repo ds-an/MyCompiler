@@ -84,7 +84,7 @@ char *s;
 node *list_node = NULL;
 ScopeStack *scopeStack = NULL;
 node *global_functions = NULL;
-node *local_functions = NULL;
+//node *local_functions = NULL;
 int yydebug=1;
 //#define YYSTYPE node*
 
@@ -1459,7 +1459,7 @@ yyreduce:
                        {
     (yyval.node_info).treenode = (yyvsp[0].node_info).treenode;
     print_tree((yyval.node_info).treenode, 0);
-    pass_type_tree((yyval.node_info).treenode, scopeStack, global_functions, local_functions);
+    pass_type_tree((yyval.node_info).treenode, scopeStack, global_functions);
     check_tree((yyval.node_info).treenode);
 }
 #line 1466 "L.tab.c"
@@ -2329,7 +2329,6 @@ yyreturnlab:
 int main() {
     scopeStack = cr_scope_stack();
     global_functions = crnode_list();
-    local_functions = crnode_list();
     push_symbol_table(scopeStack);
     int result = yyparse();
     if (main_flag > 1)

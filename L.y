@@ -4,6 +4,7 @@
 #include "stdlib.h"
 #include "nodes.h"
 #include "nodes.c"
+#include "semantics.c"
 int yylex();
 int yywrap();
 int yyerror();

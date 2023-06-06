@@ -416,7 +416,7 @@ void indent(int depth);
 
 void free_tree(node *root);
 
-void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functions);
+void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functions, node *local_functions);
 
 void *pass_type_str_decl(node *decl_param_list);
 
@@ -425,6 +425,10 @@ void *pass_type_decl(node *decl_param_list, node *type);
 void *pass_type_param_list(node *ids, node *type);
 
 void *pass_type_function(node *id, node *type);
+
+void pass_type_function_global(node *func_call_id, node *global_function_list, int i);
+
+int find_function_global(node *func_call_id, node *global_function_list);
 
 void pass_type_else(node *symbol, ScopeStack *stack);
 

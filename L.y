@@ -14,6 +14,7 @@ char *s;
 node *list_node = NULL;
 ScopeStack *scopeStack = NULL;
 node *global_functions = NULL;
+node *local_functions = NULL;
 int yydebug=1;
 //#define YYSTYPE node*
 %}
@@ -51,7 +52,7 @@ int yydebug=1;
 program: function_list {
     $$.treenode = $1.treenode;
     print_tree($$.treenode, 0);
-    pass_type_tree($$.treenode, scopeStack, global_functions);
+    pass_type_tree($$.treenode, scopeStack, global_functions, local_functions);
     check_tree($$.treenode);
 } ; // main_function | main_function ;
 
@@ -333,6 +334,7 @@ literal: INT {$$.treenode = crnode_leaf($1.str, literal, type_int);}
 int main() {
     scopeStack = cr_scope_stack();
     global_functions = crnode_list();
+    local_functions = crnode_list();
     push_symbol_table(scopeStack);
     int result = yyparse();
     if (main_flag > 1)

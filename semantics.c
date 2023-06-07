@@ -641,6 +641,18 @@ void check_tree(node *treenode) {
                         "Error: type mismatch in assign statement on a variable %s\n",
                         treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.info);
             }
+            if (treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.data_type == type_bool &&
+                    treenode->nodes.assgn_stmt_node.expr->node_type == list &&
+                    check_logic_list(treenode->nodes.assgn_stmt_node.expr) != 0) {
+                fprintf(stderr,
+                        "Error: not a valid logic expression\n");
+            }
+            /*if ((treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.data_type == type_int ||
+                    treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.data_type == type_real) &&
+                    check_ar_list(treenode->nodes.assgn_stmt_node.expr) != 0) {
+                fprintf(stderr,
+                        "Error: not a valid arithmetic expression\n");
+            }*/
 
 
             if (treenode->nodes.assgn_stmt_node.ids) {
@@ -771,6 +783,59 @@ void check_tree(node *treenode) {
             }
             break;
         case logic_expression:
+            if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "&&") == 0 ||
+                    strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "||") == 0 ) {
+                if (treenode->nodes.logic_expr_node.expr1->node_type == leaf &&
+                        treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.data_type != type_bool) {
+                    fprintf(stderr,
+                            "Error: type mismatch on a variable %s in a logic expression\n",
+                            treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.info);
+                }
+                if (treenode->nodes.logic_expr_node.expr2->node_type == leaf &&
+                    treenode->nodes.logic_expr_node.expr2->nodes.leaf_node.data_type != type_bool) {
+                    fprintf(stderr,
+                            "Error: type mismatch on a variable %s in a logic expression\n",
+                            treenode->nodes.logic_expr_node.expr2->nodes.leaf_node.info);
+                }
+            }
+            if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "<") == 0 ||
+                strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, ">") == 0 ||
+                    strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "<=") == 0 ||
+                    strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, ">=") == 0 ) {
+                if (treenode->nodes.logic_expr_node.expr1->node_type == leaf &&
+                        (treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.data_type != type_int &&
+                                treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.data_type != type_real)) {
+                    fprintf(stderr,
+                            "Error: type mismatch on a variable %s in a logic expression\n",
+                            treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.info);
+                }
+                if (treenode->nodes.logic_expr_node.expr2->node_type == leaf &&
+                    (treenode->nodes.logic_expr_node.expr2->nodes.leaf_node.data_type != type_int &&
+                     treenode->nodes.logic_expr_node.expr2->nodes.leaf_node.data_type != type_real)) {
+                    fprintf(stderr,
+                            "Error: type mismatch on a variable %s in a logic expression\n",
+                            treenode->nodes.logic_expr_node.expr2->nodes.leaf_node.info);
+                }
+            }
+            if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "==") == 0 ||
+                strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "!=") == 0 ) {
+                if (treenode->nodes.logic_expr_node.expr1->node_type == leaf &&
+                        treenode->nodes.logic_expr_node.expr2->node_type == leaf &&
+                    treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.data_type !=
+                            treenode->nodes.logic_expr_node.expr2->nodes.leaf_node.data_type) {
+                    fprintf(stderr,
+                            "Error: type mismatch on a variables %s and %s in a logic expression\n",
+                            treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.info,
+                            treenode->nodes.logic_expr_node.expr2->nodes.leaf_node.info);
+                }
+            }
+            if ((treenode->nodes.logic_expr_node.expr1->node_type == logic_expression &&
+                    treenode->nodes.logic_expr_node.expr2->node_type != logic_expression) ||
+                    (treenode->nodes.logic_expr_node.expr1->node_type != logic_expression &&
+                     treenode->nodes.logic_expr_node.expr2->node_type == logic_expression)) {
+                fprintf(stderr,
+                        "Error: not a valid logic expression\n");
+            }
             if (treenode->nodes.logic_expr_node.expr1) {
                 check_tree(treenode->nodes.logic_expr_node.expr1);
             }
@@ -782,6 +847,22 @@ void check_tree(node *treenode) {
             }
             break;
         case ar_expression:
+            if (treenode->nodes.ar_expr_node.expr1->node_type == leaf &&
+                    treenode->node_type != deref &&
+                    (treenode->nodes.ar_expr_node.expr1->nodes.leaf_node.data_type != type_int &&
+                            treenode->nodes.ar_expr_node.expr1->nodes.leaf_node.data_type != type_real)) {
+                fprintf(stderr,
+                        "Error: type mismatch on a variable %s in an arithmetic expression\n",
+                        treenode->nodes.ar_expr_node.expr1->nodes.leaf_node.info);
+            }
+            if (treenode->nodes.ar_expr_node.expr2->node_type == leaf &&
+                    treenode->node_type != deref &&
+                (treenode->nodes.ar_expr_node.expr2->nodes.leaf_node.data_type != type_int &&
+                 treenode->nodes.ar_expr_node.expr2->nodes.leaf_node.data_type != type_real)) {
+                fprintf(stderr,
+                        "Error: type mismatch on a variable %s in an arithmetic expression\n",
+                        treenode->nodes.ar_expr_node.expr2->nodes.leaf_node.info);
+            }
             if (treenode->nodes.ar_expr_node.expr1) {
                 check_tree(treenode->nodes.ar_expr_node.expr1);
             }
@@ -1023,3 +1104,27 @@ ScopeStack *cr_scope_stack() {
     scopeStack->top = -1;
     return scopeStack;
 }
+
+int check_logic_list(node *treenode) {
+    int failflag = 0;
+    for (int i = 0; i < treenode->nodes.list_node.length; i++) {
+        if (treenode->nodes.list_node.list[i]->node_type == logic_expression &&
+                (treenode->nodes.list_node.list[i]->nodes.logic_expr_node.expr1->nodes.list_node.list_type != logic ||
+                        treenode->nodes.list_node.list[i]->nodes.logic_expr_node.expr2->nodes.list_node.list_type != logic)) {
+            failflag = 1;
+        }
+    }
+    return failflag;
+}
+
+/*int check_ar_list(node *treenode) {
+    int failflag = 0;
+    for (int i = 0; i < treenode->nodes.list_node.length; i++) {
+        if (treenode->nodes.list_node.list[i]->node_type == ar_expression &&
+            (treenode->nodes.list_node.list[i]->nodes.ar_expr_node.expr1->nodes.list_node.list_type != ar ||
+             treenode->nodes.list_node.list[i]->nodes.ar_expr_node.expr2->nodes.list_node.list_type != ar)) {
+            failflag = 1;
+        }
+    }
+    return failflag;
+}*/

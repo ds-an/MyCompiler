@@ -58,7 +58,9 @@ enum leaf_node_type {
 
 enum list_node_type {
     regular,
-    block_statement
+    block_statement,
+    logic,
+    ar
 };
 
 enum data_type {
@@ -441,6 +443,12 @@ int find_function(node *func_call_id, node *global_function_list);
 void pass_type_else(node *symbol, ScopeStack *stack);
 
 void check_tree(node *treenode);
+
+int check_logic_list(node *treenode);
+
+/*
+int check_ar_list(node *treenode);
+*/
 
 /*
 void *print_stack(ScopeStack *stack);

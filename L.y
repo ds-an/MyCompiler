@@ -254,6 +254,7 @@ not_expression: NOT pr_expression {
 
 logic_expression: expression logic expression { //Change needed here, was pr_expression
     $$.treenode = crnode_list();
+    $$.treenode->nodes.list_node.list_type = logic;
     add_to_list($$.treenode, crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode));
 }
 | logic_expression logic expression {
@@ -265,6 +266,7 @@ logic_expression: expression logic expression { //Change needed here, was pr_exp
 
 ar_expression: expression arithmetic expression { //AND here too
     $$.treenode = crnode_list();
+    $$.treenode->nodes.list_node.list_type = ar;
     add_to_list($$.treenode, crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode));
 }
 | ar_expression arithmetic expression {

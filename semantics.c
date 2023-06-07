@@ -26,44 +26,7 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
                 printf("%d\n", treenode->nodes.leaf_node.data_type);
                 //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
             }
-            if (treenode->nodes.leaf_node.type == func_call_id) {
-                int index_func_global = find_function(treenode, global_functions);
-                int index_func_local;
-                int index_scope_local;
-                for (int i = scopeStack->top; i >= 0; i--) {
-                    if (find_function(treenode, scopeStack->scopestack[i]->local_functions) != -1) {
-                        printf("I'm trying to find the function.\n");
-                        index_func_local = find_function(treenode, scopeStack->scopestack[i]->local_functions);
-                        index_scope_local = i;
-                        break;
-                    }
-                }
-                if (index_func_global != -1) {
-                    pass_type_function_scope(treenode, global_functions, index_func_global);
-                    add_symbol_to_table(treenode, scopeStack);
-                    printf("The current scope is: %d\n", scopeStack->top);
-                    printf("%s\n", treenode->nodes.leaf_node.info);
-                    //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
-                    printf("%d\n", treenode->nodes.leaf_node.data_type);
-                    //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
-                } else if (index_func_local != -1) {
-                    pass_type_function_scope(treenode, scopeStack->scopestack[index_scope_local]->local_functions, index_func_local);
-                    add_symbol_to_table(treenode, scopeStack);
-                    printf("The current scope is: %d\n", scopeStack->top);
-                    printf("%s\n", treenode->nodes.leaf_node.info);
-                    //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
-                    printf("%d\n", treenode->nodes.leaf_node.data_type);
-                    //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
-                } else {
-                    pass_type_else(treenode, scopeStack);
-                    add_symbol_to_table(treenode, scopeStack);
-                    printf("The current scope is: %d\n", scopeStack->top);
-                    printf("%s\n", treenode->nodes.leaf_node.info);
-                    //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
-                    printf("%d\n", treenode->nodes.leaf_node.data_type);
-                    //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
-                }
-            }
+
             break;
         case main_function:
             push_symbol_table(scopeStack);
@@ -415,12 +378,90 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
             }
             break;
         case func_call:
+            int index_func_local = -1;
+            int index_scope_local = -1;
+            int index_func_global = find_function(treenode->nodes.func_call_args_node.id, global_functions);
+            for (int i = scopeStack->top; i >= 0; i--) {
+                if (find_function(treenode->nodes.func_call_args_node.id, scopeStack->scopestack[i]->local_functions) != -1) {
+                    printf("I'm trying to find the function.\n");
+                    index_func_local = find_function(treenode->nodes.func_call_args_node.id, scopeStack->scopestack[i]->local_functions);
+                    index_scope_local = i;
+                    break;
+                }
+            }
+            if (index_func_global != -1) {
+                pass_type_function_scope(treenode->nodes.func_call_args_node.id, global_functions, index_func_global);
+                add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);
+                //-----------------------
+                printf("The current scope is: %d\n", scopeStack->top);
+                printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
+                //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
+                printf("%d\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.data_type);
+                //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
+            } else if (index_func_local != -1) {
+                pass_type_function_scope(treenode->nodes.func_call_args_node.id, scopeStack->scopestack[index_scope_local]->local_functions, index_func_local);
+                add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);
+                //------------------------
+                printf("The current scope is: %d\n", scopeStack->top);
+                printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
+                //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
+                printf("%d\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.data_type);
+                //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
+            } else {
+                pass_type_else(treenode->nodes.func_call_args_node.id, scopeStack);
+                add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);
+                printf("The current scope is: %d\n", scopeStack->top);
+                printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
+                //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
+                printf("%d\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.data_type);
+                //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
+            }
 
             if (treenode->nodes.func_call_node.id) {
                 pass_type_tree(treenode->nodes.func_call_node.id, scopeStack, global_functions);
             }
             break;
         case func_call_args:
+            index_func_local = -1;
+            index_scope_local = -1;
+            index_func_global = find_function(treenode->nodes.func_call_args_node.id, global_functions);
+            for (int i = scopeStack->top; i >= 0; i--) {
+                if (find_function(treenode->nodes.func_call_args_node.id, scopeStack->scopestack[i]->local_functions) != -1) {
+                    printf("I'm trying to find the function.\n");
+                    index_func_local = find_function(treenode->nodes.func_call_args_node.id, scopeStack->scopestack[i]->local_functions);
+                    index_scope_local = i;
+                    break;
+                }
+            }
+            if (index_func_global != -1) {
+                node *function_args = extract_function_args(global_functions->nodes.list_node.list[index_func_global]);
+                pass_type_function_scope(treenode->nodes.func_call_args_node.id, global_functions, index_func_global);
+                add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);
+                check_function_call(treenode->nodes.func_call_args_node.args, function_args);
+                printf("The current scope is: %d\n", scopeStack->top);
+                    printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
+                    //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
+                    printf("%d\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.data_type);
+                    //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
+                } else if (index_func_local != -1) {
+                node *function_args = extract_function_args(scopeStack->scopestack[index_scope_local]->local_functions->nodes.list_node.list[index_func_local]);
+                    pass_type_function_scope(treenode->nodes.func_call_args_node.id, scopeStack->scopestack[index_scope_local]->local_functions, index_func_local);
+                    add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);\
+                    check_function_call(treenode->nodes.func_call_args_node.args, function_args);
+                printf("The current scope is: %d\n", scopeStack->top);
+                    printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
+                    //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
+                    printf("%d\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.data_type);
+                    //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
+                } else {
+                    pass_type_else(treenode->nodes.func_call_args_node.id, scopeStack);
+                    add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);
+                    printf("The current scope is: %d\n", scopeStack->top);
+                    printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
+                    //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
+                    printf("%d\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.data_type);
+                    //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
+                }
 
             if (treenode->nodes.func_call_args_node.id) {
                 pass_type_tree(treenode->nodes.func_call_args_node.id, scopeStack, global_functions);
@@ -968,27 +1009,76 @@ void *pass_type_function(node *id, node *type) {
 }
 
 
-void pass_type_function_scope(node *func_call_id, node *global_function_list, int i) {
-    if (global_function_list->nodes.list_node.list[i]->node_type == function)
-        func_call_id->nodes.leaf_node.data_type = global_function_list->nodes.list_node.list[i]->nodes.function_node.id->nodes.leaf_node.data_type;
-    if (global_function_list->nodes.list_node.list[i]->node_type == procedure)
-        func_call_id->nodes.leaf_node.data_type = global_function_list->nodes.list_node.list[i]->nodes.procedure_node.id->nodes.leaf_node.data_type;
+void pass_type_function_scope(node *func_call_id, node *function_list, int i) {
+    if (function_list->nodes.list_node.list[i]->node_type == function)
+        func_call_id->nodes.leaf_node.data_type = function_list->nodes.list_node.list[i]->nodes.function_node.id->nodes.leaf_node.data_type;
+    if (function_list->nodes.list_node.list[i]->node_type == procedure)
+        func_call_id->nodes.leaf_node.data_type = function_list->nodes.list_node.list[i]->nodes.procedure_node.id->nodes.leaf_node.data_type;
 }
 
-int find_function(node *func_call_id, node *global_function_list) {
-    for (int i = global_function_list->nodes.list_node.length - 1; i >= 0; i--) {
-        if ((global_function_list->nodes.list_node.list[i]->node_type == function &&
-             strcmp(global_function_list->nodes.list_node.list[i]->nodes.function_node.id->nodes.leaf_node.info,
+int find_function(node *func_call_id, node *function_list) {
+    for (int i = function_list->nodes.list_node.length - 1; i >= 0; i--) {
+        if ((function_list->nodes.list_node.list[i]->node_type == function &&
+             strcmp(function_list->nodes.list_node.list[i]->nodes.function_node.id->nodes.leaf_node.info,
                     func_call_id->nodes.leaf_node.info) == 0) ||
-            (global_function_list->nodes.list_node.list[i]->node_type == procedure &&
-             strcmp(global_function_list->nodes.list_node.list[i]->nodes.procedure_node.id->nodes.leaf_node.info,
+            (function_list->nodes.list_node.list[i]->node_type == procedure &&
+             strcmp(function_list->nodes.list_node.list[i]->nodes.procedure_node.id->nodes.leaf_node.info,
                     func_call_id->nodes.leaf_node.info) == 0)
                 ) {
-            //func_call->nodes.leaf_node.data_type = global_function_list->nodes.list_node.list[i]->nodes.function_node.id->nodes.leaf_node.data_type;
+            //func_call->nodes.leaf_node.data_type = function_list->nodes.list_node.list[i]->nodes.function_node.id->nodes.leaf_node.data_type;
             return i;
         }
     }
     return -1;
+}
+
+node *extract_function_args(node *myfunction) {
+    node *arglist = crnode_list();
+    if (myfunction->node_type == function) {
+        node *param_list = myfunction->nodes.function_node.param_list;
+        int param_list_length = param_list->nodes.list_node.length;
+        for (int i = 0; i < param_list_length; i++) {
+            int ids_length = param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.length;
+            for (int j = 0; j < ids_length; j++) {
+                printf("Adding the id %s\n", param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.list[j]->nodes.leaf_node.info);
+                add_to_list(arglist, param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.list[j]);
+            }
+        }
+    }
+    if (myfunction->node_type == procedure) {
+        node *param_list = myfunction->nodes.procedure_node.param_list;
+        int param_list_length = param_list->nodes.list_node.length;
+        for (int i = 0; i < param_list_length; i++) {
+            int ids_length = param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.length;
+            for (int j = 0; j < ids_length; j++) {
+                printf("Adding the id %s\n", param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.list[j]->nodes.leaf_node.info);
+                add_to_list(arglist, param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.list[j]);
+            }
+        }
+    }
+    return arglist;
+    /*if (func_call->nodes.list_node.length == function->nodes.list_node.length &&
+            func_call != NULL && function != NULL) {
+        for (int i = 0; i < func_call->nodes.list_node.length; i++) {
+            if (func_call->nodes.list_node.list[i]->nodes.leaf_node.data_type !=
+                    function->nodes.list_node.list[i]->nodes.leaf_node.data_type) {
+                fprintf(stderr,
+                        "Error: type mismatch in the function call.\n");
+            }
+        }
+    } else if ((func_call->nodes.list_node.length == function->nodes.list_node.length &&
+               func_call != NULL && function == NULL) ||
+               ((func_call->nodes.list_node.length == function->nodes.list_node.length &&
+                    func_call == NULL && function != NULL))) {
+        fprintf(stderr,
+                "Error: incorrect number of arguments in the function call.\n");
+    } else if (func_call->nodes.list_node.length == function->nodes.list_node.length &&
+               func_call == NULL && function == NULL) {
+
+    } else {
+        fprintf(stderr,
+                "Error: incorrect number of arguments in the function call.\n");
+    }*/
 }
 
 void pass_type_else(node *symbol, ScopeStack *stack) {
@@ -1115,6 +1205,28 @@ int check_logic_list(node *treenode) {
         }
     }
     return failflag;
+}
+
+void check_function_call(node *func_call_args_list, node *function_param_ids_list) {
+    if (func_call_args_list == NULL && function_param_ids_list->nodes.list_node.length != 0) {
+        fprintf(stderr,
+                "Error: incorrect number of arguments in the function call.\n");
+    } else if (func_call_args_list->nodes.list_node.length != function_param_ids_list->nodes.list_node.length) {
+        fprintf(stderr,
+                "Error: incorrect number of arguments in the function call.\n");
+    } else {
+        for (int i = 0; i < func_call_args_list->nodes.list_node.length; i++) {
+            if (func_call_args_list->nodes.list_node.list[i]->nodes.leaf_node.data_type !=
+                    function_param_ids_list->nodes.list_node.list[i]->nodes.leaf_node.data_type) {
+                printf("I'm a func_call node %s with a type %d\n", func_call_args_list->nodes.list_node.list[i]->nodes.leaf_node.info,
+                       func_call_args_list->nodes.list_node.list[i]->nodes.leaf_node.data_type);
+                printf("I'm a function node %s with a type %d\n", function_param_ids_list->nodes.list_node.list[i]->nodes.leaf_node.info,
+                       function_param_ids_list->nodes.list_node.list[i]->nodes.leaf_node.data_type);
+                fprintf(stderr,
+                        "Error: type mismatch in the function call.\n");
+                }
+            }
+        }
 }
 
 /*int check_ar_list(node *treenode) {

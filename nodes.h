@@ -436,15 +436,19 @@ void *pass_type_param_list(node *ids, node *type);
 
 void *pass_type_function(node *id, node *type);
 
-void pass_type_function_scope(node *func_call_id, node *global_function_list, int i);
+void pass_type_function_scope(node *func_call_id, node *function_list, int i);
 
-int find_function(node *func_call_id, node *global_function_list);
+int find_function(node *func_call_id, node *function_list);
 
 void pass_type_else(node *symbol, ScopeStack *stack);
 
 void check_tree(node *treenode);
 
 int check_logic_list(node *treenode);
+
+void check_function_call(node *func_call_args, node *function_param_list_ids);
+
+node *extract_function_args(node *myfunction);
 
 /*
 int check_ar_list(node *treenode);

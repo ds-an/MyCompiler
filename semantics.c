@@ -420,6 +420,20 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
             if (treenode->nodes.func_call_node.id) {
                 pass_type_tree(treenode->nodes.func_call_node.id, scopeStack, global_functions);
             }
+
+            if (index_func_global != -1) {
+                node *function_args = extract_function_args(global_functions->nodes.list_node.list[index_func_global]);
+                if (function_args->nodes.list_node.length > 0) {
+                    fprintf(stderr,
+                            "Error: incorrect number of arguments in the function call\n");
+                }
+            } else if (index_func_local != -1) {
+                node *function_args = extract_function_args(scopeStack->scopestack[index_scope_local]->local_functions->nodes.list_node.list[index_func_local]);
+                if (function_args->nodes.list_node.length > 0) {
+                    fprintf(stderr,
+                            "Error: incorrect number of arguments in the function call\n");
+                }
+            }
             break;
         case func_call_args:
             index_func_local = -1;
@@ -434,20 +448,16 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
                 }
             }
             if (index_func_global != -1) {
-                node *function_args = extract_function_args(global_functions->nodes.list_node.list[index_func_global]);
                 pass_type_function_scope(treenode->nodes.func_call_args_node.id, global_functions, index_func_global);
                 add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);
-                check_function_call(treenode->nodes.func_call_args_node.args, function_args);
                 printf("The current scope is: %d\n", scopeStack->top);
                     printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
                     //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
                     printf("%d\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.data_type);
                     //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
                 } else if (index_func_local != -1) {
-                node *function_args = extract_function_args(scopeStack->scopestack[index_scope_local]->local_functions->nodes.list_node.list[index_func_local]);
                     pass_type_function_scope(treenode->nodes.func_call_args_node.id, scopeStack->scopestack[index_scope_local]->local_functions, index_func_local);
                     add_symbol_to_table(treenode->nodes.func_call_args_node.id, scopeStack);\
-                    check_function_call(treenode->nodes.func_call_args_node.args, function_args);
                 printf("The current scope is: %d\n", scopeStack->top);
                     printf("%s\n", treenode->nodes.func_call_args_node.id->nodes.leaf_node.info);
                     //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
@@ -470,6 +480,15 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
             if (treenode->nodes.func_call_args_node.args) {
                 pass_type_tree(treenode->nodes.func_call_args_node.args, scopeStack, global_functions);
             }
+
+            if (index_func_global != -1) {
+                node *function_args = extract_function_args(global_functions->nodes.list_node.list[index_func_global]);
+                check_function_call(treenode->nodes.func_call_args_node.args, function_args);
+            } else if (index_func_local != -1) {
+                node *function_args = extract_function_args(scopeStack->scopestack[index_scope_local]->local_functions->nodes.list_node.list[index_func_local]);
+                check_function_call(treenode->nodes.func_call_args_node.args, function_args);
+            }
+
             break;
         case deref:
 
@@ -931,13 +950,31 @@ void check_tree(node *treenode) {
             }
             break;
         case deref:
+            if ((treenode->nodes.deref_node.expr->node_type != leaf &&
+                    treenode->nodes.deref_node.expr->nodes.leaf_node.data_type != type_int_point &&
+                    treenode->nodes.deref_node.expr->nodes.leaf_node.data_type != type_char_point &&
+                    treenode->nodes.deref_node.expr->nodes.leaf_node.data_type != type_real_point) &&
+                    treenode->nodes.deref_node.expr->node_type != list) {
+                fprintf(stderr,
+                        "Error: incorrect use of a dereference operator\n");
+            }  // REDO
 
             if (treenode->nodes.deref_node.expr) {
                 check_tree(treenode->nodes.deref_node.expr);
             }
             break;
         case address:
-
+            if ((treenode->nodes.address_node.expr->node_type != leaf &&
+                (treenode->nodes.address_node.expr->nodes.leaf_node.data_type != type_int &&
+                 treenode->nodes.address_node.expr->nodes.leaf_node.data_type != type_real &&
+                 treenode->nodes.address_node.expr->nodes.leaf_node.data_type != type_char &&
+                 treenode->nodes.address_node.expr->nodes.leaf_node.data_type != type_string)) &&
+                    treenode->nodes.address_node.expr->node_type != str_id_ar &&
+                    treenode->nodes.address_node.expr->node_type != str_id_int) {
+                fprintf(stderr,
+                        "Error: incorrect use of an address operator\n");
+            }
+            
             if (treenode->nodes.address_node.expr) {
                 check_tree(treenode->nodes.address_node.expr);
             }
@@ -1034,7 +1071,8 @@ int find_function(node *func_call_id, node *function_list) {
 
 node *extract_function_args(node *myfunction) {
     node *arglist = crnode_list();
-    if (myfunction->node_type == function) {
+    if (myfunction->node_type == function &&
+    myfunction->nodes.function_node.param_list->nodes.list_node.list[0]->nodes.param_list_node.ids != NULL) {
         node *param_list = myfunction->nodes.function_node.param_list;
         int param_list_length = param_list->nodes.list_node.length;
         for (int i = 0; i < param_list_length; i++) {
@@ -1044,8 +1082,8 @@ node *extract_function_args(node *myfunction) {
                 add_to_list(arglist, param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.list[j]);
             }
         }
-    }
-    if (myfunction->node_type == procedure) {
+    } else if (myfunction->node_type == procedure &&
+            myfunction->nodes.procedure_node.param_list->nodes.list_node.list[0]->nodes.param_list_node.ids != NULL) {
         node *param_list = myfunction->nodes.procedure_node.param_list;
         int param_list_length = param_list->nodes.list_node.length;
         for (int i = 0; i < param_list_length; i++) {
@@ -1055,6 +1093,8 @@ node *extract_function_args(node *myfunction) {
                 add_to_list(arglist, param_list->nodes.list_node.list[i]->nodes.param_list_node.ids->nodes.list_node.list[j]);
             }
         }
+    } else {
+        return arglist;
     }
     return arglist;
     /*if (func_call->nodes.list_node.length == function->nodes.list_node.length &&

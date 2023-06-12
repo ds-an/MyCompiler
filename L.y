@@ -34,23 +34,26 @@ int yydebug=1;
 %type <node_info> ar_expression pr_expression func_call arglist logic arithmetic type literal
 %type <node_info> parameter_list func_body proc_body iter_body str_id block_statement  // deref_expression
 
-%precedence "lowest"
-%precedence ELSE
-%left PLUS MINUS
-%left MUL DIV
 %expect 68
 
 %union {
     struct node_info {
-       char str [sizeof(char) * 50];
-       struct node *treenode;
+        char str [sizeof(char) * 50];
+        struct node *treenode;
     }node_info;
 };
+
+%left LOGICAND LOGICOR
+%left LOGICMORE LOGICLESS LOGICMOREEQ LOGICLESSEQ LOGICEQ LOGICNOTEQ
+%left PLUS MINUS
+%left MUL DIV
+%precedence "lowest"
+%precedence ELSE
 
 %%
 
 program: function_list {
-    $$.treenode = $1.treenode;
+$$.treenode = $1.treenode;
     print_tree($$.treenode, 0);
     pass_type_tree($$.treenode, scopeStack, global_functions);
     check_tree($$.treenode);

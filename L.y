@@ -275,7 +275,7 @@ pr_expression: '(' expression ')' {$$.treenode = $2.treenode;} /* brackets */
 | func_call {$$.treenode = $1.treenode;};
 | ADDRESS pr_expression {$$.treenode = crnode_address("ADDRESS", $2.treenode);};
 | MUL pr_expression {$$.treenode = crnode_deref("DEREF", $2.treenode);};
-| STRLEN {$$.treenode = crnode_leaf($1.str, strlength, type_int);} ; //think about pointers and other things
+| '|' ID '|' {$$.treenode = crnode_strlen("STRLEN", crnode_leaf($2.str, strlength, null));} ; //think about pointers and other things
 
 func_call: ID '(' arglist ')' {
     $$.treenode = crnode_func_call_args("FUNC_CALL", crnode_leaf($1.str, func_call_id, null), $3.treenode);

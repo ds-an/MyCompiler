@@ -26,6 +26,9 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
                 //printf("%s\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.info);
                 printf("%d\n", treenode->nodes.leaf_node.data_type);
                 //printf("%d\n", scopeStack->scopestack[scopeStack->top]->table[scopeStack->scopestack[scopeStack->top]->top]->nodes.leaf_node.data_type);
+            } else if (treenode->nodes.leaf_node.type == strlength) {
+                treenode->nodes.leaf_node.data_type = type_int;
+                treenode->data_type = type_int;
             } else {
                 treenode->data_type = treenode->nodes.leaf_node.data_type;
             }
@@ -629,6 +632,14 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
                 fprintf(stderr,
                         "Error: incorrect use of an address operator\n");
             }
+            break;
+        case strlng:
+            pass_type_tree(treenode->nodes.strlen_node.id, scopeStack, global_functions);
+            if (treenode->nodes.strlen_node.id->data_type != type_string) {
+                fprintf(stderr,
+                        "Error: incorrect use of a strlen operator\n");
+            }
+
             break;
     }
 }
@@ -1764,12 +1775,12 @@ void check_function_call(node *func_call_args_list, node *function_param_ids_lis
                 "Error: incorrect number of arguments in the function call.\n");
     } else {
         for (int i = 0; i < func_call_args_list->nodes.list_node.length; i++) {
-            if (func_call_args_list->nodes.list_node.list[i]->nodes.leaf_node.data_type !=
-                    function_param_ids_list->nodes.list_node.list[i]->nodes.leaf_node.data_type) {
+            if (func_call_args_list->nodes.list_node.list[i]->data_type !=
+                    function_param_ids_list->nodes.list_node.list[i]->data_type) {
                 printf("I'm a func_call node %s with a type %d\n", func_call_args_list->nodes.list_node.list[i]->nodes.leaf_node.info,
-                       func_call_args_list->nodes.list_node.list[i]->nodes.leaf_node.data_type);
+                       func_call_args_list->nodes.list_node.list[i]->data_type);
                 printf("I'm a function node %s with a type %d\n", function_param_ids_list->nodes.list_node.list[i]->nodes.leaf_node.info,
-                       function_param_ids_list->nodes.list_node.list[i]->nodes.leaf_node.data_type);
+                       function_param_ids_list->nodes.list_node.list[i]->data_type);
                 fprintf(stderr,
                         "Error: type mismatch in the function call.\n");
                 }

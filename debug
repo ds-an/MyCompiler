@@ -37,8 +37,7 @@ return x;
 }
 {
 var x: char;
-var k: bool;
-k=fee2(5,i,j);
+var k: bool;k=fee2(5,i,j);
 /*13 x=fee2(5,i,j); */
 /*14 k = fee2(5,i); */
 /*15k = fee2(5,x,j); */
@@ -59,7 +58,7 @@ var total: int; /* variable declaration */
 var bo: bool;
 bo=foo1(i, j, k, '^');
 /*18 j=foo2(); */
- /* statemets */
+total=square(i+j+k); /* statemets */
 return total;
 }
 function foo2() : int
@@ -88,7 +87,7 @@ var y: int*;
 x=5;
 y=&x;
 x=6;
-if((&x == y) && (*y == x)) {
+if((&x == y) && (*y == x) ) {
 *y=9;
 }
 {

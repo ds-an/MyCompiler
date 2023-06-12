@@ -31,7 +31,8 @@ enum node_type {
     func_call,
     func_call_args,
     deref,
-    address
+    address,
+    strlng
 };
 
 enum leaf_node_type {
@@ -261,6 +262,11 @@ typedef struct list_node {
     enum list_node_type list_type;
 }listNode;
 
+typedef struct strlen_node {
+    char *info;
+    struct node *id;
+}strlenNode;
+
 typedef struct node{
     enum node_type node_type;
     enum data_type data_type;
@@ -295,6 +301,7 @@ typedef struct node{
         funcCallNode func_call_node;
         derefNode deref_node;
         addressNode address_node;
+        strlenNode strlen_node;
     }nodes;
 }node;
 

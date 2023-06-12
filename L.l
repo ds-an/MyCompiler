@@ -38,7 +38,7 @@ id ({letter})({letter}|_|{digit})*
 {id} { strcpy(yylval.node_info.str, yytext); return ID; }
 ["].*["] { strcpy(yylval.node_info.str, yytext); return STR; }
 ['].['] { strcpy(yylval.node_info.str, yytext); return CHAR; }
-[|]{id}[|] { strcpy(yylval.node_info.str, yytext); return STRLEN; }
+ /*[|]{id}[|] { strcpy(yylval.node_info.str, yytext); return STRLEN; }*/
 "==" { strcpy(yylval.node_info.str, yytext); return LOGICEQ;}
 "!=" { strcpy(yylval.node_info.str, yytext); return LOGICNOTEQ;}
 ">" { strcpy(yylval.node_info.str, yytext); return LOGICMORE;}

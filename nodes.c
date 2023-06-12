@@ -312,6 +312,17 @@ node *crnode_list() {
     cur_node->data_type = null;
     return cur_node;
 }
+
+node *crnode_strlen(char *info, node *id) {
+    node *cur_node = (node*) malloc(sizeof(node));
+    cur_node->node_type = strlng;
+    char *str = (char*) malloc(sizeof(info) + 1); // !!!
+    strcpy(str, info);
+    cur_node->nodes.func_call_node.id = id;
+    cur_node->data_type = type_int;
+    return cur_node;
+}
+
 /*
 void *init_list(node *list_node) {
     if (list_node == NULL) {
@@ -666,18 +677,20 @@ void print_tree(node *treenode, int depth) {
             }
             break;
         case ar_expression:
-            /*printf("I'm a node type %d in left expression\n", treenode->nodes.ar_expr_node.expr1->node_type);
+/*
+            printf("I'm a node type %d in left expression\n", treenode->nodes.ar_expr_node.expr1->node_type);
             printf("I'm a node type %d - ar_op\n", treenode->nodes.ar_expr_node.ar->node_type);
-            printf("I'm a node type %d in right expression\n", treenode->nodes.ar_expr_node.expr2->node_type);*/
+            printf("I'm a node type %d in right expression\n", treenode->nodes.ar_expr_node.expr2->node_type);
             printf("I'm an arithmetic expression for some reason with left part like this:\n");
+*/
             if (treenode->nodes.ar_expr_node.expr1) {
                 print_tree(treenode->nodes.ar_expr_node.expr1, depth);
             }
-            printf("Operator like this:\n");
+            /*printf("Operator like this:\n");*/
             if (treenode->nodes.ar_expr_node.ar) {
                 print_tree(treenode->nodes.ar_expr_node.ar, depth);
             }
-            printf("And a right part like this:\n");
+            /*printf("And a right part like this:\n");*/
             if (treenode->nodes.ar_expr_node.expr2) {
                 print_tree(treenode->nodes.ar_expr_node.expr2, depth);
             }
@@ -709,6 +722,11 @@ void print_tree(node *treenode, int depth) {
             if (treenode->nodes.address_node.expr) {
                 print_tree(treenode->nodes.address_node.expr, depth);
             }
+            break;
+        case strlng:
+            printf("|");
+            print_tree(treenode->nodes.strlen_node.id, depth);
+            printf("|");
             break;
     }
 }

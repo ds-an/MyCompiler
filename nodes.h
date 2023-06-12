@@ -263,6 +263,7 @@ typedef struct list_node {
 
 typedef struct node{
     enum node_type node_type;
+    enum data_type data_type;
     union {
         leafNode leaf_node;
         functionNode function_node;

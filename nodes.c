@@ -11,6 +11,7 @@ node *crnode_leaf(char *info, enum leaf_node_type type, enum data_type data_type
     strcpy(cur_node->nodes.leaf_node.info, info);
     cur_node->nodes.leaf_node.type = type;
     cur_node->nodes.leaf_node.data_type = data_type;
+    cur_node->data_type = data_type;
     return cur_node;
 }
 
@@ -232,6 +233,7 @@ node *crnode_not_expr(char *info, node *expr) {
     char *str = (char*) malloc(sizeof(info) + 1); // !!!
     strcpy(str, info);
     cur_node->nodes.not_expr_node.expr = expr;
+    cur_node->data_type = type_bool;
     return cur_node;
 }
 
@@ -243,6 +245,7 @@ node *crnode_logic_expr(char *info, node *expr1, node *logic, node *expr2) {
     cur_node->nodes.logic_expr_node.expr1 = expr1;
     cur_node->nodes.logic_expr_node.logic = logic;
     cur_node->nodes.logic_expr_node.expr2 = expr2;
+    cur_node->data_type = type_bool;
     return cur_node;
 }
 
@@ -254,6 +257,7 @@ node *crnode_ar_expr(char *info, node *expr1, node *ar, node *expr2) {
     cur_node->nodes.ar_expr_node.expr1 = expr1;
     cur_node->nodes.ar_expr_node.ar = ar;
     cur_node->nodes.ar_expr_node.expr2 = expr2;
+    cur_node->data_type = null;
     return cur_node;
 }
 
@@ -303,6 +307,7 @@ node *crnode_list() {
     cur_node->nodes.list_node.num = 1;
     cur_node->nodes.list_node.length = 0;
     cur_node->nodes.list_node.list_type = regular;
+    cur_node->data_type = null;
     return cur_node;
 }
 /*
@@ -659,6 +664,9 @@ void print_tree(node *treenode, int depth) {
             }
             break;
         case ar_expression:
+            /*printf("I'm a node type %d in left expression\n", treenode->nodes.ar_expr_node.expr1->node_type);
+            printf("I'm a node type %d - ar_op\n", treenode->nodes.ar_expr_node.ar->node_type);
+            printf("I'm a node type %d in right expression\n", treenode->nodes.ar_expr_node.expr2->node_type);*/
             if (treenode->nodes.ar_expr_node.expr1) {
                 print_tree(treenode->nodes.ar_expr_node.expr1, depth);
             }

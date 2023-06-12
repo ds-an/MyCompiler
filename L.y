@@ -38,7 +38,6 @@ int yydebug=1;
 %precedence ELSE
 %left PLUS MINUS
 %left MUL DIV
-
 %expect 68
 
 %union {
@@ -253,27 +252,17 @@ not_expression: NOT pr_expression {
 } ;
 
 logic_expression: expression logic expression { //Change needed here, was pr_expression
-    $$.treenode = crnode_list();
-    $$.treenode->nodes.list_node.list_type = logic;
-    add_to_list($$.treenode, crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode));
+    $$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
 }
 | logic_expression logic expression {
-    node *list_node_logic = $$.treenode;
-    add_to_list(list_node_logic, crnode_leaf($2.str, logic_op, null));
-    add_to_list(list_node_logic, $3.treenode);
-    $$.treenode = list_node_logic;
+    $$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
 };
 
 ar_expression: expression arithmetic expression { //AND here too
-    $$.treenode = crnode_list();
-    $$.treenode->nodes.list_node.list_type = ar;
-    add_to_list($$.treenode, crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode));
+    $$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
 }
 | ar_expression arithmetic expression {
-    node *list_node_ar = $$.treenode;
-    add_to_list(list_node_ar, crnode_leaf($2.str, ar_op, null));
-    add_to_list(list_node_ar, $3.treenode);
-    $$.treenode = list_node_ar;
+    $$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
 };
 
 pr_expression: '(' expression ')' {$$.treenode = $2.treenode;} /* brackets */

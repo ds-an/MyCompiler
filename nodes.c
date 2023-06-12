@@ -114,6 +114,7 @@ node *crnode_id_ar_str(char *info, node *str_id, node *expr) {
     strcpy(str, info);
     cur_node->nodes.id_ar_str_node.str_id = str_id;
     cur_node->nodes.id_ar_str_node.expr = expr;
+    cur_node->data_type = type_char;
     return cur_node;
 }
 
@@ -124,6 +125,7 @@ node *crnode_id_int_str(char *info, node *str_id, node *integer) {
     strcpy(str, info);
     cur_node->nodes.id_int_str_node.str_id = str_id;
     cur_node->nodes.id_int_str_node.integer = integer;
+    cur_node->data_type = type_char;
     return cur_node;
 }
 

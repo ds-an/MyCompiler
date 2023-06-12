@@ -367,6 +367,79 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
             if (treenode->nodes.logic_expr_node.expr2) {
                 pass_type_tree(treenode->nodes.logic_expr_node.expr2, scopeStack, global_functions);
             }
+
+            if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "&&") == 0 ||
+                    strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "||") == 0) {
+                if (treenode->nodes.logic_expr_node.expr1->data_type != type_bool) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "&& and || operators only work with boolean operands. "
+                            "Here the operands are %d and %d\n", treenode->nodes.logic_expr_node.expr1->data_type,
+                            treenode->nodes.logic_expr_node.expr2->data_type);
+                } else if (treenode->nodes.logic_expr_node.expr2->data_type != type_bool) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "&& and || operators only work with boolean operands. "
+                            "Here the operands are %d and %d\n", treenode->nodes.logic_expr_node.expr1->data_type,
+                            treenode->nodes.logic_expr_node.expr2->data_type);
+                }
+            } else if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "<") == 0 ||
+                       strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, ">") == 0 ||
+                    strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "<=") == 0 ||
+                    strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, ">=") == 0) {
+                if (treenode->nodes.logic_expr_node.expr1->data_type != type_int &&
+                    treenode->nodes.logic_expr_node.expr1->data_type != type_real) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "<, >, <=, and >= operators only work with int or real operands. "
+                            "Operand 1 has an incorrect type\n");
+                } else if (treenode->nodes.logic_expr_node.expr2->data_type != type_int &&
+                           treenode->nodes.logic_expr_node.expr2->data_type != type_real) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "<, >, <=, and >= operators only work with int or real operands. "
+                            "Operand 2 has an incorrect type\n");
+                }
+            } else if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "==") == 0 ||
+                       strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "!=") == 0) {
+                if ((treenode->nodes.logic_expr_node.expr1->data_type != treenode->nodes.logic_expr_node.expr2->data_type) &&
+                        (treenode->nodes.logic_expr_node.expr1->data_type != type_int ||
+                                treenode->nodes.logic_expr_node.expr2->data_type != type_int)) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "== and != operators only work with int, real, char, and bool operands. "
+                            "Additionally, both operands should be of the same type\n"
+                            "Here the operands are %d and %d\n", treenode->nodes.logic_expr_node.expr1->data_type,
+                            treenode->nodes.logic_expr_node.expr2->data_type);
+                } else if ((treenode->nodes.logic_expr_node.expr1->data_type != treenode->nodes.logic_expr_node.expr2->data_type) &&
+                      (treenode->nodes.logic_expr_node.expr1->data_type != type_real ||
+                       treenode->nodes.logic_expr_node.expr2->data_type != type_real)) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "== and != operators only work with int, real, char, and bool operands. "
+                            "Additionally, both operands should be of the same type\n"
+                            "Here the operands are %d and %d\n", treenode->nodes.logic_expr_node.expr1->data_type,
+                            treenode->nodes.logic_expr_node.expr2->data_type);
+                } else if ((treenode->nodes.logic_expr_node.expr1->data_type != treenode->nodes.logic_expr_node.expr2->data_type) &&
+                           (treenode->nodes.logic_expr_node.expr1->data_type != type_bool ||
+                            treenode->nodes.logic_expr_node.expr2->data_type != type_bool)) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "== and != operators only work with int, real, char, and bool operands. "
+                            "Additionally, both operands should be of the same type\n"
+                            "Here the operands are %d and %d\n", treenode->nodes.logic_expr_node.expr1->data_type,
+                            treenode->nodes.logic_expr_node.expr2->data_type);
+                } else if ((treenode->nodes.logic_expr_node.expr1->data_type != treenode->nodes.logic_expr_node.expr2->data_type) &&
+                           (treenode->nodes.logic_expr_node.expr1->data_type != type_char ||
+                            treenode->nodes.logic_expr_node.expr2->data_type != type_char)) {
+                    fprintf(stderr,
+                            "Error: type mismatch in a logic expression. "
+                            "== and != operators only work with int, real, char, and bool operands. "
+                            "Additionally, both operands should be of the same type\n"
+                            "Here the operands are %d and %d\n", treenode->nodes.logic_expr_node.expr1->data_type,
+                            treenode->nodes.logic_expr_node.expr2->data_type);
+                }
+            }
             break;
         case ar_expression:
             if (treenode->nodes.ar_expr_node.expr1) {
@@ -385,6 +458,15 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
             } else if (treenode->nodes.ar_expr_node.expr1->data_type == type_real ||
                        treenode->nodes.ar_expr_node.expr2->data_type == type_real) {
                 treenode->data_type = type_real;
+            } else if (treenode->nodes.ar_expr_node.expr1->data_type == type_int_point &&
+                       treenode->nodes.ar_expr_node.expr2->data_type == type_int) {
+                treenode->data_type = type_int_point;
+            } else if (treenode->nodes.ar_expr_node.expr1->data_type == type_real_point &&
+                       treenode->nodes.ar_expr_node.expr2->data_type == type_int) {
+                treenode->data_type = type_real_point;
+            } else if (treenode->nodes.ar_expr_node.expr1->data_type == type_char_point &&
+                       treenode->nodes.ar_expr_node.expr2->data_type == type_int) {
+                treenode->data_type = type_char_point;
             } else {
                 fprintf(stderr,
                         "Error: type mismatch in an arithmetic expression: %d on %s and %d on %s\n",
@@ -512,11 +594,40 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
             if (treenode->nodes.deref_node.expr) {
                 pass_type_tree(treenode->nodes.deref_node.expr, scopeStack, global_functions);
             }
+            if (treenode->nodes.deref_node.expr->data_type == type_int_point) {
+                treenode->data_type = type_int;
+            } else if (treenode->nodes.deref_node.expr->data_type == type_real_point) {
+                treenode->data_type = type_real;
+            } else if (treenode->nodes.deref_node.expr->data_type == type_char_point) {
+                treenode->data_type = type_char;
+            } else {
+                fprintf(stderr,
+                        "Error: incorrect use of a dereference operator\n");
+            }
             break;
         case address:
 
             if (treenode->nodes.address_node.expr) {
                 pass_type_tree(treenode->nodes.address_node.expr, scopeStack, global_functions);
+            }
+            if (treenode->nodes.address_node.expr->data_type == type_int &&
+                    (treenode->nodes.address_node.expr->node_type == leaf ||
+                    treenode->nodes.address_node.expr->node_type == str_id_ar ||
+                    treenode->nodes.address_node.expr->node_type == str_id_int)) {
+                treenode->data_type = type_int_point;
+            } else if (treenode->nodes.address_node.expr->data_type == type_real &&
+                    (treenode->nodes.address_node.expr->node_type == leaf ||
+                     treenode->nodes.address_node.expr->node_type == str_id_ar ||
+                     treenode->nodes.address_node.expr->node_type == str_id_int)) {
+                treenode->data_type = type_real_point;
+            } else if (treenode->nodes.address_node.expr->data_type == type_char &&
+                    (treenode->nodes.address_node.expr->node_type == leaf ||
+                     treenode->nodes.address_node.expr->node_type == str_id_ar ||
+                     treenode->nodes.address_node.expr->node_type == str_id_int)) {
+                treenode->data_type = type_char_point;
+            } else {
+                fprintf(stderr,
+                        "Error: incorrect use of an address operator\n");
             }
             break;
     }
@@ -1084,7 +1195,7 @@ void check_tree(node *treenode) {
 
             break;
         case assgn_statement:
-            if (treenode->nodes.assgn_stmt_node.expr->node_type == leaf &&
+            /*if (treenode->nodes.assgn_stmt_node.expr->node_type == leaf &&
                 treenode->nodes.assgn_stmt_node.ids->node_type != deref &&
                 treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.data_type !=
                 treenode->nodes.assgn_stmt_node.expr->nodes.leaf_node.data_type) {
@@ -1097,7 +1208,7 @@ void check_tree(node *treenode) {
                     check_logic_list(treenode->nodes.assgn_stmt_node.expr) != 0) {
                 fprintf(stderr,
                         "Error: not a valid logic expression\n");
-            }
+            }*/
             /*if ((treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.data_type == type_int ||
                     treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.data_type == type_real) &&
                     check_ar_list(treenode->nodes.assgn_stmt_node.expr) != 0) {
@@ -1114,6 +1225,12 @@ void check_tree(node *treenode) {
                 check_tree(treenode->nodes.assgn_stmt_node.expr);
             }
 
+            if (treenode->nodes.assgn_stmt_node.ids->data_type != treenode->nodes.assgn_stmt_node.expr->data_type) {
+                fprintf(stderr,
+                        "Error: type mismatch in an assign statement on id %s: %d and %d\n",
+                        treenode->nodes.assgn_stmt_node.ids->nodes.leaf_node.info,
+                        treenode->nodes.assgn_stmt_node.ids->data_type, treenode->nodes.assgn_stmt_node.expr->data_type);
+            }
             break;
         case expr_statement:
 
@@ -1234,7 +1351,7 @@ void check_tree(node *treenode) {
             }
             break;
         case logic_expression:
-            if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "&&") == 0 ||
+            /*if (strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "&&") == 0 ||
                     strcmp(treenode->nodes.logic_expr_node.logic->nodes.leaf_node.info, "||") == 0 ) {
                 if (treenode->nodes.logic_expr_node.expr1->node_type == leaf &&
                         treenode->nodes.logic_expr_node.expr1->nodes.leaf_node.data_type != type_bool) {
@@ -1286,7 +1403,7 @@ void check_tree(node *treenode) {
                      treenode->nodes.logic_expr_node.expr2->node_type == logic_expression)) {
                 fprintf(stderr,
                         "Error: not a valid logic expression\n");
-            }
+            }*/
             if (treenode->nodes.logic_expr_node.expr1) {
                 check_tree(treenode->nodes.logic_expr_node.expr1);
             }
@@ -1298,7 +1415,7 @@ void check_tree(node *treenode) {
             }
             break;
         case ar_expression:
-            if (treenode->nodes.ar_expr_node.expr1->node_type == leaf &&
+            /*if (treenode->nodes.ar_expr_node.expr1->node_type == leaf &&
                     treenode->node_type != deref &&
                     (treenode->nodes.ar_expr_node.expr1->nodes.leaf_node.data_type != type_int &&
                             treenode->nodes.ar_expr_node.expr1->nodes.leaf_node.data_type != type_real)) {
@@ -1313,7 +1430,7 @@ void check_tree(node *treenode) {
                 fprintf(stderr,
                         "Error: type mismatch on a variable %s in an arithmetic expression\n",
                         treenode->nodes.ar_expr_node.expr2->nodes.leaf_node.info);
-            }
+            }*/
             if (treenode->nodes.ar_expr_node.expr1) {
                 check_tree(treenode->nodes.ar_expr_node.expr1);
             }
@@ -1341,21 +1458,21 @@ void check_tree(node *treenode) {
             }
             break;
         case deref:
-            if ((treenode->nodes.deref_node.expr->node_type != leaf &&
+            /*if ((treenode->nodes.deref_node.expr->node_type != leaf &&
                     treenode->nodes.deref_node.expr->nodes.leaf_node.data_type != type_int_point &&
                     treenode->nodes.deref_node.expr->nodes.leaf_node.data_type != type_char_point &&
                     treenode->nodes.deref_node.expr->nodes.leaf_node.data_type != type_real_point) &&
                     treenode->nodes.deref_node.expr->node_type != list) {
                 fprintf(stderr,
                         "Error: incorrect use of a dereference operator\n");
-            }  // REDO
+            }  // REDO*/
 
             if (treenode->nodes.deref_node.expr) {
                 check_tree(treenode->nodes.deref_node.expr);
             }
             break;
         case address:
-            if ((treenode->nodes.address_node.expr->node_type != leaf &&
+            /*if ((treenode->nodes.address_node.expr->node_type != leaf &&
                 (treenode->nodes.address_node.expr->nodes.leaf_node.data_type != type_int &&
                  treenode->nodes.address_node.expr->nodes.leaf_node.data_type != type_real &&
                  treenode->nodes.address_node.expr->nodes.leaf_node.data_type != type_char &&
@@ -1364,7 +1481,7 @@ void check_tree(node *treenode) {
                     treenode->nodes.address_node.expr->node_type != str_id_int) {
                 fprintf(stderr,
                         "Error: incorrect use of an address operator\n");
-            }
+            }*/
             
             if (treenode->nodes.address_node.expr) {
                 check_tree(treenode->nodes.address_node.expr);

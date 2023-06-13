@@ -3319,9 +3319,6 @@ State 177
    78              | expression • MUL expression
    79              | expression • DIV expression
 
-    MUL  shift, and go to state 125
-    DIV  shift, and go to state 126
-
     $default  reduce using rule 76 (ar_expression)
 
 
@@ -3340,9 +3337,6 @@ State 178
    77              | expression MINUS expression •
    78              | expression • MUL expression
    79              | expression • DIV expression
-
-    MUL  shift, and go to state 125
-    DIV  shift, and go to state 126
 
     $default  reduce using rule 77 (ar_expression)
 
@@ -3363,6 +3357,9 @@ State 179
    78              | expression MUL expression •
    79              | expression • DIV expression
 
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+
     $default  reduce using rule 78 (ar_expression)
 
 
@@ -3381,6 +3378,9 @@ State 180
    78              | expression • MUL expression
    79              | expression • DIV expression
    79              | expression DIV expression •
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
 
     $default  reduce using rule 79 (ar_expression)
 
@@ -3605,9 +3605,6 @@ State 189
    79              | expression • DIV expression
    80              | ar_expression PLUS expression •
 
-    MUL  shift, and go to state 125
-    DIV  shift, and go to state 126
-
     $default  reduce using rule 80 (ar_expression)
 
 
@@ -3626,9 +3623,6 @@ State 190
    78              | expression • MUL expression
    79              | expression • DIV expression
    81              | ar_expression MINUS expression •
-
-    MUL  shift, and go to state 125
-    DIV  shift, and go to state 126
 
     $default  reduce using rule 81 (ar_expression)
 
@@ -3649,6 +3643,9 @@ State 191
    79              | expression • DIV expression
    82              | ar_expression MUL expression •
 
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+
     $default  reduce using rule 82 (ar_expression)
 
 
@@ -3667,6 +3664,9 @@ State 192
    78              | expression • MUL expression
    79              | expression • DIV expression
    83              | ar_expression DIV expression •
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
 
     $default  reduce using rule 83 (ar_expression)
 

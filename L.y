@@ -45,8 +45,8 @@ int yydebug=1;
 
 %left LOGICAND LOGICOR
 %left LOGICMORE LOGICLESS LOGICMOREEQ LOGICLESSEQ LOGICEQ LOGICNOTEQ
-%left PLUS MINUS
 %left MUL DIV
+%left PLUS MINUS
 %precedence "lowest"
 %precedence ELSE
 

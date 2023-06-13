@@ -677,10 +677,10 @@ void print_tree(node *treenode, int depth) {
             }
             break;
         case ar_expression:
-            printf("I'm a node type %d in left expression\n", treenode->nodes.ar_expr_node.expr1->node_type);
+            /*printf("I'm a node type %d in left expression\n", treenode->nodes.ar_expr_node.expr1->node_type);
             printf("I'm a node type %d - ar_op\n", treenode->nodes.ar_expr_node.ar->node_type);
             printf("I'm a node type %d in right expression\n", treenode->nodes.ar_expr_node.expr2->node_type);
-            printf("I'm an arithmetic expression for some reason with left part like this:\n");
+            printf("I'm an arithmetic expression for some reason with left part like this:\n");*/
             if (treenode->nodes.ar_expr_node.expr1) {
                 print_tree(treenode->nodes.ar_expr_node.expr1, depth);
             }

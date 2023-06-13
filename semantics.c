@@ -348,10 +348,27 @@ void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functio
             }
             break;
         case ret_statement:
-
-
             if (treenode->nodes.ret_stmt_node.expr) {
                 pass_type_tree(treenode->nodes.ret_stmt_node.expr, scopeStack, global_functions);
+            }
+
+            if (scopeStack->top == 1) {
+                if (treenode->nodes.ret_stmt_node.expr->data_type !=
+                        global_functions->nodes.list_node.list[global_functions->nodes.list_node.length - 1]->nodes.function_node.id->nodes.leaf_node.data_type) {
+                    fprintf(stderr,
+                            "Error: returning an incorrect type in function \"%s\"\n",
+                            global_functions->nodes.list_node.list[global_functions->nodes.list_node.length - 1]->nodes.function_node.id->nodes.leaf_node.info);
+                    exit(1);
+                }
+            } else if (scopeStack->top > 1) {
+                int localfuncslength = scopeStack->scopestack[scopeStack->top - 1]->local_functions->nodes.list_node.length;
+                if (treenode->nodes.ret_stmt_node.expr->data_type !=
+                        scopeStack->scopestack[scopeStack->top - 1]->local_functions->nodes.list_node.list[localfuncslength - 1]->nodes.function_node.id->nodes.leaf_node.data_type) {
+                    fprintf(stderr,
+                            "Error: returning an incorrect type in function \"%s\"\n",
+                            scopeStack->scopestack[scopeStack->top - 1]->local_functions->nodes.list_node.list[localfuncslength - 1]->nodes.function_node.id->nodes.leaf_node.info);
+                    exit(1);
+                }
             }
             break;
         case not_expression:
@@ -1045,6 +1062,7 @@ void check_tree(node *treenode) {
             if (treenode->nodes.ret_stmt_node.expr) {
                 check_tree(treenode->nodes.ret_stmt_node.expr);
             }
+
             break;
         case not_expression:
 

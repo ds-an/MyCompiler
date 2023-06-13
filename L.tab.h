@@ -108,11 +108,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 37 "L.y"
+#line 39 "L.y"
 
     struct node_info {
-       char str [sizeof(char) * 50];
-       struct node *treenode;
+        char str [sizeof(char) * 50];
+        struct node *treenode;
     }node_info;
 
 #line 119 "L.tab.h"

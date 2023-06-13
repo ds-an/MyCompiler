@@ -6,7 +6,9 @@ enum node_type {
     decl_var, // *
     decl_str, // *
     decl_id_ar, // * check
-    decl_id_int, // * check
+    decl_id_int,
+    str_id_ar,
+    str_id_int,// * check
     decl_assgn, // * check
     function, // *
     procedure, // *
@@ -29,7 +31,8 @@ enum node_type {
     func_call,
     func_call_args,
     deref,
-    address
+    address,
+    strlng
 };
 
 enum leaf_node_type {
@@ -37,6 +40,10 @@ enum leaf_node_type {
     decl_id,
     decl_id_br,
     decl_id_integer,
+    decl_id_id,
+    str_id_br,
+    str_id_integer,
+    str_id_id,
     func_id,
     id_plain,
     func_type,
@@ -50,6 +57,26 @@ enum leaf_node_type {
     func_call_id
 };
 
+enum list_node_type {
+    regular,
+    block_statement,
+    logic,
+    ar
+};
+
+enum data_type {
+    null,
+    type_bool,
+    type_char,
+    type_int,
+    type_real,
+    type_char_point,
+    type_int_point,
+    type_real_point,
+    type_string,
+    type_void
+};
+
 /*enum data_type {
 
 };*/
@@ -57,6 +84,7 @@ enum leaf_node_type {
 typedef struct leaf_node {
     char *info;
     enum leaf_node_type type;
+    enum data_type data_type;
 }leafNode;
 
 typedef struct deref_node {
@@ -124,6 +152,18 @@ typedef struct id_int_decl_node {
     struct node *decl_id;
     struct node *integer;
 }idIntDeclNode;
+
+typedef struct id_ar_str_node {
+    char *info;
+    struct node *str_id;
+    struct node *expr;
+}idArStrNode;
+
+typedef struct id_int_str_node {
+    char *info;
+    struct node *str_id;
+    struct node *integer;
+}idIntStrNode;
 
 typedef struct update_node {
     char *info;
@@ -217,11 +257,19 @@ typedef struct func_call_node {
 
 typedef struct list_node {
     int num;
+    size_t length;
     struct node **list;
+    enum list_node_type list_type;
 }listNode;
+
+typedef struct strlen_node {
+    char *info;
+    struct node *id;
+}strlenNode;
 
 typedef struct node{
     enum node_type node_type;
+    enum data_type data_type;
     union {
         leafNode leaf_node;
         functionNode function_node;
@@ -233,6 +281,8 @@ typedef struct node{
         assgnDeclNode assgn_decl_node;
         idArDeclNode id_ar_decl_node;
         idIntDeclNode id_int_decl_node;
+        idArStrNode id_ar_str_node;
+        idIntStrNode id_int_str_node;
         updateNode update_node;
         exprStmtNode expr_stmt_node;
         declStmtNode decl_stmt_node;
@@ -251,10 +301,11 @@ typedef struct node{
         funcCallNode func_call_node;
         derefNode deref_node;
         addressNode address_node;
+        strlenNode strlen_node;
     }nodes;
 }node;
 
-node *crnode_leaf(char *info, enum leaf_node_type type);
+node *crnode_leaf(char *info, enum leaf_node_type type, enum data_type data_type);
 
 node *crnode_function(char *info, node *id, node *param_list, node *type, node *stmt);
 
@@ -273,6 +324,10 @@ node *crnode_assgn_decl(char *info, node *decl_id, node *expr);
 node *crnode_id_ar_decl(char *info, node *decl_id, node *expr);
 
 node *crnode_id_int_decl(char *info, node *decl_id, node *integer);
+
+node *crnode_id_ar_str(char *info, node *decl_id, node *expr);
+
+node *crnode_id_int_str(char *info, node *decl_id, node *integer);
 
 node *crnode_update(char *info, node *id, node *expr);
 
@@ -310,6 +365,63 @@ node *crnode_address(char *info, node *expr);
 
 node *crnode_list();
 
+// symbol table stuff here
+
+/*typedef struct Symbol {
+    char *name;
+    enum data_type data_type;
+    enum node_type node_type;
+}Symbol;*/
+
+typedef struct SymbolTable {
+    node **table;
+    int size;
+    int capacity;
+    int top;
+    node *local_functions;
+    int local_functions_length;
+}SymbolTable;
+
+typedef struct ScopeStack {
+    SymbolTable **scopestack;
+    int size;
+    int capacity;
+    int top;
+}ScopeStack;
+
+typedef struct FunctionInfo {
+    char *name;
+    int argcount;
+    node *args;
+    enum node_type node_type;
+}FunctionInfo;
+
+typedef struct FunctionTable {
+    FunctionInfo **functions;
+    int size;
+    int capacity;
+}FunctionTable;
+
+typedef struct FunctionScopeStack {
+    FunctionTable **scopestack;
+    int size;
+    int capacity;
+    int top;
+}FunctionScopeStack;
+
+/*typedef struct LocalFunction {
+    node *function;
+    int scope;
+}LocalFunction;*/
+
+void *add_symbol_to_table(node *node, ScopeStack *stack);
+
+void *push_symbol_table(ScopeStack *stack);
+
+void *pop_symbol_table(ScopeStack *stack);
+
+ScopeStack *cr_scope_stack();
+
 void *init_list(node *list_node);
 
 void *free_list(node *list_node);
@@ -322,7 +434,37 @@ void indent(int depth);
 
 void free_tree(node *root);
 
-void analyze_tree(node *treenode);
+void pass_type_tree(node *treenode, ScopeStack *scopeStack, node *global_functions);
+
+void *pass_type_str_decl(node *decl_param_list);
+
+void *pass_type_decl(node *decl_param_list, node *type);
+
+void *pass_type_param_list(node *ids, node *type);
+
+void *pass_type_function(node *id, node *type);
+
+void pass_type_function_scope(node *func_call_id, node *function_list, int i);
+
+int find_function(node *func_call_id, node *function_list);
+
+void pass_type_else(node *symbol, ScopeStack *stack);
+
+void check_tree(node *treenode);
+
+int check_logic_list(node *treenode);
+
+void check_function_call(node *func_call_args, node *function_param_list_ids);
+
+node *extract_function_args(node *myfunction);
+
+/*
+int check_ar_list(node *treenode);
+*/
+
+/*
+void *print_stack(ScopeStack *stack);
+*/
 
 #endif //MYCOMPILER_NODES_H
 

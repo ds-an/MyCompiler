@@ -331,12 +331,17 @@ int main() {
     global_functions = crnode_list();
     push_symbol_table(scopeStack);
     int result = yyparse();
-    if (main_flag > 1)
+    if (main_flag > 1) {
         fprintf(stderr, "Error: more than one main function.");
-    if (main_flag < 1)
+        exit(1);
+    }
+    if (main_flag < 1) {
         fprintf(stderr, "Error: main function not present.");
+        exit(1);
+    }
 }
 
 int yyerror(char *s) {
-    fprintf(stderr, "-------\nGrammar error: %s\nToken: %d (Check the corresponding token in L.tab.h file)\nLine: %d\n-------\n", s, yychar, yylineno);
+    fprintf(stderr, "Grammar error on line: %d\n", yylineno);
+    exit(1);
 }

@@ -31,10 +31,10 @@ int yydebug=1;
 %type <node_info> funcproc function procedure main_function statement
 %type <node_info> update statement_list decl_statement assgn_statement expr_statement if_statement
 %type <node_info> iter_statement ret_statement ids expression not_expression logic_expression
-%type <node_info> ar_expression pr_expression func_call arglist logic arithmetic type literal
+%type <node_info> ar_expression pr_expression func_call arglist type literal
 %type <node_info> parameter_list func_body proc_body iter_body str_id block_statement  // deref_expression
 
-%expect 68
+%expect 20
 
 %union {
     struct node_info {
@@ -254,18 +254,78 @@ not_expression: NOT pr_expression {
     $$.treenode = crnode_not_expr("NOT_EXPR", $2.treenode);
 } ;
 
-logic_expression: expression logic expression { //Change needed here, was pr_expression
-    $$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+logic_expression: expression LOGICEQ expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
 }
-| logic_expression logic expression {
-    $$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+| expression LOGICNOTEQ expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| expression LOGICMORE expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| expression LOGICLESS expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| expression LOGICMOREEQ expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| expression LOGICLESSEQ expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| expression LOGICAND expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| expression LOGICOR expression { //Change needed here, was pr_expression
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICEQ expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICNOTEQ expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICMORE expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICLESS expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICMOREEQ expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICLESSEQ expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICAND expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
+}
+| logic_expression LOGICOR expression {
+$$.treenode = crnode_logic_expr("LOGIC_EXPR", $1.treenode, crnode_leaf($2.str, logic_op, null), $3.treenode);
 };
 
-ar_expression: expression arithmetic expression { //AND here too
+ar_expression: expression PLUS expression { //AND here too
     $$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
 }
-| ar_expression arithmetic expression {
+| expression MINUS expression {
+$$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
+}
+| expression MUL expression {
+$$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
+}
+| expression DIV expression {
+$$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
+}
+| ar_expression PLUS expression {
     $$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
+}
+| ar_expression MINUS expression {
+$$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
+}
+| ar_expression MUL expression {
+$$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
+}
+| ar_expression DIV expression {
+$$.treenode = crnode_ar_expr("AR_EXPR", $1.treenode, crnode_leaf($2.str, ar_op, null), $3.treenode);
 };
 
 pr_expression: '(' expression ')' {$$.treenode = $2.treenode;} /* brackets */
@@ -303,11 +363,6 @@ arglist: expression {
     add_to_list(list_node_args, $3.treenode);
     $$.treenode = list_node_args;
 }; // подумать
-
-logic: LOGICEQ | LOGICNOTEQ | LOGICMORE | LOGICLESS
-| LOGICMOREEQ | LOGICLESSEQ | LOGICAND | LOGICOR ;
-
-arithmetic: PLUS | MINUS | MUL | DIV ;
 
 type: TYPEBOOL {$$.treenode = crnode_leaf($1.str, param_type, type_bool);} 
 | TYPECHAR {$$.treenode = crnode_leaf($1.str, param_type, type_char);}

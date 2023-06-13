@@ -9,7 +9,7 @@ function  F1(arg->  a, b, c : int; arg-> c1 : char) : bool
      b='&';
      /*1  a=x; */
      /*2 b=8; */
-     a=(y*7)/a-y;
+     a=y-7/a*y;
      /*3 a=(y*7)/b-y; */
      /*4 a=(y*7)/a-c1; */
      /*5 res=(b==c) && (y>a); */
@@ -30,7 +30,7 @@ function  P1(arg->  i, j, k, x : int) : void
        i=l + l;
        /*11 i=j+1; */
        /*12 i=k+1; */
-       if((k=='*') || (x!=false) && ( (l+m) < i)) {
+       if((k=='*') || (x!=false) && ( l < i + m)) {
            x=l<m;
        }
        return x;
@@ -89,7 +89,7 @@ function  F4() : int
      x=5;
      y=&x;
      x=6;
-     if((&x == y) && (*y == x) ) {
+     if(&x == y && *y == x ) {
        *y=9;
      }
      {

@@ -8,12 +8,8 @@ Terminals unused in grammar
 
 State 79 conflicts: 8 shift/reduce
 State 80 conflicts: 4 shift/reduce
-State 140 conflicts: 4 shift/reduce
-State 161 conflicts: 12 shift/reduce
-State 162 conflicts: 12 shift/reduce
-State 163 conflicts: 12 shift/reduce
-State 164 conflicts: 12 shift/reduce
-State 182 conflicts: 4 shift/reduce
+State 148 conflicts: 4 shift/reduce
+State 210 conflicts: 4 shift/reduce
 
 
 Grammar
@@ -106,79 +102,85 @@ Grammar
 
    59 not_expression: NOT pr_expression
 
-   60 logic_expression: expression logic expression
-   61                 | logic_expression logic expression
+   60 logic_expression: expression LOGICEQ expression
+   61                 | expression LOGICNOTEQ expression
+   62                 | expression LOGICMORE expression
+   63                 | expression LOGICLESS expression
+   64                 | expression LOGICMOREEQ expression
+   65                 | expression LOGICLESSEQ expression
+   66                 | expression LOGICAND expression
+   67                 | expression LOGICOR expression
+   68                 | logic_expression LOGICEQ expression
+   69                 | logic_expression LOGICNOTEQ expression
+   70                 | logic_expression LOGICMORE expression
+   71                 | logic_expression LOGICLESS expression
+   72                 | logic_expression LOGICMOREEQ expression
+   73                 | logic_expression LOGICLESSEQ expression
+   74                 | logic_expression LOGICAND expression
+   75                 | logic_expression LOGICOR expression
 
-   62 ar_expression: expression arithmetic expression
-   63              | ar_expression arithmetic expression
+   76 ar_expression: expression PLUS expression
+   77              | expression MINUS expression
+   78              | expression MUL expression
+   79              | expression DIV expression
+   80              | ar_expression PLUS expression
+   81              | ar_expression MINUS expression
+   82              | ar_expression MUL expression
+   83              | ar_expression DIV expression
 
-   64 pr_expression: '(' expression ')'
-   65              | ID
-   66              | str_id
-   67              | literal
-   68              | func_call
-   69              | ADDRESS pr_expression
-   70              | MUL pr_expression
-   71              | '|' ID '|'
+   84 pr_expression: '(' expression ')'
+   85              | ID
+   86              | str_id
+   87              | literal
+   88              | func_call
+   89              | ADDRESS pr_expression
+   90              | MUL pr_expression
+   91              | '|' ID '|'
 
-   72 func_call: ID '(' arglist ')'
-   73          | ID '(' ')'
+   92 func_call: ID '(' arglist ')'
+   93          | ID '(' ')'
 
-   74 str_id: ID '[' ar_expression ']'
-   75       | ID '[' INT ']'
-   76       | ID '[' ID ']'
+   94 str_id: ID '[' ar_expression ']'
+   95       | ID '[' INT ']'
+   96       | ID '[' ID ']'
 
-   77 arglist: expression
-   78        | arglist ',' expression
+   97 arglist: expression
+   98        | arglist ',' expression
 
-   79 logic: LOGICEQ
-   80      | LOGICNOTEQ
-   81      | LOGICMORE
-   82      | LOGICLESS
-   83      | LOGICMOREEQ
-   84      | LOGICLESSEQ
-   85      | LOGICAND
-   86      | LOGICOR
+   99 type: TYPEBOOL
+  100     | TYPECHAR
+  101     | TYPEINT
+  102     | TYPEREAL
+  103     | TYPECHARPOINTER
+  104     | TYPEINTPOINTER
+  105     | TYPEREALPOINTER
+  106     | TYPESTR
 
-   87 arithmetic: PLUS
-   88           | MINUS
-   89           | MUL
-   90           | DIV
-
-   91 type: TYPEBOOL
-   92     | TYPECHAR
-   93     | TYPEINT
-   94     | TYPEREAL
-   95     | TYPECHARPOINTER
-   96     | TYPEINTPOINTER
-   97     | TYPEREALPOINTER
-   98     | TYPESTR
-
-   99 literal: INT
-  100        | REAL
-  101        | CHAR
-  102        | BOOL
-  103        | STR
+  107 literal: INT
+  108        | REAL
+  109        | CHAR
+  110        | BOOL
+  111        | STR
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '(' (40) 17 18 19 47 48 49 50 51 64 72 73
-    ')' (41) 17 18 19 47 48 49 50 51 64 72 73
-    ',' (44) 5 54 78
-    '[' (91) 9 10 11 74 75 76
-    ']' (93) 9 10 11 74 75 76
+    '(' (40) 17 18 19 47 48 49 50 51 84 92 93
+    ')' (41) 17 18 19 47 48 49 50 51 84 92 93
+    ',' (44) 5 54 98
+    '[' (91) 9 10 11 94 95 96
+    ']' (93) 9 10 11 94 95 96
     '{' (123) 23 24 25 26 27 28 29 30 32 39
-    '|' (124) 71
+    '|' (124) 91
     '}' (125) 23 24 25 26 27 28 29 30 32 39
     error (256)
-    INT <node_info> (258) 10 75 99
-    ID <node_info> (259) 8 9 10 11 17 18 40 44 53 54 65 71 72 73 74 75 76
-    REAL <node_info> (260) 100
-    BOOL <node_info> (261) 102
-    STR <node_info> (262) 103
-    CHAR <node_info> (263) 101
+    INT <node_info> (258) 10 95 107
+    ID <node_info> (259) 8 9 10 11 17 18 40 44 53 54 85 91 92 93 94 95 96
+    REAL <node_info> (260) 108
+    BOOL <node_info> (261) 110
+    STR <node_info> (262) 111
+    CHAR <node_info> (263) 109
     IF <node_info> (264) 47 48
     ELSE <node_info> (265) 48
     WHILE <node_info> (266) 49 50
@@ -189,32 +191,32 @@ Terminals, with rules where they appear
     RETURN <node_info> (271) 52
     NUL <node_info> (272)
     VOID <node_info> (273) 18 19
-    TYPEBOOL <node_info> (274) 91
-    TYPECHAR <node_info> (275) 92
-    TYPEINT <node_info> (276) 93
-    TYPEREAL <node_info> (277) 94
-    TYPECHARPOINTER <node_info> (278) 95
-    TYPEINTPOINTER <node_info> (279) 96
-    TYPEREALPOINTER <node_info> (280) 97
-    TYPESTR <node_info> (281) 3 98
-    LOGICEQ <node_info> (282) 79
-    LOGICNOTEQ <node_info> (283) 80
-    LOGICMORE <node_info> (284) 81
-    LOGICLESS <node_info> (285) 82
-    LOGICMOREEQ <node_info> (286) 83
-    LOGICLESSEQ <node_info> (287) 84
-    LOGICAND <node_info> (288) 85
-    LOGICOR <node_info> (289) 86
-    PLUS <node_info> (290) 87
-    MINUS <node_info> (291) 88
-    MUL <node_info> (292) 45 70 89
-    DIV <node_info> (293) 90
+    TYPEBOOL <node_info> (274) 99
+    TYPECHAR <node_info> (275) 100
+    TYPEINT <node_info> (276) 101
+    TYPEREAL <node_info> (277) 102
+    TYPECHARPOINTER <node_info> (278) 103
+    TYPEINTPOINTER <node_info> (279) 104
+    TYPEREALPOINTER <node_info> (280) 105
+    TYPESTR <node_info> (281) 3 106
+    LOGICEQ <node_info> (282) 60 68
+    LOGICNOTEQ <node_info> (283) 61 69
+    LOGICMORE <node_info> (284) 62 70
+    LOGICLESS <node_info> (285) 63 71
+    LOGICMOREEQ <node_info> (286) 64 72
+    LOGICLESSEQ <node_info> (287) 65 73
+    LOGICAND <node_info> (288) 66 74
+    LOGICOR <node_info> (289) 67 75
+    PLUS <node_info> (290) 76 80
+    MINUS <node_info> (291) 77 81
+    MUL <node_info> (292) 45 78 82 90
+    DIV <node_info> (293) 79 83
     ARG <node_info> (294) 20 21
     ASSGN <node_info> (295) 6 40 44 45
     ENDST <node_info> (296) 21 43 44 45 46 50 51 52
     TYPEDEF <node_info> (297) 2 17 18 19 20 21
     NOT <node_info> (298) 59
-    ADDRESS <node_info> (299) 69
+    ADDRESS <node_info> (299) 89
     COMMOPEN <node_info> (300)
     COMMCLOSE <node_info> (301)
     MAIN <node_info> (302) 19
@@ -303,40 +305,34 @@ Nonterminals, with rules where they appear
         on right: 20 21 54
     expression <node_info> (84)
         on left: 55 56 57 58
-        on right: 6 40 44 45 46 47 48 49 50 51 52 60 61 62 63 64 77 78
+        on right: 6 40 44 45 46 47 48 49 50 51 52 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 97 98
     not_expression <node_info> (85)
         on left: 59
         on right: 55
     logic_expression <node_info> (86)
-        on left: 60 61
-        on right: 57 61
+        on left: 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75
+        on right: 57 68 69 70 71 72 73 74 75
     ar_expression <node_info> (87)
-        on left: 62 63
-        on right: 9 56 63 74
+        on left: 76 77 78 79 80 81 82 83
+        on right: 9 56 80 81 82 83 94
     pr_expression <node_info> (88)
-        on left: 64 65 66 67 68 69 70 71
-        on right: 45 58 59 69 70
+        on left: 84 85 86 87 88 89 90 91
+        on right: 45 58 59 89 90
     func_call <node_info> (89)
-        on left: 72 73
-        on right: 68
+        on left: 92 93
+        on right: 88
     str_id <node_info> (90)
-        on left: 74 75 76
-        on right: 66
+        on left: 94 95 96
+        on right: 86
     arglist <node_info> (91)
-        on left: 77 78
-        on right: 72 78
-    logic <node_info> (92)
-        on left: 79 80 81 82 83 84 85 86
-        on right: 60 61
-    arithmetic <node_info> (93)
-        on left: 87 88 89 90
-        on right: 62 63
-    type <node_info> (94)
-        on left: 91 92 93 94 95 96 97 98
+        on left: 97 98
+        on right: 92 98
+    type <node_info> (92)
+        on left: 99 100 101 102 103 104 105 106
         on right: 2 17 20 21
-    literal <node_info> (95)
-        on left: 99 100 101 102 103
-        on right: 67
+    literal <node_info> (93)
+        on left: 107 108 109 110 111
+        on right: 87
 
 
 State 0
@@ -590,58 +586,58 @@ State 26
 
 State 27
 
-   91 type: TYPEBOOL •
+   99 type: TYPEBOOL •
 
-    $default  reduce using rule 91 (type)
+    $default  reduce using rule 99 (type)
 
 
 State 28
 
-   92 type: TYPECHAR •
+  100 type: TYPECHAR •
 
-    $default  reduce using rule 92 (type)
+    $default  reduce using rule 100 (type)
 
 
 State 29
 
-   93 type: TYPEINT •
+  101 type: TYPEINT •
 
-    $default  reduce using rule 93 (type)
+    $default  reduce using rule 101 (type)
 
 
 State 30
 
-   94 type: TYPEREAL •
+  102 type: TYPEREAL •
 
-    $default  reduce using rule 94 (type)
+    $default  reduce using rule 102 (type)
 
 
 State 31
 
-   95 type: TYPECHARPOINTER •
+  103 type: TYPECHARPOINTER •
 
-    $default  reduce using rule 95 (type)
+    $default  reduce using rule 103 (type)
 
 
 State 32
 
-   96 type: TYPEINTPOINTER •
+  104 type: TYPEINTPOINTER •
 
-    $default  reduce using rule 96 (type)
+    $default  reduce using rule 104 (type)
 
 
 State 33
 
-   97 type: TYPEREALPOINTER •
+  105 type: TYPEREALPOINTER •
 
-    $default  reduce using rule 97 (type)
+    $default  reduce using rule 105 (type)
 
 
 State 34
 
-   98 type: TYPESTR •
+  106 type: TYPESTR •
 
-    $default  reduce using rule 98 (type)
+    $default  reduce using rule 106 (type)
 
 
 State 35
@@ -844,54 +840,54 @@ State 47
 
 State 48
 
-   99 literal: INT •
+  107 literal: INT •
 
-    $default  reduce using rule 99 (literal)
+    $default  reduce using rule 107 (literal)
 
 
 State 49
 
    44 assgn_statement: ID • ASSGN expression ENDST
-   65 pr_expression: ID •
-   72 func_call: ID • '(' arglist ')'
-   73          | ID • '(' ')'
-   74 str_id: ID • '[' ar_expression ']'
-   75       | ID • '[' INT ']'
-   76       | ID • '[' ID ']'
+   85 pr_expression: ID •
+   92 func_call: ID • '(' arglist ')'
+   93          | ID • '(' ')'
+   94 str_id: ID • '[' ar_expression ']'
+   95       | ID • '[' INT ']'
+   96       | ID • '[' ID ']'
 
     ASSGN  shift, and go to state 88
     '['    shift, and go to state 89
     '('    shift, and go to state 90
 
-    $default  reduce using rule 65 (pr_expression)
+    $default  reduce using rule 85 (pr_expression)
 
 
 State 50
 
-  100 literal: REAL •
+  108 literal: REAL •
 
-    $default  reduce using rule 100 (literal)
+    $default  reduce using rule 108 (literal)
 
 
 State 51
 
-  102 literal: BOOL •
+  110 literal: BOOL •
 
-    $default  reduce using rule 102 (literal)
+    $default  reduce using rule 110 (literal)
 
 
 State 52
 
-  103 literal: STR •
+  111 literal: STR •
 
-    $default  reduce using rule 103 (literal)
+    $default  reduce using rule 111 (literal)
 
 
 State 53
 
-  101 literal: CHAR •
+  109 literal: CHAR •
 
-    $default  reduce using rule 101 (literal)
+    $default  reduce using rule 109 (literal)
 
 
 State 54
@@ -983,7 +979,7 @@ State 59
 State 60
 
    45 assgn_statement: MUL • pr_expression ASSGN expression ENDST
-   70 pr_expression: MUL • pr_expression
+   90 pr_expression: MUL • pr_expression
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -1025,7 +1021,7 @@ State 61
 
 State 62
 
-   69 pr_expression: ADDRESS • pr_expression
+   89 pr_expression: ADDRESS • pr_expression
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -1046,7 +1042,7 @@ State 62
 
 State 63
 
-   64 pr_expression: '(' • expression ')'
+   84 pr_expression: '(' • expression ')'
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -1121,7 +1117,7 @@ State 65
 
 State 66
 
-   71 pr_expression: '|' • ID '|'
+   91 pr_expression: '|' • ID '|'
 
     ID  shift, and go to state 109
 
@@ -1278,8 +1274,18 @@ State 76
 State 77
 
    46 expr_statement: expression • ENDST
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -1295,9 +1301,6 @@ State 77
     DIV          shift, and go to state 126
     ENDST        shift, and go to state 127
 
-    logic       go to state 128
-    arithmetic  go to state 129
-
 
 State 78
 
@@ -1309,16 +1312,23 @@ State 78
 State 79
 
    57 expression: logic_expression •
-   61 logic_expression: logic_expression • logic expression
+   68 logic_expression: logic_expression • LOGICEQ expression
+   69                 | logic_expression • LOGICNOTEQ expression
+   70                 | logic_expression • LOGICMORE expression
+   71                 | logic_expression • LOGICLESS expression
+   72                 | logic_expression • LOGICMOREEQ expression
+   73                 | logic_expression • LOGICLESSEQ expression
+   74                 | logic_expression • LOGICAND expression
+   75                 | logic_expression • LOGICOR expression
 
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
+    LOGICEQ      shift, and go to state 128
+    LOGICNOTEQ   shift, and go to state 129
+    LOGICMORE    shift, and go to state 130
+    LOGICLESS    shift, and go to state 131
+    LOGICMOREEQ  shift, and go to state 132
+    LOGICLESSEQ  shift, and go to state 133
+    LOGICAND     shift, and go to state 134
+    LOGICOR      shift, and go to state 135
 
     LOGICEQ      [reduce using rule 57 (expression)]
     LOGICNOTEQ   [reduce using rule 57 (expression)]
@@ -1330,26 +1340,25 @@ State 79
     LOGICOR      [reduce using rule 57 (expression)]
     $default     reduce using rule 57 (expression)
 
-    logic  go to state 130
-
 
 State 80
 
    56 expression: ar_expression •
-   63 ar_expression: ar_expression • arithmetic expression
+   80 ar_expression: ar_expression • PLUS expression
+   81              | ar_expression • MINUS expression
+   82              | ar_expression • MUL expression
+   83              | ar_expression • DIV expression
 
-    PLUS   shift, and go to state 123
-    MINUS  shift, and go to state 124
-    MUL    shift, and go to state 125
-    DIV    shift, and go to state 126
+    PLUS   shift, and go to state 136
+    MINUS  shift, and go to state 137
+    MUL    shift, and go to state 138
+    DIV    shift, and go to state 139
 
     PLUS      [reduce using rule 56 (expression)]
     MINUS     [reduce using rule 56 (expression)]
     MUL       [reduce using rule 56 (expression)]
     DIV       [reduce using rule 56 (expression)]
     $default  reduce using rule 56 (expression)
-
-    arithmetic  go to state 131
 
 
 State 81
@@ -1361,23 +1370,23 @@ State 81
 
 State 82
 
-   68 pr_expression: func_call •
+   88 pr_expression: func_call •
 
-    $default  reduce using rule 68 (pr_expression)
+    $default  reduce using rule 88 (pr_expression)
 
 
 State 83
 
-   66 pr_expression: str_id •
+   86 pr_expression: str_id •
 
-    $default  reduce using rule 66 (pr_expression)
+    $default  reduce using rule 86 (pr_expression)
 
 
 State 84
 
-   67 pr_expression: literal •
+   87 pr_expression: literal •
 
-    $default  reduce using rule 67 (pr_expression)
+    $default  reduce using rule 87 (pr_expression)
 
 
 State 85
@@ -1405,7 +1414,7 @@ State 86
     DO        shift, and go to state 57
     VAR       shift, and go to state 58
     FUNCTION  shift, and go to state 1
-    RETURN    shift, and go to state 132
+    RETURN    shift, and go to state 140
     TYPESTR   shift, and go to state 59
     MUL       shift, and go to state 60
     NOT       shift, and go to state 61
@@ -1421,13 +1430,13 @@ State 86
     main_function     go to state 7
     statement         go to state 69
     block_statement   go to state 70
-    statement_list    go to state 133
+    statement_list    go to state 141
     decl_statement    go to state 72
     assgn_statement   go to state 73
     expr_statement    go to state 74
     if_statement      go to state 75
     iter_statement    go to state 76
-    ret_statement     go to state 134
+    ret_statement     go to state 142
     expression        go to state 77
     not_expression    go to state 78
     logic_expression  go to state 79
@@ -1454,7 +1463,7 @@ State 87
     FOR      shift, and go to state 56
     DO       shift, and go to state 57
     VAR      shift, and go to state 58
-    RETURN   shift, and go to state 132
+    RETURN   shift, and go to state 140
     TYPESTR  shift, and go to state 59
     MUL      shift, and go to state 60
     NOT      shift, and go to state 61
@@ -1471,7 +1480,7 @@ State 87
     expr_statement    go to state 74
     if_statement      go to state 75
     iter_statement    go to state 76
-    ret_statement     go to state 135
+    ret_statement     go to state 143
     expression        go to state 77
     not_expression    go to state 78
     logic_expression  go to state 79
@@ -1498,7 +1507,7 @@ State 88
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    expression        go to state 136
+    expression        go to state 144
     not_expression    go to state 78
     logic_expression  go to state 79
     ar_expression     go to state 80
@@ -1510,12 +1519,12 @@ State 88
 
 State 89
 
-   74 str_id: ID '[' • ar_expression ']'
-   75       | ID '[' • INT ']'
-   76       | ID '[' • ID ']'
+   94 str_id: ID '[' • ar_expression ']'
+   95       | ID '[' • INT ']'
+   96       | ID '[' • ID ']'
 
-    INT      shift, and go to state 137
-    ID       shift, and go to state 138
+    INT      shift, and go to state 145
+    ID       shift, and go to state 146
     REAL     shift, and go to state 50
     BOOL     shift, and go to state 51
     STR      shift, and go to state 52
@@ -1526,10 +1535,10 @@ State 89
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    expression        go to state 139
+    expression        go to state 147
     not_expression    go to state 78
     logic_expression  go to state 79
-    ar_expression     go to state 140
+    ar_expression     go to state 148
     pr_expression     go to state 81
     func_call         go to state 82
     str_id            go to state 83
@@ -1538,8 +1547,8 @@ State 89
 
 State 90
 
-   72 func_call: ID '(' • arglist ')'
-   73          | ID '(' • ')'
+   92 func_call: ID '(' • arglist ')'
+   93          | ID '(' • ')'
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -1551,17 +1560,17 @@ State 90
     NOT      shift, and go to state 61
     ADDRESS  shift, and go to state 62
     '('      shift, and go to state 63
-    ')'      shift, and go to state 141
+    ')'      shift, and go to state 149
     '|'      shift, and go to state 66
 
-    expression        go to state 142
+    expression        go to state 150
     not_expression    go to state 78
     logic_expression  go to state 79
     ar_expression     go to state 80
     pr_expression     go to state 81
     func_call         go to state 82
     str_id            go to state 83
-    arglist           go to state 143
+    arglist           go to state 151
     literal           go to state 84
 
 
@@ -1582,7 +1591,7 @@ State 91
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    expression        go to state 144
+    expression        go to state 152
     not_expression    go to state 78
     logic_expression  go to state 79
     ar_expression     go to state 80
@@ -1608,7 +1617,7 @@ State 92
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    expression        go to state 145
+    expression        go to state 153
     not_expression    go to state 78
     logic_expression  go to state 79
     ar_expression     go to state 80
@@ -1622,10 +1631,10 @@ State 93
 
    51 iter_statement: FOR '(' • assgn_statement expression ENDST update ')' iter_body
 
-    ID   shift, and go to state 146
-    MUL  shift, and go to state 147
+    ID   shift, and go to state 154
+    MUL  shift, and go to state 155
 
-    assgn_statement  go to state 148
+    assgn_statement  go to state 156
 
 
 State 94
@@ -1650,7 +1659,7 @@ State 94
     ADDRESS  shift, and go to state 62
     '('      shift, and go to state 63
     '{'      shift, and go to state 64
-    '}'      shift, and go to state 149
+    '}'      shift, and go to state 157
     '|'      shift, and go to state 66
 
     declaration       go to state 67
@@ -1676,7 +1685,7 @@ State 95
 
    50 iter_statement: DO iter_body • WHILE '(' expression ')' ENDST
 
-    WHILE  shift, and go to state 150
+    WHILE  shift, and go to state 158
 
 
 State 96
@@ -1693,7 +1702,7 @@ State 97
    10        | ID • '[' INT ']'
    11        | ID • '[' ID ']'
 
-    '['  shift, and go to state 151
+    '['  shift, and go to state 159
 
     $default  reduce using rule 8 (decl_id)
 
@@ -1703,8 +1712,8 @@ State 98
     2 declaration: VAR decl_param_list • TYPEDEF type
     5 decl_param_list: decl_param_list • ',' decl_assgn
 
-    TYPEDEF  shift, and go to state 152
-    ','      shift, and go to state 153
+    TYPEDEF  shift, and go to state 160
+    ','      shift, and go to state 161
 
 
 State 99
@@ -1719,7 +1728,7 @@ State 100
     6 decl_assgn: decl_id • ASSGN expression
     7           | decl_id •
 
-    ASSGN  shift, and go to state 154
+    ASSGN  shift, and go to state 162
 
     $default  reduce using rule 7 (decl_assgn)
 
@@ -1729,29 +1738,29 @@ State 101
     3 declaration: TYPESTR decl_param_list •
     5 decl_param_list: decl_param_list • ',' decl_assgn
 
-    ','  shift, and go to state 153
+    ','  shift, and go to state 161
 
     $default  reduce using rule 3 (declaration)
 
 
 State 102
 
-   65 pr_expression: ID •
-   72 func_call: ID • '(' arglist ')'
-   73          | ID • '(' ')'
-   74 str_id: ID • '[' ar_expression ']'
-   75       | ID • '[' INT ']'
-   76       | ID • '[' ID ']'
+   85 pr_expression: ID •
+   92 func_call: ID • '(' arglist ')'
+   93          | ID • '(' ')'
+   94 str_id: ID • '[' ar_expression ']'
+   95       | ID • '[' INT ']'
+   96       | ID • '[' ID ']'
 
     '['  shift, and go to state 89
     '('  shift, and go to state 90
 
-    $default  reduce using rule 65 (pr_expression)
+    $default  reduce using rule 85 (pr_expression)
 
 
 State 103
 
-   70 pr_expression: MUL • pr_expression
+   90 pr_expression: MUL • pr_expression
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -1764,7 +1773,7 @@ State 103
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    pr_expression  go to state 155
+    pr_expression  go to state 163
     func_call      go to state 82
     str_id         go to state 83
     literal        go to state 84
@@ -1773,11 +1782,11 @@ State 103
 State 104
 
    45 assgn_statement: MUL pr_expression • ASSGN expression ENDST
-   70 pr_expression: MUL pr_expression •
+   90 pr_expression: MUL pr_expression •
 
-    ASSGN  shift, and go to state 156
+    ASSGN  shift, and go to state 164
 
-    $default  reduce using rule 70 (pr_expression)
+    $default  reduce using rule 90 (pr_expression)
 
 
 State 105
@@ -1789,16 +1798,26 @@ State 105
 
 State 106
 
-   69 pr_expression: ADDRESS pr_expression •
+   89 pr_expression: ADDRESS pr_expression •
 
-    $default  reduce using rule 69 (pr_expression)
+    $default  reduce using rule 89 (pr_expression)
 
 
 State 107
 
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-   64 pr_expression: '(' expression • ')'
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   84 pr_expression: '(' expression • ')'
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -1812,10 +1831,7 @@ State 107
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ')'          shift, and go to state 157
-
-    logic       go to state 128
-    arithmetic  go to state 129
+    ')'          shift, and go to state 165
 
 
 State 108
@@ -1840,7 +1856,7 @@ State 108
     ADDRESS  shift, and go to state 62
     '('      shift, and go to state 63
     '{'      shift, and go to state 64
-    '}'      shift, and go to state 158
+    '}'      shift, and go to state 166
     '|'      shift, and go to state 66
 
     declaration       go to state 67
@@ -1863,9 +1879,9 @@ State 108
 
 State 109
 
-   71 pr_expression: '|' ID • '|'
+   91 pr_expression: '|' ID • '|'
 
-    '|'  shift, and go to state 159
+    '|'  shift, and go to state 167
 
 
 State 110
@@ -1904,7 +1920,7 @@ State 112
     ADDRESS  shift, and go to state 62
     '('      shift, and go to state 63
     '{'      shift, and go to state 64
-    '}'      shift, and go to state 160
+    '}'      shift, and go to state 168
     '|'      shift, and go to state 66
 
     declaration       go to state 67
@@ -1941,498 +1957,241 @@ State 114
 
 State 115
 
-   79 logic: LOGICEQ •
+   60 logic_expression: expression LOGICEQ • expression
 
-    $default  reduce using rule 79 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 169
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 116
 
-   80 logic: LOGICNOTEQ •
+   61 logic_expression: expression LOGICNOTEQ • expression
 
-    $default  reduce using rule 80 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 170
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 117
 
-   81 logic: LOGICMORE •
+   62 logic_expression: expression LOGICMORE • expression
 
-    $default  reduce using rule 81 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 171
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 118
 
-   82 logic: LOGICLESS •
+   63 logic_expression: expression LOGICLESS • expression
 
-    $default  reduce using rule 82 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 172
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 119
 
-   83 logic: LOGICMOREEQ •
+   64 logic_expression: expression LOGICMOREEQ • expression
 
-    $default  reduce using rule 83 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 173
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 120
 
-   84 logic: LOGICLESSEQ •
+   65 logic_expression: expression LOGICLESSEQ • expression
 
-    $default  reduce using rule 84 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 174
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 121
 
-   85 logic: LOGICAND •
+   66 logic_expression: expression LOGICAND • expression
 
-    $default  reduce using rule 85 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 175
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 122
 
-   86 logic: LOGICOR •
+   67 logic_expression: expression LOGICOR • expression
 
-    $default  reduce using rule 86 (logic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 176
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 123
 
-   87 arithmetic: PLUS •
+   76 ar_expression: expression PLUS • expression
 
-    $default  reduce using rule 87 (arithmetic)
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 177
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
 State 124
 
-   88 arithmetic: MINUS •
-
-    $default  reduce using rule 88 (arithmetic)
-
-
-State 125
-
-   89 arithmetic: MUL •
-
-    $default  reduce using rule 89 (arithmetic)
-
-
-State 126
-
-   90 arithmetic: DIV •
-
-    $default  reduce using rule 90 (arithmetic)
-
-
-State 127
-
-   46 expr_statement: expression ENDST •
-
-    $default  reduce using rule 46 (expr_statement)
-
-
-State 128
-
-   60 logic_expression: expression logic • expression
-
-    INT      shift, and go to state 48
-    ID       shift, and go to state 102
-    REAL     shift, and go to state 50
-    BOOL     shift, and go to state 51
-    STR      shift, and go to state 52
-    CHAR     shift, and go to state 53
-    MUL      shift, and go to state 103
-    NOT      shift, and go to state 61
-    ADDRESS  shift, and go to state 62
-    '('      shift, and go to state 63
-    '|'      shift, and go to state 66
-
-    expression        go to state 161
-    not_expression    go to state 78
-    logic_expression  go to state 79
-    ar_expression     go to state 80
-    pr_expression     go to state 81
-    func_call         go to state 82
-    str_id            go to state 83
-    literal           go to state 84
-
-
-State 129
-
-   62 ar_expression: expression arithmetic • expression
-
-    INT      shift, and go to state 48
-    ID       shift, and go to state 102
-    REAL     shift, and go to state 50
-    BOOL     shift, and go to state 51
-    STR      shift, and go to state 52
-    CHAR     shift, and go to state 53
-    MUL      shift, and go to state 103
-    NOT      shift, and go to state 61
-    ADDRESS  shift, and go to state 62
-    '('      shift, and go to state 63
-    '|'      shift, and go to state 66
-
-    expression        go to state 162
-    not_expression    go to state 78
-    logic_expression  go to state 79
-    ar_expression     go to state 80
-    pr_expression     go to state 81
-    func_call         go to state 82
-    str_id            go to state 83
-    literal           go to state 84
-
-
-State 130
-
-   61 logic_expression: logic_expression logic • expression
-
-    INT      shift, and go to state 48
-    ID       shift, and go to state 102
-    REAL     shift, and go to state 50
-    BOOL     shift, and go to state 51
-    STR      shift, and go to state 52
-    CHAR     shift, and go to state 53
-    MUL      shift, and go to state 103
-    NOT      shift, and go to state 61
-    ADDRESS  shift, and go to state 62
-    '('      shift, and go to state 63
-    '|'      shift, and go to state 66
-
-    expression        go to state 163
-    not_expression    go to state 78
-    logic_expression  go to state 79
-    ar_expression     go to state 80
-    pr_expression     go to state 81
-    func_call         go to state 82
-    str_id            go to state 83
-    literal           go to state 84
-
-
-State 131
-
-   63 ar_expression: ar_expression arithmetic • expression
-
-    INT      shift, and go to state 48
-    ID       shift, and go to state 102
-    REAL     shift, and go to state 50
-    BOOL     shift, and go to state 51
-    STR      shift, and go to state 52
-    CHAR     shift, and go to state 53
-    MUL      shift, and go to state 103
-    NOT      shift, and go to state 61
-    ADDRESS  shift, and go to state 62
-    '('      shift, and go to state 63
-    '|'      shift, and go to state 66
-
-    expression        go to state 164
-    not_expression    go to state 78
-    logic_expression  go to state 79
-    ar_expression     go to state 80
-    pr_expression     go to state 81
-    func_call         go to state 82
-    str_id            go to state 83
-    literal           go to state 84
-
-
-State 132
-
-   52 ret_statement: RETURN • expression ENDST
-
-    INT      shift, and go to state 48
-    ID       shift, and go to state 102
-    REAL     shift, and go to state 50
-    BOOL     shift, and go to state 51
-    STR      shift, and go to state 52
-    CHAR     shift, and go to state 53
-    MUL      shift, and go to state 103
-    NOT      shift, and go to state 61
-    ADDRESS  shift, and go to state 62
-    '('      shift, and go to state 63
-    '|'      shift, and go to state 66
-
-    expression        go to state 165
-    not_expression    go to state 78
-    logic_expression  go to state 79
-    ar_expression     go to state 80
-    pr_expression     go to state 81
-    func_call         go to state 82
-    str_id            go to state 83
-    literal           go to state 84
-
-
-State 133
-
-   25 func_body: '{' function_list statement_list • ret_statement '}'
-   42 statement_list: statement_list • statement
-
-    INT      shift, and go to state 48
-    ID       shift, and go to state 49
-    REAL     shift, and go to state 50
-    BOOL     shift, and go to state 51
-    STR      shift, and go to state 52
-    CHAR     shift, and go to state 53
-    IF       shift, and go to state 54
-    WHILE    shift, and go to state 55
-    FOR      shift, and go to state 56
-    DO       shift, and go to state 57
-    VAR      shift, and go to state 58
-    RETURN   shift, and go to state 132
-    TYPESTR  shift, and go to state 59
-    MUL      shift, and go to state 60
-    NOT      shift, and go to state 61
-    ADDRESS  shift, and go to state 62
-    '('      shift, and go to state 63
-    '{'      shift, and go to state 64
-    '|'      shift, and go to state 66
-
-    declaration       go to state 67
-    statement         go to state 114
-    block_statement   go to state 70
-    decl_statement    go to state 72
-    assgn_statement   go to state 73
-    expr_statement    go to state 74
-    if_statement      go to state 75
-    iter_statement    go to state 76
-    ret_statement     go to state 166
-    expression        go to state 77
-    not_expression    go to state 78
-    logic_expression  go to state 79
-    ar_expression     go to state 80
-    pr_expression     go to state 81
-    func_call         go to state 82
-    str_id            go to state 83
-    literal           go to state 84
-
-
-State 134
-
-   23 func_body: '{' function_list ret_statement • '}'
-
-    '}'  shift, and go to state 167
-
-
-State 135
-
-   24 func_body: '{' statement_list ret_statement • '}'
-
-    '}'  shift, and go to state 168
-
-
-State 136
-
-   44 assgn_statement: ID ASSGN expression • ENDST
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-    ENDST        shift, and go to state 169
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 137
-
-   75 str_id: ID '[' INT • ']'
-   99 literal: INT •
-
-    ']'  shift, and go to state 170
-
-    $default  reduce using rule 99 (literal)
-
-
-State 138
-
-   65 pr_expression: ID •
-   72 func_call: ID • '(' arglist ')'
-   73          | ID • '(' ')'
-   74 str_id: ID • '[' ar_expression ']'
-   75       | ID • '[' INT ']'
-   76       | ID • '[' ID ']'
-   76       | ID '[' ID • ']'
-
-    '['  shift, and go to state 89
-    ']'  shift, and go to state 171
-    '('  shift, and go to state 90
-
-    $default  reduce using rule 65 (pr_expression)
-
-
-State 139
-
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 140
-
-   56 expression: ar_expression •
-   63 ar_expression: ar_expression • arithmetic expression
-   74 str_id: ID '[' ar_expression • ']'
-
-    PLUS   shift, and go to state 123
-    MINUS  shift, and go to state 124
-    MUL    shift, and go to state 125
-    DIV    shift, and go to state 126
-    ']'    shift, and go to state 172
-
-    PLUS      [reduce using rule 56 (expression)]
-    MINUS     [reduce using rule 56 (expression)]
-    MUL       [reduce using rule 56 (expression)]
-    DIV       [reduce using rule 56 (expression)]
-    $default  reduce using rule 56 (expression)
-
-    arithmetic  go to state 131
-
-
-State 141
-
-   73 func_call: ID '(' ')' •
-
-    $default  reduce using rule 73 (func_call)
-
-
-State 142
-
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-   77 arglist: expression •
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-
-    $default  reduce using rule 77 (arglist)
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 143
-
-   72 func_call: ID '(' arglist • ')'
-   78 arglist: arglist • ',' expression
-
-    ','  shift, and go to state 173
-    ')'  shift, and go to state 174
-
-
-State 144
-
-   47 if_statement: IF '(' expression • ')' iter_body
-   48             | IF '(' expression • ')' iter_body ELSE iter_body
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-    ')'          shift, and go to state 175
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 145
-
-   49 iter_statement: WHILE '(' expression • ')' iter_body
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-    ')'          shift, and go to state 176
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 146
-
-   44 assgn_statement: ID • ASSGN expression ENDST
-
-    ASSGN  shift, and go to state 88
-
-
-State 147
-
-   45 assgn_statement: MUL • pr_expression ASSGN expression ENDST
-
-    INT      shift, and go to state 48
-    ID       shift, and go to state 102
-    REAL     shift, and go to state 50
-    BOOL     shift, and go to state 51
-    STR      shift, and go to state 52
-    CHAR     shift, and go to state 53
-    MUL      shift, and go to state 103
-    ADDRESS  shift, and go to state 62
-    '('      shift, and go to state 63
-    '|'      shift, and go to state 66
-
-    pr_expression  go to state 177
-    func_call      go to state 82
-    str_id         go to state 83
-    literal        go to state 84
-
-
-State 148
-
-   51 iter_statement: FOR '(' assgn_statement • expression ENDST update ')' iter_body
+   77 ar_expression: expression MINUS • expression
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -2456,28 +2215,12 @@ State 148
     literal           go to state 84
 
 
-State 149
+State 125
 
-   32 iter_body: '{' '}' •
+   78 ar_expression: expression MUL • expression
 
-    $default  reduce using rule 32 (iter_body)
-
-
-State 150
-
-   50 iter_statement: DO iter_body WHILE • '(' expression ')' ENDST
-
-    '('  shift, and go to state 179
-
-
-State 151
-
-    9 decl_id: ID '[' • ar_expression ']'
-   10        | ID '[' • INT ']'
-   11        | ID '[' • ID ']'
-
-    INT      shift, and go to state 180
-    ID       shift, and go to state 181
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
     REAL     shift, and go to state 50
     BOOL     shift, and go to state 51
     STR      shift, and go to state 52
@@ -2488,45 +2231,156 @@ State 151
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    expression        go to state 139
+    expression        go to state 179
     not_expression    go to state 78
     logic_expression  go to state 79
-    ar_expression     go to state 182
+    ar_expression     go to state 80
     pr_expression     go to state 81
     func_call         go to state 82
     str_id            go to state 83
     literal           go to state 84
 
 
-State 152
+State 126
 
-    2 declaration: VAR decl_param_list TYPEDEF • type
+   79 ar_expression: expression DIV • expression
 
-    TYPEBOOL         shift, and go to state 27
-    TYPECHAR         shift, and go to state 28
-    TYPEINT          shift, and go to state 29
-    TYPEREAL         shift, and go to state 30
-    TYPECHARPOINTER  shift, and go to state 31
-    TYPEINTPOINTER   shift, and go to state 32
-    TYPEREALPOINTER  shift, and go to state 33
-    TYPESTR          shift, and go to state 34
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
 
-    type  go to state 183
+    expression        go to state 180
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
 
 
-State 153
+State 127
 
-    5 decl_param_list: decl_param_list ',' • decl_assgn
+   46 expr_statement: expression ENDST •
 
-    ID  shift, and go to state 97
-
-    decl_assgn  go to state 184
-    decl_id     go to state 100
+    $default  reduce using rule 46 (expr_statement)
 
 
-State 154
+State 128
 
-    6 decl_assgn: decl_id ASSGN • expression
+   68 logic_expression: logic_expression LOGICEQ • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 181
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 129
+
+   69 logic_expression: logic_expression LOGICNOTEQ • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 182
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 130
+
+   70 logic_expression: logic_expression LOGICMORE • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 183
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 131
+
+   71 logic_expression: logic_expression LOGICLESS • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 184
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 132
+
+   72 logic_expression: logic_expression LOGICMOREEQ • expression
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -2550,16 +2404,9 @@ State 154
     literal           go to state 84
 
 
-State 155
+State 133
 
-   70 pr_expression: MUL pr_expression •
-
-    $default  reduce using rule 70 (pr_expression)
-
-
-State 156
-
-   45 assgn_statement: MUL pr_expression ASSGN • expression ENDST
+   73 logic_expression: logic_expression LOGICLESSEQ • expression
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -2583,258 +2430,61 @@ State 156
     literal           go to state 84
 
 
-State 157
-
-   64 pr_expression: '(' expression ')' •
-
-    $default  reduce using rule 64 (pr_expression)
-
-
-State 158
-
-   39 block_statement: '{' statement_list '}' •
-
-    $default  reduce using rule 39 (block_statement)
-
-
-State 159
-
-   71 pr_expression: '|' ID '|' •
-
-    $default  reduce using rule 71 (pr_expression)
-
-
-State 160
-
-   29 proc_body: '{' function_list statement_list '}' •
-
-    $default  reduce using rule 29 (proc_body)
-
-
-State 161
-
-   60 logic_expression: expression • logic expression
-   60                 | expression logic expression •
-   62 ar_expression: expression • arithmetic expression
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-
-    LOGICEQ      [reduce using rule 60 (logic_expression)]
-    LOGICNOTEQ   [reduce using rule 60 (logic_expression)]
-    LOGICMORE    [reduce using rule 60 (logic_expression)]
-    LOGICLESS    [reduce using rule 60 (logic_expression)]
-    LOGICMOREEQ  [reduce using rule 60 (logic_expression)]
-    LOGICLESSEQ  [reduce using rule 60 (logic_expression)]
-    LOGICAND     [reduce using rule 60 (logic_expression)]
-    LOGICOR      [reduce using rule 60 (logic_expression)]
-    PLUS         [reduce using rule 60 (logic_expression)]
-    MINUS        [reduce using rule 60 (logic_expression)]
-    MUL          [reduce using rule 60 (logic_expression)]
-    DIV          [reduce using rule 60 (logic_expression)]
-    $default     reduce using rule 60 (logic_expression)
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 162
-
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-   62              | expression arithmetic expression •
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-
-    LOGICEQ      [reduce using rule 62 (ar_expression)]
-    LOGICNOTEQ   [reduce using rule 62 (ar_expression)]
-    LOGICMORE    [reduce using rule 62 (ar_expression)]
-    LOGICLESS    [reduce using rule 62 (ar_expression)]
-    LOGICMOREEQ  [reduce using rule 62 (ar_expression)]
-    LOGICLESSEQ  [reduce using rule 62 (ar_expression)]
-    LOGICAND     [reduce using rule 62 (ar_expression)]
-    LOGICOR      [reduce using rule 62 (ar_expression)]
-    PLUS         [reduce using rule 62 (ar_expression)]
-    MINUS        [reduce using rule 62 (ar_expression)]
-    MUL          [reduce using rule 62 (ar_expression)]
-    DIV          [reduce using rule 62 (ar_expression)]
-    $default     reduce using rule 62 (ar_expression)
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 163
-
-   60 logic_expression: expression • logic expression
-   61                 | logic_expression logic expression •
-   62 ar_expression: expression • arithmetic expression
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-
-    LOGICEQ      [reduce using rule 61 (logic_expression)]
-    LOGICNOTEQ   [reduce using rule 61 (logic_expression)]
-    LOGICMORE    [reduce using rule 61 (logic_expression)]
-    LOGICLESS    [reduce using rule 61 (logic_expression)]
-    LOGICMOREEQ  [reduce using rule 61 (logic_expression)]
-    LOGICLESSEQ  [reduce using rule 61 (logic_expression)]
-    LOGICAND     [reduce using rule 61 (logic_expression)]
-    LOGICOR      [reduce using rule 61 (logic_expression)]
-    PLUS         [reduce using rule 61 (logic_expression)]
-    MINUS        [reduce using rule 61 (logic_expression)]
-    MUL          [reduce using rule 61 (logic_expression)]
-    DIV          [reduce using rule 61 (logic_expression)]
-    $default     reduce using rule 61 (logic_expression)
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 164
-
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-   63              | ar_expression arithmetic expression •
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-
-    LOGICEQ      [reduce using rule 63 (ar_expression)]
-    LOGICNOTEQ   [reduce using rule 63 (ar_expression)]
-    LOGICMORE    [reduce using rule 63 (ar_expression)]
-    LOGICLESS    [reduce using rule 63 (ar_expression)]
-    LOGICMOREEQ  [reduce using rule 63 (ar_expression)]
-    LOGICLESSEQ  [reduce using rule 63 (ar_expression)]
-    LOGICAND     [reduce using rule 63 (ar_expression)]
-    LOGICOR      [reduce using rule 63 (ar_expression)]
-    PLUS         [reduce using rule 63 (ar_expression)]
-    MINUS        [reduce using rule 63 (ar_expression)]
-    MUL          [reduce using rule 63 (ar_expression)]
-    DIV          [reduce using rule 63 (ar_expression)]
-    $default     reduce using rule 63 (ar_expression)
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 165
-
-   52 ret_statement: RETURN expression • ENDST
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-
-    LOGICEQ      shift, and go to state 115
-    LOGICNOTEQ   shift, and go to state 116
-    LOGICMORE    shift, and go to state 117
-    LOGICLESS    shift, and go to state 118
-    LOGICMOREEQ  shift, and go to state 119
-    LOGICLESSEQ  shift, and go to state 120
-    LOGICAND     shift, and go to state 121
-    LOGICOR      shift, and go to state 122
-    PLUS         shift, and go to state 123
-    MINUS        shift, and go to state 124
-    MUL          shift, and go to state 125
-    DIV          shift, and go to state 126
-    ENDST        shift, and go to state 187
-
-    logic       go to state 128
-    arithmetic  go to state 129
-
-
-State 166
-
-   25 func_body: '{' function_list statement_list ret_statement • '}'
-
-    '}'  shift, and go to state 188
-
-
-State 167
-
-   23 func_body: '{' function_list ret_statement '}' •
-
-    $default  reduce using rule 23 (func_body)
-
-
-State 168
-
-   24 func_body: '{' statement_list ret_statement '}' •
-
-    $default  reduce using rule 24 (func_body)
-
-
-State 169
-
-   44 assgn_statement: ID ASSGN expression ENDST •
-
-    $default  reduce using rule 44 (assgn_statement)
-
-
-State 170
-
-   75 str_id: ID '[' INT ']' •
-
-    $default  reduce using rule 75 (str_id)
-
-
-State 171
-
-   76 str_id: ID '[' ID ']' •
-
-    $default  reduce using rule 76 (str_id)
-
-
-State 172
-
-   74 str_id: ID '[' ar_expression ']' •
-
-    $default  reduce using rule 74 (str_id)
-
-
-State 173
-
-   78 arglist: arglist ',' • expression
+State 134
+
+   74 logic_expression: logic_expression LOGICAND • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 187
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 135
+
+   75 logic_expression: logic_expression LOGICOR • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 188
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 136
+
+   80 ar_expression: ar_expression PLUS • expression
 
     INT      shift, and go to state 48
     ID       shift, and go to state 102
@@ -2858,14 +2508,1283 @@ State 173
     literal           go to state 84
 
 
+State 137
+
+   81 ar_expression: ar_expression MINUS • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 190
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 138
+
+   82 ar_expression: ar_expression MUL • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 191
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 139
+
+   83 ar_expression: ar_expression DIV • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 192
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 140
+
+   52 ret_statement: RETURN • expression ENDST
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 193
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 141
+
+   25 func_body: '{' function_list statement_list • ret_statement '}'
+   42 statement_list: statement_list • statement
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 49
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    IF       shift, and go to state 54
+    WHILE    shift, and go to state 55
+    FOR      shift, and go to state 56
+    DO       shift, and go to state 57
+    VAR      shift, and go to state 58
+    RETURN   shift, and go to state 140
+    TYPESTR  shift, and go to state 59
+    MUL      shift, and go to state 60
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '{'      shift, and go to state 64
+    '|'      shift, and go to state 66
+
+    declaration       go to state 67
+    statement         go to state 114
+    block_statement   go to state 70
+    decl_statement    go to state 72
+    assgn_statement   go to state 73
+    expr_statement    go to state 74
+    if_statement      go to state 75
+    iter_statement    go to state 76
+    ret_statement     go to state 194
+    expression        go to state 77
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 142
+
+   23 func_body: '{' function_list ret_statement • '}'
+
+    '}'  shift, and go to state 195
+
+
+State 143
+
+   24 func_body: '{' statement_list ret_statement • '}'
+
+    '}'  shift, and go to state 196
+
+
+State 144
+
+   44 assgn_statement: ID ASSGN expression • ENDST
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    LOGICAND     shift, and go to state 121
+    LOGICOR      shift, and go to state 122
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+    ENDST        shift, and go to state 197
+
+
+State 145
+
+   95 str_id: ID '[' INT • ']'
+  107 literal: INT •
+
+    ']'  shift, and go to state 198
+
+    $default  reduce using rule 107 (literal)
+
+
+State 146
+
+   85 pr_expression: ID •
+   92 func_call: ID • '(' arglist ')'
+   93          | ID • '(' ')'
+   94 str_id: ID • '[' ar_expression ']'
+   95       | ID • '[' INT ']'
+   96       | ID • '[' ID ']'
+   96       | ID '[' ID • ']'
+
+    '['  shift, and go to state 89
+    ']'  shift, and go to state 199
+    '('  shift, and go to state 90
+
+    $default  reduce using rule 85 (pr_expression)
+
+
+State 147
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    LOGICAND     shift, and go to state 121
+    LOGICOR      shift, and go to state 122
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+
+
+State 148
+
+   56 expression: ar_expression •
+   80 ar_expression: ar_expression • PLUS expression
+   81              | ar_expression • MINUS expression
+   82              | ar_expression • MUL expression
+   83              | ar_expression • DIV expression
+   94 str_id: ID '[' ar_expression • ']'
+
+    PLUS   shift, and go to state 136
+    MINUS  shift, and go to state 137
+    MUL    shift, and go to state 138
+    DIV    shift, and go to state 139
+    ']'    shift, and go to state 200
+
+    PLUS      [reduce using rule 56 (expression)]
+    MINUS     [reduce using rule 56 (expression)]
+    MUL       [reduce using rule 56 (expression)]
+    DIV       [reduce using rule 56 (expression)]
+    $default  reduce using rule 56 (expression)
+
+
+State 149
+
+   93 func_call: ID '(' ')' •
+
+    $default  reduce using rule 93 (func_call)
+
+
+State 150
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   97 arglist: expression •
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    LOGICAND     shift, and go to state 121
+    LOGICOR      shift, and go to state 122
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+
+    $default  reduce using rule 97 (arglist)
+
+
+State 151
+
+   92 func_call: ID '(' arglist • ')'
+   98 arglist: arglist • ',' expression
+
+    ','  shift, and go to state 201
+    ')'  shift, and go to state 202
+
+
+State 152
+
+   47 if_statement: IF '(' expression • ')' iter_body
+   48             | IF '(' expression • ')' iter_body ELSE iter_body
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    LOGICAND     shift, and go to state 121
+    LOGICOR      shift, and go to state 122
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+    ')'          shift, and go to state 203
+
+
+State 153
+
+   49 iter_statement: WHILE '(' expression • ')' iter_body
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    LOGICAND     shift, and go to state 121
+    LOGICOR      shift, and go to state 122
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+    ')'          shift, and go to state 204
+
+
+State 154
+
+   44 assgn_statement: ID • ASSGN expression ENDST
+
+    ASSGN  shift, and go to state 88
+
+
+State 155
+
+   45 assgn_statement: MUL • pr_expression ASSGN expression ENDST
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    pr_expression  go to state 205
+    func_call      go to state 82
+    str_id         go to state 83
+    literal        go to state 84
+
+
+State 156
+
+   51 iter_statement: FOR '(' assgn_statement • expression ENDST update ')' iter_body
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 206
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 157
+
+   32 iter_body: '{' '}' •
+
+    $default  reduce using rule 32 (iter_body)
+
+
+State 158
+
+   50 iter_statement: DO iter_body WHILE • '(' expression ')' ENDST
+
+    '('  shift, and go to state 207
+
+
+State 159
+
+    9 decl_id: ID '[' • ar_expression ']'
+   10        | ID '[' • INT ']'
+   11        | ID '[' • ID ']'
+
+    INT      shift, and go to state 208
+    ID       shift, and go to state 209
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 147
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 210
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 160
+
+    2 declaration: VAR decl_param_list TYPEDEF • type
+
+    TYPEBOOL         shift, and go to state 27
+    TYPECHAR         shift, and go to state 28
+    TYPEINT          shift, and go to state 29
+    TYPEREAL         shift, and go to state 30
+    TYPECHARPOINTER  shift, and go to state 31
+    TYPEINTPOINTER   shift, and go to state 32
+    TYPEREALPOINTER  shift, and go to state 33
+    TYPESTR          shift, and go to state 34
+
+    type  go to state 211
+
+
+State 161
+
+    5 decl_param_list: decl_param_list ',' • decl_assgn
+
+    ID  shift, and go to state 97
+
+    decl_assgn  go to state 212
+    decl_id     go to state 100
+
+
+State 162
+
+    6 decl_assgn: decl_id ASSGN • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 213
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 163
+
+   90 pr_expression: MUL pr_expression •
+
+    $default  reduce using rule 90 (pr_expression)
+
+
+State 164
+
+   45 assgn_statement: MUL pr_expression ASSGN • expression ENDST
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 214
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 165
+
+   84 pr_expression: '(' expression ')' •
+
+    $default  reduce using rule 84 (pr_expression)
+
+
+State 166
+
+   39 block_statement: '{' statement_list '}' •
+
+    $default  reduce using rule 39 (block_statement)
+
+
+State 167
+
+   91 pr_expression: '|' ID '|' •
+
+    $default  reduce using rule 91 (pr_expression)
+
+
+State 168
+
+   29 proc_body: '{' function_list statement_list '}' •
+
+    $default  reduce using rule 29 (proc_body)
+
+
+State 169
+
+   60 logic_expression: expression • LOGICEQ expression
+   60                 | expression LOGICEQ expression •
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 60 (logic_expression)
+
+
+State 170
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   61                 | expression LOGICNOTEQ expression •
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 61 (logic_expression)
+
+
+State 171
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   62                 | expression LOGICMORE expression •
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 62 (logic_expression)
+
+
+State 172
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   63                 | expression LOGICLESS expression •
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 63 (logic_expression)
+
+
+State 173
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   64                 | expression LOGICMOREEQ expression •
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 64 (logic_expression)
+
+
 State 174
 
-   72 func_call: ID '(' arglist ')' •
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   65                 | expression LOGICLESSEQ expression •
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
 
-    $default  reduce using rule 72 (func_call)
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 65 (logic_expression)
 
 
 State 175
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   66                 | expression LOGICAND expression •
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+
+    $default  reduce using rule 66 (logic_expression)
+
+
+State 176
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   67                 | expression LOGICOR expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+
+    $default  reduce using rule 67 (logic_expression)
+
+
+State 177
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   76              | expression PLUS expression •
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    MUL  shift, and go to state 125
+    DIV  shift, and go to state 126
+
+    $default  reduce using rule 76 (ar_expression)
+
+
+State 178
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   77              | expression MINUS expression •
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    MUL  shift, and go to state 125
+    DIV  shift, and go to state 126
+
+    $default  reduce using rule 77 (ar_expression)
+
+
+State 179
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   78              | expression MUL expression •
+   79              | expression • DIV expression
+
+    $default  reduce using rule 78 (ar_expression)
+
+
+State 180
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   79              | expression DIV expression •
+
+    $default  reduce using rule 79 (ar_expression)
+
+
+State 181
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   68                 | logic_expression LOGICEQ expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 68 (logic_expression)
+
+
+State 182
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   69                 | logic_expression LOGICNOTEQ expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 69 (logic_expression)
+
+
+State 183
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   70                 | logic_expression LOGICMORE expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 70 (logic_expression)
+
+
+State 184
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   71                 | logic_expression LOGICLESS expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 71 (logic_expression)
+
+
+State 185
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   72                 | logic_expression LOGICMOREEQ expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 72 (logic_expression)
+
+
+State 186
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   73                 | logic_expression LOGICLESSEQ expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    PLUS   shift, and go to state 123
+    MINUS  shift, and go to state 124
+    MUL    shift, and go to state 125
+    DIV    shift, and go to state 126
+
+    $default  reduce using rule 73 (logic_expression)
+
+
+State 187
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   74                 | logic_expression LOGICAND expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+
+    $default  reduce using rule 74 (logic_expression)
+
+
+State 188
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   75                 | logic_expression LOGICOR expression •
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+
+    $default  reduce using rule 75 (logic_expression)
+
+
+State 189
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   80              | ar_expression PLUS expression •
+
+    MUL  shift, and go to state 125
+    DIV  shift, and go to state 126
+
+    $default  reduce using rule 80 (ar_expression)
+
+
+State 190
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   81              | ar_expression MINUS expression •
+
+    MUL  shift, and go to state 125
+    DIV  shift, and go to state 126
+
+    $default  reduce using rule 81 (ar_expression)
+
+
+State 191
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   82              | ar_expression MUL expression •
+
+    $default  reduce using rule 82 (ar_expression)
+
+
+State 192
+
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   83              | ar_expression DIV expression •
+
+    $default  reduce using rule 83 (ar_expression)
+
+
+State 193
+
+   52 ret_statement: RETURN expression • ENDST
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+
+    LOGICEQ      shift, and go to state 115
+    LOGICNOTEQ   shift, and go to state 116
+    LOGICMORE    shift, and go to state 117
+    LOGICLESS    shift, and go to state 118
+    LOGICMOREEQ  shift, and go to state 119
+    LOGICLESSEQ  shift, and go to state 120
+    LOGICAND     shift, and go to state 121
+    LOGICOR      shift, and go to state 122
+    PLUS         shift, and go to state 123
+    MINUS        shift, and go to state 124
+    MUL          shift, and go to state 125
+    DIV          shift, and go to state 126
+    ENDST        shift, and go to state 215
+
+
+State 194
+
+   25 func_body: '{' function_list statement_list ret_statement • '}'
+
+    '}'  shift, and go to state 216
+
+
+State 195
+
+   23 func_body: '{' function_list ret_statement '}' •
+
+    $default  reduce using rule 23 (func_body)
+
+
+State 196
+
+   24 func_body: '{' statement_list ret_statement '}' •
+
+    $default  reduce using rule 24 (func_body)
+
+
+State 197
+
+   44 assgn_statement: ID ASSGN expression ENDST •
+
+    $default  reduce using rule 44 (assgn_statement)
+
+
+State 198
+
+   95 str_id: ID '[' INT ']' •
+
+    $default  reduce using rule 95 (str_id)
+
+
+State 199
+
+   96 str_id: ID '[' ID ']' •
+
+    $default  reduce using rule 96 (str_id)
+
+
+State 200
+
+   94 str_id: ID '[' ar_expression ']' •
+
+    $default  reduce using rule 94 (str_id)
+
+
+State 201
+
+   98 arglist: arglist ',' • expression
+
+    INT      shift, and go to state 48
+    ID       shift, and go to state 102
+    REAL     shift, and go to state 50
+    BOOL     shift, and go to state 51
+    STR      shift, and go to state 52
+    CHAR     shift, and go to state 53
+    MUL      shift, and go to state 103
+    NOT      shift, and go to state 61
+    ADDRESS  shift, and go to state 62
+    '('      shift, and go to state 63
+    '|'      shift, and go to state 66
+
+    expression        go to state 217
+    not_expression    go to state 78
+    logic_expression  go to state 79
+    ar_expression     go to state 80
+    pr_expression     go to state 81
+    func_call         go to state 82
+    str_id            go to state 83
+    literal           go to state 84
+
+
+State 202
+
+   92 func_call: ID '(' arglist ')' •
+
+    $default  reduce using rule 92 (func_call)
+
+
+State 203
 
    47 if_statement: IF '(' expression ')' • iter_body
    48             | IF '(' expression ')' • iter_body ELSE iter_body
@@ -2890,7 +3809,7 @@ State 175
     '|'      shift, and go to state 66
 
     declaration       go to state 67
-    iter_body         go to state 190
+    iter_body         go to state 218
     statement         go to state 96
     block_statement   go to state 70
     decl_statement    go to state 72
@@ -2908,7 +3827,7 @@ State 175
     literal           go to state 84
 
 
-State 176
+State 204
 
    49 iter_statement: WHILE '(' expression ')' • iter_body
 
@@ -2932,7 +3851,7 @@ State 176
     '|'      shift, and go to state 66
 
     declaration       go to state 67
-    iter_body         go to state 191
+    iter_body         go to state 219
     statement         go to state 96
     block_statement   go to state 70
     decl_statement    go to state 72
@@ -2950,18 +3869,28 @@ State 176
     literal           go to state 84
 
 
-State 177
+State 205
 
    45 assgn_statement: MUL pr_expression • ASSGN expression ENDST
 
-    ASSGN  shift, and go to state 156
+    ASSGN  shift, and go to state 164
 
 
-State 178
+State 206
 
    51 iter_statement: FOR '(' assgn_statement expression • ENDST update ')' iter_body
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -2975,13 +3904,10 @@ State 178
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ENDST        shift, and go to state 192
-
-    logic       go to state 128
-    arithmetic  go to state 129
+    ENDST        shift, and go to state 220
 
 
-State 179
+State 207
 
    50 iter_statement: DO iter_body WHILE '(' • expression ')' ENDST
 
@@ -2997,7 +3923,7 @@ State 179
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    expression        go to state 193
+    expression        go to state 221
     not_expression    go to state 78
     logic_expression  go to state 79
     ar_expression     go to state 80
@@ -3007,44 +3933,47 @@ State 179
     literal           go to state 84
 
 
-State 180
+State 208
 
    10 decl_id: ID '[' INT • ']'
-   99 literal: INT •
+  107 literal: INT •
 
-    ']'  shift, and go to state 194
+    ']'  shift, and go to state 222
 
-    $default  reduce using rule 99 (literal)
+    $default  reduce using rule 107 (literal)
 
 
-State 181
+State 209
 
    11 decl_id: ID '[' ID • ']'
-   65 pr_expression: ID •
-   72 func_call: ID • '(' arglist ')'
-   73          | ID • '(' ')'
-   74 str_id: ID • '[' ar_expression ']'
-   75       | ID • '[' INT ']'
-   76       | ID • '[' ID ']'
+   85 pr_expression: ID •
+   92 func_call: ID • '(' arglist ')'
+   93          | ID • '(' ')'
+   94 str_id: ID • '[' ar_expression ']'
+   95       | ID • '[' INT ']'
+   96       | ID • '[' ID ']'
 
     '['  shift, and go to state 89
-    ']'  shift, and go to state 195
+    ']'  shift, and go to state 223
     '('  shift, and go to state 90
 
-    $default  reduce using rule 65 (pr_expression)
+    $default  reduce using rule 85 (pr_expression)
 
 
-State 182
+State 210
 
     9 decl_id: ID '[' ar_expression • ']'
    56 expression: ar_expression •
-   63 ar_expression: ar_expression • arithmetic expression
+   80 ar_expression: ar_expression • PLUS expression
+   81              | ar_expression • MINUS expression
+   82              | ar_expression • MUL expression
+   83              | ar_expression • DIV expression
 
-    PLUS   shift, and go to state 123
-    MINUS  shift, and go to state 124
-    MUL    shift, and go to state 125
-    DIV    shift, and go to state 126
-    ']'    shift, and go to state 196
+    PLUS   shift, and go to state 136
+    MINUS  shift, and go to state 137
+    MUL    shift, and go to state 138
+    DIV    shift, and go to state 139
+    ']'    shift, and go to state 224
 
     PLUS      [reduce using rule 56 (expression)]
     MINUS     [reduce using rule 56 (expression)]
@@ -3052,28 +3981,36 @@ State 182
     DIV       [reduce using rule 56 (expression)]
     $default  reduce using rule 56 (expression)
 
-    arithmetic  go to state 131
 
-
-State 183
+State 211
 
     2 declaration: VAR decl_param_list TYPEDEF type •
 
     $default  reduce using rule 2 (declaration)
 
 
-State 184
+State 212
 
     5 decl_param_list: decl_param_list ',' decl_assgn •
 
     $default  reduce using rule 5 (decl_param_list)
 
 
-State 185
+State 213
 
     6 decl_assgn: decl_id ASSGN expression •
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -3090,15 +4027,22 @@ State 185
 
     $default  reduce using rule 6 (decl_assgn)
 
-    logic       go to state 128
-    arithmetic  go to state 129
 
-
-State 186
+State 214
 
    45 assgn_statement: MUL pr_expression ASSGN expression • ENDST
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -3112,31 +4056,38 @@ State 186
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ENDST        shift, and go to state 197
-
-    logic       go to state 128
-    arithmetic  go to state 129
+    ENDST        shift, and go to state 225
 
 
-State 187
+State 215
 
    52 ret_statement: RETURN expression ENDST •
 
     $default  reduce using rule 52 (ret_statement)
 
 
-State 188
+State 216
 
    25 func_body: '{' function_list statement_list ret_statement '}' •
 
     $default  reduce using rule 25 (func_body)
 
 
-State 189
+State 217
 
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
-   78 arglist: arglist ',' expression •
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
+   98 arglist: arglist ',' expression •
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -3151,43 +4102,50 @@ State 189
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
 
-    $default  reduce using rule 78 (arglist)
-
-    logic       go to state 128
-    arithmetic  go to state 129
+    $default  reduce using rule 98 (arglist)
 
 
-State 190
+State 218
 
    47 if_statement: IF '(' expression ')' iter_body •
    48             | IF '(' expression ')' iter_body • ELSE iter_body
 
-    ELSE  shift, and go to state 198
+    ELSE  shift, and go to state 226
 
     $default  reduce using rule 47 (if_statement)
 
 
-State 191
+State 219
 
    49 iter_statement: WHILE '(' expression ')' iter_body •
 
     $default  reduce using rule 49 (iter_statement)
 
 
-State 192
+State 220
 
    51 iter_statement: FOR '(' assgn_statement expression ENDST • update ')' iter_body
 
-    ID  shift, and go to state 199
+    ID  shift, and go to state 227
 
-    update  go to state 200
+    update  go to state 228
 
 
-State 193
+State 221
 
    50 iter_statement: DO iter_body WHILE '(' expression • ')' ENDST
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -3201,41 +4159,38 @@ State 193
     MINUS        shift, and go to state 124
     MUL          shift, and go to state 125
     DIV          shift, and go to state 126
-    ')'          shift, and go to state 201
-
-    logic       go to state 128
-    arithmetic  go to state 129
+    ')'          shift, and go to state 229
 
 
-State 194
+State 222
 
    10 decl_id: ID '[' INT ']' •
 
     $default  reduce using rule 10 (decl_id)
 
 
-State 195
+State 223
 
    11 decl_id: ID '[' ID ']' •
 
     $default  reduce using rule 11 (decl_id)
 
 
-State 196
+State 224
 
     9 decl_id: ID '[' ar_expression ']' •
 
     $default  reduce using rule 9 (decl_id)
 
 
-State 197
+State 225
 
    45 assgn_statement: MUL pr_expression ASSGN expression ENDST •
 
     $default  reduce using rule 45 (assgn_statement)
 
 
-State 198
+State 226
 
    48 if_statement: IF '(' expression ')' iter_body ELSE • iter_body
 
@@ -3259,7 +4214,7 @@ State 198
     '|'      shift, and go to state 66
 
     declaration       go to state 67
-    iter_body         go to state 202
+    iter_body         go to state 230
     statement         go to state 96
     block_statement   go to state 70
     decl_statement    go to state 72
@@ -3277,35 +4232,35 @@ State 198
     literal           go to state 84
 
 
-State 199
+State 227
 
    40 update: ID • ASSGN expression
 
-    ASSGN  shift, and go to state 203
+    ASSGN  shift, and go to state 231
 
 
-State 200
+State 228
 
    51 iter_statement: FOR '(' assgn_statement expression ENDST update • ')' iter_body
 
-    ')'  shift, and go to state 204
+    ')'  shift, and go to state 232
 
 
-State 201
+State 229
 
    50 iter_statement: DO iter_body WHILE '(' expression ')' • ENDST
 
-    ENDST  shift, and go to state 205
+    ENDST  shift, and go to state 233
 
 
-State 202
+State 230
 
    48 if_statement: IF '(' expression ')' iter_body ELSE iter_body •
 
     $default  reduce using rule 48 (if_statement)
 
 
-State 203
+State 231
 
    40 update: ID ASSGN • expression
 
@@ -3321,7 +4276,7 @@ State 203
     '('      shift, and go to state 63
     '|'      shift, and go to state 66
 
-    expression        go to state 206
+    expression        go to state 234
     not_expression    go to state 78
     logic_expression  go to state 79
     ar_expression     go to state 80
@@ -3331,7 +4286,7 @@ State 203
     literal           go to state 84
 
 
-State 204
+State 232
 
    51 iter_statement: FOR '(' assgn_statement expression ENDST update ')' • iter_body
 
@@ -3355,7 +4310,7 @@ State 204
     '|'      shift, and go to state 66
 
     declaration       go to state 67
-    iter_body         go to state 207
+    iter_body         go to state 235
     statement         go to state 96
     block_statement   go to state 70
     decl_statement    go to state 72
@@ -3373,18 +4328,28 @@ State 204
     literal           go to state 84
 
 
-State 205
+State 233
 
    50 iter_statement: DO iter_body WHILE '(' expression ')' ENDST •
 
     $default  reduce using rule 50 (iter_statement)
 
 
-State 206
+State 234
 
    40 update: ID ASSGN expression •
-   60 logic_expression: expression • logic expression
-   62 ar_expression: expression • arithmetic expression
+   60 logic_expression: expression • LOGICEQ expression
+   61                 | expression • LOGICNOTEQ expression
+   62                 | expression • LOGICMORE expression
+   63                 | expression • LOGICLESS expression
+   64                 | expression • LOGICMOREEQ expression
+   65                 | expression • LOGICLESSEQ expression
+   66                 | expression • LOGICAND expression
+   67                 | expression • LOGICOR expression
+   76 ar_expression: expression • PLUS expression
+   77              | expression • MINUS expression
+   78              | expression • MUL expression
+   79              | expression • DIV expression
 
     LOGICEQ      shift, and go to state 115
     LOGICNOTEQ   shift, and go to state 116
@@ -3401,11 +4366,8 @@ State 206
 
     $default  reduce using rule 40 (update)
 
-    logic       go to state 128
-    arithmetic  go to state 129
 
-
-State 207
+State 235
 
    51 iter_statement: FOR '(' assgn_statement expression ENDST update ')' iter_body •
 
